@@ -1,0 +1,69 @@
+﻿@using System.Runtime.Remoting.Services
+@using System.Web.WebSockets
+@using DegreePlanCollection.Models
+@model DegreePlanCollection.Models.CollectDegreeViewModel
+
+
+@{
+    ViewBag.Title = "CollectCoreCourses";
+}
+
+<h2>CollectCoreCourses</h2>
+
+<h3>@Model.CurrentDegree at @Model.School</h3>
+
+@{string[] vals = Model.CurrentDegreeCourses.Split('|');
+    <table>
+    @foreach (var i in vals)
+    {
+        <tr>
+            <td>
+              @Html.Raw(i)
+            </td>
+        </tr>
+    }
+    </table>
+}
+
+
+@{
+    // when addcoursetolist is submited, the CurrentDegreeCourses has amp appended to &
+}
+
+@using (Html.BeginForm("AddCourseToList","CollectDegreePlan"))
+{
+    
+    @Html.EditorFor(m => m.CurrentCourse)
+    
+    @Html.HiddenFor(m=>m.CurrentDegree)
+    @Html.HiddenFor(m=>m.School)
+    @Html.HiddenFor(m=>m.Schools)
+
+    <input type="hidden" value="@Html.Raw(Model.CurrentDegreeCourses)" id="CurrentDegreeCourses" name="CurrentDegreeCourses" />
+    
+
+    <input type="submit" value="Add"/>
+
+    
+}   
+
+
+@using (Html.BeginForm("CollectCourseInfo", "CollectDegreePlan"))
+{
+  
+
+
+
+    <input type="hidden" value="@Html.Raw(Model.CurrentDegreeCourses)" id="CurrentDegreeCourses" name="CurrentDegreeCourses" />
+
+    @Html.HiddenFor(m=>m.CurrentDegree)
+    @Html.HiddenFor(m=>m.School)
+   @Html.HiddenFor(m => m.CourseTimeInfo)
+
+<input type="submit" value="Submit" />
+}
+
+
+
+
+

@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LocalVSADevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AcademicYear">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Year" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="CourseID" />
+    </Key>
+    <Property Name="CourseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="AbbreviatedTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="MinCredit" Type="Int32" />
+    <Property Name="MaxCredit" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="DepartmentID" Type="Int32" />
+    <Property Name="PreRequisites" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="CoRequisites" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="UseCatalog" Type="Int32" />
+    <Property Name="SectionID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="Majors" Relationship="Self.FK_Major_Department" FromRole="Department" ToRole="Major" />
+  </EntityType>
+  <EntityType Name="GeneratedPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Score" Type="Double" />
+    <Property Name="ParameterSetID" Type="Int32" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="StudyPlans" Relationship="Self.FK_StudentModifiedStudyPlan_GeneratedPlan" FromRole="GeneratedPlan" ToRole="StudyPlan" />
+    <NavigationProperty Name="StudyPlans1" Relationship="Self.FK_StudyPlan_GeneratedPlan" FromRole="GeneratedPlan" ToRole="StudyPlan" />
+  </EntityType>
+  <EntityType Name="JobType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobType1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="WorkHours" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="Students" Relationship="Self.FK_Student_JobType" FromRole="JobType" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Major">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="DepartmentID" Type="Int32" />
+    <Property Name="DegreeType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Major_Department" FromRole="Major" ToRole="Department" />
+    <NavigationProperty Name="Students" Relationship="Self.FK_Student_Major" FromRole="Major" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Parameter">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MajorID" Type="Int32" />
+    <Property Name="SchoolID" Type="Int32" />
+    <Property Name="JobTypeID" Type="Int32" />
+    <Property Name="BudgetID" Type="Int32" />
+    <Property Name="StartQuarterID" Type="Int32" />
+    <Property Name="TimePreferenceID" Type="Binary" MaxLength="1" FixedLength="true" />
+    <Property Name="QuarterPreferenceID" Type="Binary" MaxLength="1" FixedLength="true" />
+    <Property Name="Placements" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Completed" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ParameterSet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MajorID" Type="Int32" />
+    <Property Name="SchoolID" Type="Int32" />
+    <Property Name="JobTypeID" Type="Int32" />
+    <Property Name="BudgetID" Type="Int32" />
+    <Property Name="TimePreferenceID" Type="Int32" />
+    <Property Name="QuarterPreferenceID" Type="Int32" />
+    <Property Name="CompletedCourses" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="PlacementCourses" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="PlanRating">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="PlanID" Type="Int32" Nullable="false" />
+    <Property Name="OptionGroupID" Type="Int32" Nullable="false" />
+    <Property Name="Stars" Type="Int32" />
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="PlanRatingDescription">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="PlanRatingOption">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OptionGroupID" Type="Int32" Nullable="false" />
+    <Property Name="DescriptionID" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Quarter">
+    <Key>
+      <PropertyRef Name="QuarterID" />
+    </Key>
+    <Property Name="QuarterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Quarter1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="StudentEnrollments" Relationship="Self.FK_StudentEnrollment_Quarter" FromRole="Quarter" ToRole="StudentEnrollment" />
+  </EntityType>
+  <EntityType Name="ReviewedStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int64" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="PlanName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AdvisorID" Type="Int64" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="ReviewDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="StudyPlan" Relationship="Self.FK_ReviewedStudyPlan_StudyPlan" FromRole="ReviewedStudyPlan" ToRole="StudyPlan" />
+  </EntityType>
+  <EntityType Name="Section">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Section1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MajorID" Type="Int64" />
+    <Property Name="DepartmentID" Type="Int64" />
+    <Property Name="JobTypeID" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="JobType" Relationship="Self.FK_Student_JobType" FromRole="Student" ToRole="JobType" />
+    <NavigationProperty Name="Major" Relationship="Self.FK_Student_Major" FromRole="Student" ToRole="Major" />
+    <NavigationProperty Name="StudentEnrollments" Relationship="Self.FK_StudentEnrollment_Student" FromRole="Student" ToRole="StudentEnrollment" />
+  </EntityType>
+  <EntityType Name="StudentEnrollment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int64" Nullable="false" />
+    <Property Name="CourseNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="QuarterID" Type="Int32" />
+    <Property Name="Elective" Type="Int32" />
+    <Property Name="Core" Type="Int32" />
+    <Property Name="CreditNo" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="Year" Type="Int32" />
+    <Property Name="EnrollmentDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Quarter" Relationship="Self.FK_StudentEnrollment_Quarter" FromRole="StudentEnrollment" ToRole="Quarter" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_StudentEnrollment_Student" FromRole="StudentEnrollment" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="StudentModifiedStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="QuarterID" Type="Int32" />
+    <Property Name="YearID" Type="Int32" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="StudentStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int64" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="StudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="QuarterID" Type="Int32" />
+    <Property Name="YearID" Type="Int32" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="GeneratedPlan" Relationship="Self.FK_StudentModifiedStudyPlan_GeneratedPlan" FromRole="StudyPlan" ToRole="GeneratedPlan" />
+    <NavigationProperty Name="GeneratedPlan1" Relationship="Self.FK_StudyPlan_GeneratedPlan" FromRole="StudyPlan" ToRole="GeneratedPlan" />
+    <NavigationProperty Name="ReviewedStudyPlans" Relationship="Self.FK_ReviewedStudyPlan_StudyPlan" FromRole="StudyPlan" ToRole="ReviewedStudyPlan" />
+  </EntityType>
+  <EntityType Name="WeekDay">
+    <Key>
+      <PropertyRef Name="DayID" />
+    </Key>
+    <Property Name="DayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WeekDay1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Budget">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Budget1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="MaxCredit" Type="Int32" />
+    <Property Name="ResidentStatusID" Type="Int32" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="MockUpData">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="Int64" Nullable="false" />
+    <Property Name="Major" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="JobTypeID" Type="Int32" />
+    <Property Name="NoOfCourses" Type="Int32" />
+    <Property Name="Elective" Type="Int32" />
+    <Property Name="Core" Type="Int32" />
+    <Property Name="ElectiveCredit" Type="Int32" />
+    <Property Name="CoreCredit" Type="Int32" />
+    <Property Name="CreditNo" Type="Int32" />
+  </EntityType>
+  <EntityType Name="PrerequisiteTransfer">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="CourseNumber" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="PrerequisiteID" />
+      <PropertyRef Name="PrerequisiteNumber" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" Nullable="false" />
+    <Property Name="CourseNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="GroupID" Type="Int32" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="Int32" Nullable="false" />
+    <Property Name="PrerequisiteNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Requisite">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="RequisiteID" Type="Int32" />
+    <Property Name="Relationship" Type="Int32" />
+    <Property Name="DepartmentID" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="CourseName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="RequisiteName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RequisitesType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RequisiteType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ResidentStatu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Residency" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="School">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Acronymn" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="StudentPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="PlanName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="StudentID" Type="Int64" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="TimePreference">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TimePeriod" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="TimeSlot">
+    <Key>
+      <PropertyRef Name="TimeID" />
+    </Key>
+    <Property Name="TimeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Time" Type="Time" Precision="0" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_Major_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Major" Type="Self.Major" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Major">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentModifiedStudyPlan_GeneratedPlan">
+    <End Role="GeneratedPlan" Type="Self.GeneratedPlan" Multiplicity="0..1" />
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GeneratedPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyPlan_GeneratedPlan">
+    <End Role="GeneratedPlan" Type="Self.GeneratedPlan" Multiplicity="0..1" />
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GeneratedPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_JobType">
+    <End Role="JobType" Type="Self.JobType" Multiplicity="0..1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="JobType">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="JobTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Major">
+    <End Role="Major" Type="Self.Major" Multiplicity="0..1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Major">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="MajorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentEnrollment_Quarter">
+    <End Role="Quarter" Type="Self.Quarter" Multiplicity="0..1" />
+    <End Role="StudentEnrollment" Type="Self.StudentEnrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Quarter">
+        <PropertyRef Name="QuarterID" />
+      </Principal>
+      <Dependent Role="StudentEnrollment">
+        <PropertyRef Name="QuarterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReviewedStudyPlan_StudyPlan">
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="0..1" />
+    <End Role="ReviewedStudyPlan" Type="Self.ReviewedStudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudyPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReviewedStudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentEnrollment_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="StudentEnrollment" Type="Self.StudentEnrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="StudentEnrollment">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LocalVSADevEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AcademicYears" EntityType="Self.AcademicYear" />
+    <EntitySet Name="Courses" EntityType="Self.Course" />
+    <EntitySet Name="Departments" EntityType="Self.Department" />
+    <EntitySet Name="GeneratedPlans" EntityType="Self.GeneratedPlan" />
+    <EntitySet Name="JobTypes" EntityType="Self.JobType" />
+    <EntitySet Name="Majors" EntityType="Self.Major" />
+    <EntitySet Name="Parameters" EntityType="Self.Parameter" />
+    <EntitySet Name="ParameterSets" EntityType="Self.ParameterSet" />
+    <EntitySet Name="PlanRatings" EntityType="Self.PlanRating" />
+    <EntitySet Name="PlanRatingDescriptions" EntityType="Self.PlanRatingDescription" />
+    <EntitySet Name="PlanRatingOptions" EntityType="Self.PlanRatingOption" />
+    <EntitySet Name="Quarters" EntityType="Self.Quarter" />
+    <EntitySet Name="ReviewedStudyPlans" EntityType="Self.ReviewedStudyPlan" />
+    <EntitySet Name="Sections" EntityType="Self.Section" />
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <EntitySet Name="StudentEnrollments" EntityType="Self.StudentEnrollment" />
+    <EntitySet Name="StudentModifiedStudyPlans" EntityType="Self.StudentModifiedStudyPlan" />
+    <EntitySet Name="StudentStudyPlans" EntityType="Self.StudentStudyPlan" />
+    <EntitySet Name="StudyPlans" EntityType="Self.StudyPlan" />
+    <EntitySet Name="WeekDays" EntityType="Self.WeekDay" />
+    <EntitySet Name="Budgets" EntityType="Self.Budget" />
+    <EntitySet Name="MockUpDatas" EntityType="Self.MockUpData" />
+    <EntitySet Name="PrerequisiteTransfers" EntityType="Self.PrerequisiteTransfer" />
+    <EntitySet Name="Requisites" EntityType="Self.Requisite" />
+    <EntitySet Name="RequisitesTypes" EntityType="Self.RequisitesType" />
+    <EntitySet Name="ResidentStatus" EntityType="Self.ResidentStatu" />
+    <EntitySet Name="Schools" EntityType="Self.School" />
+    <EntitySet Name="StudentPlans" EntityType="Self.StudentPlan" />
+    <EntitySet Name="TimePreferences" EntityType="Self.TimePreference" />
+    <EntitySet Name="TimeSlots" EntityType="Self.TimeSlot" />
+    <AssociationSet Name="FK_Major_Department" Association="Self.FK_Major_Department">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Major" EntitySet="Majors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentModifiedStudyPlan_GeneratedPlan" Association="Self.FK_StudentModifiedStudyPlan_GeneratedPlan">
+      <End Role="GeneratedPlan" EntitySet="GeneratedPlans" />
+      <End Role="StudyPlan" EntitySet="StudyPlans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyPlan_GeneratedPlan" Association="Self.FK_StudyPlan_GeneratedPlan">
+      <End Role="GeneratedPlan" EntitySet="GeneratedPlans" />
+      <End Role="StudyPlan" EntitySet="StudyPlans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_JobType" Association="Self.FK_Student_JobType">
+      <End Role="JobType" EntitySet="JobTypes" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Major" Association="Self.FK_Student_Major">
+      <End Role="Major" EntitySet="Majors" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentEnrollment_Quarter" Association="Self.FK_StudentEnrollment_Quarter">
+      <End Role="Quarter" EntitySet="Quarters" />
+      <End Role="StudentEnrollment" EntitySet="StudentEnrollments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReviewedStudyPlan_StudyPlan" Association="Self.FK_ReviewedStudyPlan_StudyPlan">
+      <End Role="StudyPlan" EntitySet="StudyPlans" />
+      <End Role="ReviewedStudyPlan" EntitySet="ReviewedStudyPlans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentEnrollment_Student" Association="Self.FK_StudentEnrollment_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="StudentEnrollment" EntitySet="StudentEnrollments" />
+    </AssociationSet>
+    <EntitySet Name="Prerequisites" EntityType="LocalVSADevModel.Prerequisite" />
+    <EntitySet Name="AdmissionRequiredCourses" EntityType="LocalVSADevModel.AdmissionRequiredCours" />
+    <EntitySet Name="CourseTimes" EntityType="LocalVSADevModel.CourseTime" />
+  </EntityContainer>
+  <EntityType Name="Prerequisite">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" Nullable="false" />
+    <Property Name="GroupID" Type="Int32" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdmissionRequiredCours">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MajorID" Type="Int32" />
+    <Property Name="SchoolID" Type="Int32" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="DepartmentID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="CourseTime">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="CourseNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="StartTimeID" Type="Int32" />
+    <Property Name="EndTimeID" Type="Int32" />
+    <Property Name="DayID" Type="Int32" />
+    <Property Name="QuarterID" Type="Int32" />
+    <Property Name="Year" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="SectionID" Type="Int32" />
+  </EntityType>
+</Schema>

@@ -1,0 +1,32 @@
+﻿@using System.Collections
+@using System.Dynamic
+@using DegreePlanCollection.Models
+@using Newtonsoft.Json
+
+@model IEnumerable<SchoolMajorViewModel> 
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Degrees</h2>
+<table>
+    
+   
+    @foreach (var items in Model)
+    {
+
+        <tr>
+
+            <td>@Html.ActionLink(items.Major + " at " + items.School, "EditPlan", "CollectDegreePlan", new {items.MajorId,items.SchoolId }, null)</td>
+        </tr>
+    }
+
+</table>
+@Html.ActionLink("Create New Plan", "Create","CollectDegreePlan",new {}, null)
+
+
+
+    
+
+

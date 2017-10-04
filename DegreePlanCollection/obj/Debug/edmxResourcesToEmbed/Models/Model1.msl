@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="LocalVSADevModelStoreContainer" CdmEntityContainer="LocalVSADevEntities">
+    <EntitySetMapping Name="AcademicYears">
+      <EntityTypeMapping TypeName="LocalVSADevModel.AcademicYear">
+        <MappingFragment StoreEntitySet="AcademicYear">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Courses">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Course">
+        <MappingFragment StoreEntitySet="Course">
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+          <ScalarProperty Name="AbbreviatedTitle" ColumnName="AbbreviatedTitle" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="MinCredit" ColumnName="MinCredit" />
+          <ScalarProperty Name="MaxCredit" ColumnName="MaxCredit" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="PreRequisites" ColumnName="PreRequisites" />
+          <ScalarProperty Name="CoRequisites" ColumnName="CoRequisites" />
+          <ScalarProperty Name="UseCatalog" ColumnName="UseCatalog" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Department">
+        <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GeneratedPlans">
+      <EntityTypeMapping TypeName="LocalVSADevModel.GeneratedPlan">
+        <MappingFragment StoreEntitySet="GeneratedPlan">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Score" ColumnName="Score" />
+          <ScalarProperty Name="ParameterSetID" ColumnName="ParameterSetID" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="JobTypes">
+      <EntityTypeMapping TypeName="LocalVSADevModel.JobType">
+        <MappingFragment StoreEntitySet="JobType">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="JobType1" ColumnName="JobType" />
+          <ScalarProperty Name="WorkHours" ColumnName="WorkHours" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Majors">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Major">
+        <MappingFragment StoreEntitySet="Major">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="DegreeType" ColumnName="DegreeType" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Parameters">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Parameter">
+        <MappingFragment StoreEntitySet="Parameters">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="MajorID" ColumnName="MajorID" />
+          <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
+          <ScalarProperty Name="JobTypeID" ColumnName="JobTypeID" />
+          <ScalarProperty Name="BudgetID" ColumnName="BudgetID" />
+          <ScalarProperty Name="StartQuarterID" ColumnName="StartQuarterID" />
+          <ScalarProperty Name="TimePreferenceID" ColumnName="TimePreferenceID" />
+          <ScalarProperty Name="QuarterPreferenceID" ColumnName="QuarterPreferenceID" />
+          <ScalarProperty Name="Placements" ColumnName="Placements" />
+          <ScalarProperty Name="Completed" ColumnName="Completed" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ParameterSets">
+      <EntityTypeMapping TypeName="LocalVSADevModel.ParameterSet">
+        <MappingFragment StoreEntitySet="ParameterSet">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="MajorID" ColumnName="MajorID" />
+          <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
+          <ScalarProperty Name="JobTypeID" ColumnName="JobTypeID" />
+          <ScalarProperty Name="BudgetID" ColumnName="BudgetID" />
+          <ScalarProperty Name="TimePreferenceID" ColumnName="TimePreferenceID" />
+          <ScalarProperty Name="QuarterPreferenceID" ColumnName="QuarterPreferenceID" />
+          <ScalarProperty Name="CompletedCourses" ColumnName="CompletedCourses" />
+          <ScalarProperty Name="PlacementCourses" ColumnName="PlacementCourses" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PlanRatings">
+      <EntityTypeMapping TypeName="LocalVSADevModel.PlanRating">
+        <MappingFragment StoreEntitySet="PlanRating">
+          <ScalarProperty Name="PlanID" ColumnName="PlanID" />
+          <ScalarProperty Name="OptionGroupID" ColumnName="OptionGroupID" />
+          <ScalarProperty Name="Stars" ColumnName="Stars" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PlanRatingDescriptions">
+      <EntityTypeMapping TypeName="LocalVSADevModel.PlanRatingDescription">
+        <MappingFragment StoreEntitySet="PlanRatingDescription">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PlanRatingOptions">
+      <EntityTypeMapping TypeName="LocalVSADevModel.PlanRatingOption">
+        <MappingFragment StoreEntitySet="PlanRatingOption">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OptionGroupID" ColumnName="OptionGroupID" />
+          <ScalarProperty Name="DescriptionID" ColumnName="DescriptionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Quarters">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Quarter">
+        <MappingFragment StoreEntitySet="Quarter">
+          <ScalarProperty Name="QuarterID" ColumnName="QuarterID" />
+          <ScalarProperty Name="Quarter1" ColumnName="Quarter" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReviewedStudyPlans">
+      <EntityTypeMapping TypeName="LocalVSADevModel.ReviewedStudyPlan">
+        <MappingFragment StoreEntitySet="ReviewedStudyPlan">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="PlanID" ColumnName="PlanID" />
+          <ScalarProperty Name="PlanName" ColumnName="PlanName" />
+          <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="ReviewDate" ColumnName="ReviewDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sections">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Section">
+        <MappingFragment StoreEntitySet="Section">
+          <ScalarProperty Name="Section1" ColumnName="Section" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Students">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Student">
+        <MappingFragment StoreEntitySet="Student">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="MajorID" ColumnName="MajorID" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="JobTypeID" ColumnName="JobTypeID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudentEnrollments">
+      <EntityTypeMapping TypeName="LocalVSADevModel.StudentEnrollment">
+        <MappingFragment StoreEntitySet="StudentEnrollment">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+          <ScalarProperty Name="QuarterID" ColumnName="QuarterID" />
+          <ScalarProperty Name="Elective" ColumnName="Elective" />
+          <ScalarProperty Name="Core" ColumnName="Core" />
+          <ScalarProperty Name="CreditNo" ColumnName="CreditNo" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="EnrollmentDate" ColumnName="EnrollmentDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudentModifiedStudyPlans">
+      <EntityTypeMapping TypeName="LocalVSADevModel.StudentModifiedStudyPlan">
+        <MappingFragment StoreEntitySet="StudentModifiedStudyPlan">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PlanID" ColumnName="PlanID" />
+          <ScalarProperty Name="QuarterID" ColumnName="QuarterID" />
+          <ScalarProperty Name="YearID" ColumnName="YearID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudentStudyPlans">
+      <EntityTypeMapping TypeName="LocalVSADevModel.StudentStudyPlan">
+        <MappingFragment StoreEntitySet="StudentStudyPlan">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="PlanID" ColumnName="PlanID" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudyPlans">
+      <EntityTypeMapping TypeName="LocalVSADevModel.StudyPlan">
+        <MappingFragment StoreEntitySet="StudyPlan">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PlanID" ColumnName="PlanID" />
+          <ScalarProperty Name="QuarterID" ColumnName="QuarterID" />
+          <ScalarProperty Name="YearID" ColumnName="YearID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WeekDays">
+      <EntityTypeMapping TypeName="LocalVSADevModel.WeekDay">
+        <MappingFragment StoreEntitySet="WeekDay">
+          <ScalarProperty Name="DayID" ColumnName="DayID" />
+          <ScalarProperty Name="WeekDay1" ColumnName="WeekDay" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Budgets">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Budget">
+        <MappingFragment StoreEntitySet="Budget">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Budget1" ColumnName="Budget" />
+          <ScalarProperty Name="MaxCredit" ColumnName="MaxCredit" />
+          <ScalarProperty Name="ResidentStatusID" ColumnName="ResidentStatusID" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MockUpDatas">
+      <EntityTypeMapping TypeName="LocalVSADevModel.MockUpData">
+        <MappingFragment StoreEntitySet="MockUpData">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="Major" ColumnName="Major" />
+          <ScalarProperty Name="JobTypeID" ColumnName="JobTypeID" />
+          <ScalarProperty Name="NoOfCourses" ColumnName="NoOfCourses" />
+          <ScalarProperty Name="Elective" ColumnName="Elective" />
+          <ScalarProperty Name="Core" ColumnName="Core" />
+          <ScalarProperty Name="ElectiveCredit" ColumnName="ElectiveCredit" />
+          <ScalarProperty Name="CoreCredit" ColumnName="CoreCredit" />
+          <ScalarProperty Name="CreditNo" ColumnName="CreditNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PrerequisiteTransfers">
+      <EntityTypeMapping TypeName="LocalVSADevModel.PrerequisiteTransfer">
+        <MappingFragment StoreEntitySet="PrerequisiteTransfer">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="PrerequisiteID" ColumnName="PrerequisiteID" />
+          <ScalarProperty Name="PrerequisiteNumber" ColumnName="PrerequisiteNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Requisites">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Requisite">
+        <MappingFragment StoreEntitySet="Requisites">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="RequisiteID" ColumnName="RequisiteID" />
+          <ScalarProperty Name="Relationship" ColumnName="Relationship" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+          <ScalarProperty Name="RequisiteName" ColumnName="RequisiteName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RequisitesTypes">
+      <EntityTypeMapping TypeName="LocalVSADevModel.RequisitesType">
+        <MappingFragment StoreEntitySet="RequisitesType">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="RequisiteType" ColumnName="RequisiteType" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ResidentStatus">
+      <EntityTypeMapping TypeName="LocalVSADevModel.ResidentStatu">
+        <MappingFragment StoreEntitySet="ResidentStatus">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Residency" ColumnName="Residency" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Schools">
+      <EntityTypeMapping TypeName="LocalVSADevModel.School">
+        <MappingFragment StoreEntitySet="School">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Acronymn" ColumnName="Acronymn" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudentPlans">
+      <EntityTypeMapping TypeName="LocalVSADevModel.StudentPlan">
+        <MappingFragment StoreEntitySet="StudentPlan">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PlanID" ColumnName="PlanID" />
+          <ScalarProperty Name="PlanName" ColumnName="PlanName" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimePreferences">
+      <EntityTypeMapping TypeName="LocalVSADevModel.TimePreference">
+        <MappingFragment StoreEntitySet="TimePreference">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TimePeriod" ColumnName="TimePeriod" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="LastDateModified" ColumnName="LastDateModified" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeSlots">
+      <EntityTypeMapping TypeName="LocalVSADevModel.TimeSlot">
+        <MappingFragment StoreEntitySet="TimeSlot">
+          <ScalarProperty Name="TimeID" ColumnName="TimeID" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Prerequisites">
+      <EntityTypeMapping TypeName="LocalVSADevModel.Prerequisite">
+        <MappingFragment StoreEntitySet="Prerequisite">
+          <ScalarProperty Name="PrerequisiteID" ColumnName="PrerequisiteID" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AdmissionRequiredCourses">
+      <EntityTypeMapping TypeName="LocalVSADevModel.AdmissionRequiredCours">
+        <MappingFragment StoreEntitySet="AdmissionRequiredCourses">
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
+          <ScalarProperty Name="MajorID" ColumnName="MajorID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CourseTimes">
+      <EntityTypeMapping TypeName="LocalVSADevModel.CourseTime">
+        <MappingFragment StoreEntitySet="CourseTime">
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="QuarterID" ColumnName="QuarterID" />
+          <ScalarProperty Name="DayID" ColumnName="DayID" />
+          <ScalarProperty Name="EndTimeID" ColumnName="EndTimeID" />
+          <ScalarProperty Name="StartTimeID" ColumnName="StartTimeID" />
+          <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,135 @@
+﻿@using System.Runtime.Remoting.Services
+@using System.Web.WebSockets
+@using DegreePlanCollection.Models
+@model DegreePlanCollection.Models.CollectDegreeViewModel
+
+
+@{
+    ViewBag.Title = "CollectCourseInfo";
+}
+
+
+
+@{
+    var courses = Model.CurrentCollectDegreeInfoCourses.Split('|');
+    Model.currentCollectInfoCourse = courses[0].Replace("amp;", "");
+}
+
+<h2>Enter @Html.Raw(Model.currentCollectInfoCourse) Info:  </h2>
+
+
+
+
+
+@using (Html.BeginForm("WriteCourseToDb", "CollectDegreePlan"))
+{
+    <table>
+        <tr>
+            <td>
+
+                    @Html.LabelFor(m => m.Title)
+            </td>
+            <td>
+
+                    @Html.EditorFor(m => m.Title)
+            </td>
+    </tr>
+    <tr>
+        <td>
+            
+            @Html.LabelFor(m => m.Description)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.Description)
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.MinCredit)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.MinCredit)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.MaxCredit)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.MaxCredit)
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.Prerequisite)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.Prerequisite)
+        </td>
+    </tr>
+</table>
+
+    @Html.HiddenFor(m => m.CurrentDegree)
+    <input type="hidden" value="@Html.Raw(Model.CurrentCollectDegreeInfoCourses)" id="CurrentCollectDegreeInfoCourses" name="CurrentCollectDegreeInfoCourses" />
+
+        @Html.HiddenFor(m => m.CurrentDegreeCourses)
+        <input type="hidden" value="@Html.Raw(Model.currentCollectInfoCourse)" id="currentCollectInfoCourse" name="currentCollectInfoCourse" />
+
+        @Html.HiddenFor(m => m.School)
+        @Html.HiddenFor(m => m.CurrentCourse)
+
+        <br />
+
+ 
+    string[] quarters = { "Fall", "Winter", "Spring", "Summer" };
+   
+    <table>
+        <tr>
+            <th>Quarter</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+
+        </tr>
+        @{
+            Model.CourseTimeInfo = new List<CourseTimeViewModel>
+                   {
+                       new CourseTimeViewModel {Quarter = "Fall"},
+                       new CourseTimeViewModel {Quarter = "Winter"},
+                       new CourseTimeViewModel {Quarter = "Spring"},
+                       new CourseTimeViewModel {Quarter = "Summer"}
+                   };
+        }
+
+
+        @for (var i = 0; i < Model.CourseTimeInfo.Count; i++)
+        {
+            <tr>
+                <td><p>@Model.CourseTimeInfo[i].Quarter</p></td>
+                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Monday)</td>
+                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Tuesday)</td>
+                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Wednesday)</td>
+                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Thursday)</td>
+                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Friday)</td>
+                <td>@Html.EditorFor(m => m.CourseTimeInfo[i].StartTime)</td>
+                <td>@Html.EditorFor(m => m.CourseTimeInfo[i].EndTime)</td>
+                @Html.HiddenFor(m => m.CourseTimeInfo[i].Quarter)
+            </tr>
+
+        }
+
+    </table>
+            <input type="submit" value="Submit" />
+
+            }
+
+
+
+
+

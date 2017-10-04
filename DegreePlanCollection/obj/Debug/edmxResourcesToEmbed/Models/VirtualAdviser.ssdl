@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="vsaDevModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AcademicYear">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Year" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'vsaDev.dbo.AdmissionRequiredCourses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AdmissionRequiredCourses">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="int" />
+    <Property Name="SchoolID" Type="int" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="DepartmentID" Type="int" />
+  </EntityType>
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="CourseID" />
+    </Key>
+    <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseNumber" Type="nchar" MaxLength="10" />
+    <Property Name="AbbreviatedTitle" Type="varchar" MaxLength="50" />
+    <Property Name="Title" Type="varchar" MaxLength="100" />
+    <Property Name="MinCredit" Type="int" />
+    <Property Name="MaxCredit" Type="int" />
+    <Property Name="Description" Type="varchar" MaxLength="1000" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="PreRequisites" Type="varchar" MaxLength="250" />
+    <Property Name="CoRequisites" Type="varchar" MaxLength="250" />
+    <Property Name="UseCatalog" Type="int" />
+    <Property Name="SectionID" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'vsaDev.dbo.CourseTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="CourseTime">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="CourseNumber" Type="nchar" MaxLength="10" />
+    <Property Name="StartTimeID" Type="int" />
+    <Property Name="EndTimeID" Type="int" />
+    <Property Name="DayID" Type="int" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="Year" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="SectionID" Type="int" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="Description" Type="varchar" MaxLength="300" />
+    <Property Name="Code" Type="varchar" MaxLength="50" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="GeneratedPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Score" Type="float" />
+    <Property Name="ParameterSetID" Type="int" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Major">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="250" />
+    <Property Name="Description" Type="varchar" MaxLength="250" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="DegreeType" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'vsaDev.dbo.Prerequisite' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Prerequisite">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="PrerequisiteID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" Nullable="false" />
+    <Property Name="GroupID" Type="int" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Quarter">
+    <Key>
+      <PropertyRef Name="QuarterID" />
+    </Key>
+    <Property Name="QuarterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quarter" Type="nchar" MaxLength="10" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'vsaDev.dbo.School' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="School">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="Acronymn" Type="varchar" MaxLength="10" />
+    <Property Name="Address" Type="varchar" MaxLength="150" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Section">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Section" Type="nchar" MaxLength="10" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'vsaDev.dbo.TimeSlot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TimeSlot">
+    <Key>
+      <PropertyRef Name="TimeID" />
+    </Key>
+    <Property Name="TimeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Time" Type="time" Precision="0" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="WeekDay">
+    <Key>
+      <PropertyRef Name="DayID" />
+    </Key>
+    <Property Name="DayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WeekDay" Type="nchar" MaxLength="10" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <Association Name="FK_Major_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Major" Type="Self.Major" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Major">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="vsaDevModelStoreContainer">
+    <EntitySet Name="AcademicYear" EntityType="Self.AcademicYear" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GeneratedPlan" EntityType="Self.GeneratedPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Major" EntityType="Self.Major" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Quarter" EntityType="Self.Quarter" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WeekDay" EntityType="Self.WeekDay" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdmissionRequiredCourses" EntityType="Self.AdmissionRequiredCourses" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [AdmissionRequiredCourses].[ID] AS [ID], 
+    [AdmissionRequiredCourses].[MajorID] AS [MajorID], 
+    [AdmissionRequiredCourses].[SchoolID] AS [SchoolID], 
+    [AdmissionRequiredCourses].[CourseID] AS [CourseID], 
+    [AdmissionRequiredCourses].[DepartmentID] AS [DepartmentID]
+    FROM [dbo].[AdmissionRequiredCourses] AS [AdmissionRequiredCourses]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CourseTime" EntityType="Self.CourseTime" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [CourseTime].[ID] AS [ID], 
+    [CourseTime].[CourseID] AS [CourseID], 
+    [CourseTime].[CourseNumber] AS [CourseNumber], 
+    [CourseTime].[StartTimeID] AS [StartTimeID], 
+    [CourseTime].[EndTimeID] AS [EndTimeID], 
+    [CourseTime].[DayID] AS [DayID], 
+    [CourseTime].[QuarterID] AS [QuarterID], 
+    [CourseTime].[Year] AS [Year], 
+    [CourseTime].[Status] AS [Status], 
+    [CourseTime].[SectionID] AS [SectionID]
+    FROM [dbo].[CourseTime] AS [CourseTime]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Prerequisite" EntityType="Self.Prerequisite" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Prerequisite].[ID] AS [ID], 
+    [Prerequisite].[CourseID] AS [CourseID], 
+    [Prerequisite].[GroupID] AS [GroupID], 
+    [Prerequisite].[PrerequisiteID] AS [PrerequisiteID]
+    FROM [dbo].[Prerequisite] AS [Prerequisite]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="School" EntityType="Self.School" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [School].[ID] AS [ID], 
+    [School].[Name] AS [Name], 
+    [School].[Acronymn] AS [Acronymn], 
+    [School].[Address] AS [Address], 
+    [School].[CreationDate] AS [CreationDate], 
+    [School].[LastDateModified] AS [LastDateModified], 
+    [School].[Status] AS [Status]
+    FROM [dbo].[School] AS [School]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TimeSlot" EntityType="Self.TimeSlot" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TimeSlot].[TimeID] AS [TimeID], 
+    [TimeSlot].[Time] AS [Time], 
+    [TimeSlot].[Status] AS [Status]
+    FROM [dbo].[TimeSlot] AS [TimeSlot]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Major_Department" Association="Self.FK_Major_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Major" EntitySet="Major" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

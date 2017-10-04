@@ -1,0 +1,53 @@
+﻿@model IEnumerable<DegreePlanCollection.Models.DisplayCourseTimeViewModel>
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>Course Scheduling</h2>
+
+
+<table class="table">
+    <tr>
+        <th>Course</th>
+        <th>Day</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Quarter</th>
+        <th>Section</th>
+
+
+
+
+
+    </tr>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CourseNumber)
+        </td>
+        
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.Day)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartTime)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.EndTime)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Quarter)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Section)
+        </td>
+        
+    </tr>
+}
+
+</table>

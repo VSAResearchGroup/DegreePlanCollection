@@ -1,0 +1,653 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LocalVSADevModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AcademicYear">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Year" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="AdmissionRequiredCourses">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="int" />
+    <Property Name="SchoolID" Type="int" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="DepartmentID" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.Budget' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Budget">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Budget" Type="varchar" MaxLength="30" />
+    <Property Name="MaxCredit" Type="int" />
+    <Property Name="ResidentStatusID" Type="int" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="CourseID" />
+    </Key>
+    <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseNumber" Type="nchar" MaxLength="10" />
+    <Property Name="AbbreviatedTitle" Type="varchar" MaxLength="50" />
+    <Property Name="Title" Type="varchar" MaxLength="100" />
+    <Property Name="MinCredit" Type="int" />
+    <Property Name="MaxCredit" Type="int" />
+    <Property Name="Description" Type="varchar" MaxLength="1000" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="PreRequisites" Type="varchar" MaxLength="250" />
+    <Property Name="CoRequisites" Type="varchar" MaxLength="250" />
+    <Property Name="UseCatalog" Type="int" />
+    <Property Name="SectionID" Type="int" />
+  </EntityType>
+  <EntityType Name="CourseTime">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="CourseNumber" Type="nchar" MaxLength="10" />
+    <Property Name="StartTimeID" Type="int" />
+    <Property Name="EndTimeID" Type="int" />
+    <Property Name="DayID" Type="int" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="Year" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="SectionID" Type="int" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="Description" Type="varchar" MaxLength="300" />
+    <Property Name="Code" Type="varchar" MaxLength="50" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="GeneratedPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Score" Type="float" />
+    <Property Name="ParameterSetID" Type="int" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="JobType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobType" Type="varchar" MaxLength="50" />
+    <Property Name="WorkHours" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Major">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="250" />
+    <Property Name="Description" Type="varchar" MaxLength="250" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="DegreeType" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.MockUpData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="MockUpData">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="bigint" Nullable="false" />
+    <Property Name="Major" Type="varchar" MaxLength="250" />
+    <Property Name="JobTypeID" Type="int" />
+    <Property Name="NoOfCourses" Type="int" />
+    <Property Name="Elective" Type="int" />
+    <Property Name="Core" Type="int" />
+    <Property Name="ElectiveCredit" Type="int" />
+    <Property Name="CoreCredit" Type="int" />
+    <Property Name="CreditNo" Type="int" />
+  </EntityType>
+  <EntityType Name="Parameters">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="int" />
+    <Property Name="SchoolID" Type="int" />
+    <Property Name="JobTypeID" Type="int" />
+    <Property Name="BudgetID" Type="int" />
+    <Property Name="StartQuarterID" Type="int" />
+    <Property Name="TimePreferenceID" Type="binary" MaxLength="1" />
+    <Property Name="QuarterPreferenceID" Type="binary" MaxLength="1" />
+    <Property Name="Placements" Type="varchar" MaxLength="50" />
+    <Property Name="Completed" Type="varchar" MaxLength="50" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="ParameterSet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="int" />
+    <Property Name="SchoolID" Type="int" />
+    <Property Name="JobTypeID" Type="int" />
+    <Property Name="BudgetID" Type="int" />
+    <Property Name="TimePreferenceID" Type="int" />
+    <Property Name="QuarterPreferenceID" Type="int" />
+    <Property Name="CompletedCourses" Type="varchar" MaxLength="250" />
+    <Property Name="PlacementCourses" Type="varchar" MaxLength="250" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="PlanRating">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="PlanID" Type="int" Nullable="false" />
+    <Property Name="OptionGroupID" Type="int" Nullable="false" />
+    <Property Name="Stars" Type="int" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PlanRatingDescription">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PlanRatingOption">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OptionGroupID" Type="int" Nullable="false" />
+    <Property Name="DescriptionID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Prerequisite">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" Nullable="false" />
+    <Property Name="GroupID" Type="int" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.PrerequisiteTransfer' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="PrerequisiteTransfer">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="CourseNumber" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="PrerequisiteID" />
+      <PropertyRef Name="PrerequisiteNumber" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" Nullable="false" />
+    <Property Name="CourseNumber" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="GroupID" Type="int" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="int" Nullable="false" />
+    <Property Name="PrerequisiteNumber" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Quarter">
+    <Key>
+      <PropertyRef Name="QuarterID" />
+    </Key>
+    <Property Name="QuarterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quarter" Type="nchar" MaxLength="10" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.Requisites' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Requisites">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="RequisiteID" Type="int" />
+    <Property Name="Relationship" Type="int" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="UserID" Type="int" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="CourseName" Type="nchar" MaxLength="10" />
+    <Property Name="RequisiteName" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.RequisitesType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="RequisitesType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RequisiteType" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.ResidentStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ResidentStatus">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Residency" Type="varchar" MaxLength="30" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="ReviewedStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentID" Type="bigint" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="PlanName" Type="varchar" MaxLength="50" />
+    <Property Name="AdvisorID" Type="bigint" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="ReviewDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.School' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="School">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="Acronymn" Type="varchar" MaxLength="10" />
+    <Property Name="Address" Type="varchar" MaxLength="150" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Section">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Section" Type="nchar" MaxLength="10" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="bigint" />
+    <Property Name="DepartmentID" Type="bigint" />
+    <Property Name="JobTypeID" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="StudentEnrollment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentID" Type="bigint" Nullable="false" />
+    <Property Name="CourseNumber" Type="nchar" MaxLength="10" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="Elective" Type="int" />
+    <Property Name="Core" Type="int" />
+    <Property Name="CreditNo" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="Year" Type="int" />
+    <Property Name="EnrollmentDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+  </EntityType>
+  <EntityType Name="StudentModifiedStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="YearID" Type="int" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.StudentPlan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="StudentPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="PlanName" Type="varchar" MaxLength="50" />
+    <Property Name="StudentID" Type="bigint" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+  </EntityType>
+  <EntityType Name="StudentStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentID" Type="bigint" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="StudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="YearID" Type="int" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.TimePreference' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TimePreference">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TimePeriod" Type="varchar" MaxLength="10" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.TimeSlot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TimeSlot">
+    <Key>
+      <PropertyRef Name="TimeID" />
+    </Key>
+    <Property Name="TimeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Time" Type="time" Precision="0" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="WeekDay">
+    <Key>
+      <PropertyRef Name="DayID" />
+    </Key>
+    <Property Name="DayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WeekDay" Type="nchar" MaxLength="10" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <Association Name="FK_Major_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Major" Type="Self.Major" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Major">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReviewedStudyPlan_StudyPlan">
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="0..1" />
+    <End Role="ReviewedStudyPlan" Type="Self.ReviewedStudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudyPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReviewedStudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_JobType">
+    <End Role="JobType" Type="Self.JobType" Multiplicity="0..1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="JobType">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="JobTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Major">
+    <End Role="Major" Type="Self.Major" Multiplicity="0..1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Major">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="MajorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentEnrollment_Quarter">
+    <End Role="Quarter" Type="Self.Quarter" Multiplicity="0..1" />
+    <End Role="StudentEnrollment" Type="Self.StudentEnrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Quarter">
+        <PropertyRef Name="QuarterID" />
+      </Principal>
+      <Dependent Role="StudentEnrollment">
+        <PropertyRef Name="QuarterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentEnrollment_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="StudentEnrollment" Type="Self.StudentEnrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="StudentEnrollment">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentModifiedStudyPlan_GeneratedPlan">
+    <End Role="GeneratedPlan" Type="Self.GeneratedPlan" Multiplicity="0..1" />
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GeneratedPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyPlan_GeneratedPlan">
+    <End Role="GeneratedPlan" Type="Self.GeneratedPlan" Multiplicity="0..1" />
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GeneratedPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LocalVSADevModelStoreContainer">
+    <EntitySet Name="AcademicYear" EntityType="Self.AcademicYear" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdmissionRequiredCourses" EntityType="Self.AdmissionRequiredCourses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CourseTime" EntityType="Self.CourseTime" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GeneratedPlan" EntityType="Self.GeneratedPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="JobType" EntityType="Self.JobType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Major" EntityType="Self.Major" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Parameters" EntityType="Self.Parameters" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ParameterSet" EntityType="Self.ParameterSet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PlanRating" EntityType="Self.PlanRating" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PlanRatingDescription" EntityType="Self.PlanRatingDescription" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PlanRatingOption" EntityType="Self.PlanRatingOption" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Prerequisite" EntityType="Self.Prerequisite" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Quarter" EntityType="Self.Quarter" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReviewedStudyPlan" EntityType="Self.ReviewedStudyPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudentEnrollment" EntityType="Self.StudentEnrollment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudentModifiedStudyPlan" EntityType="Self.StudentModifiedStudyPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudentStudyPlan" EntityType="Self.StudentStudyPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudyPlan" EntityType="Self.StudyPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WeekDay" EntityType="Self.WeekDay" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Budget" EntityType="Self.Budget" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Budget].[ID] AS [ID], 
+    [Budget].[Budget] AS [Budget], 
+    [Budget].[MaxCredit] AS [MaxCredit], 
+    [Budget].[ResidentStatusID] AS [ResidentStatusID], 
+    [Budget].[CreationDate] AS [CreationDate], 
+    [Budget].[LastDateModified] AS [LastDateModified], 
+    [Budget].[Status] AS [Status]
+    FROM [dbo].[Budget] AS [Budget]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="MockUpData" EntityType="Self.MockUpData" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [MockUpData].[StudentID] AS [StudentID], 
+    [MockUpData].[Major] AS [Major], 
+    [MockUpData].[JobTypeID] AS [JobTypeID], 
+    [MockUpData].[NoOfCourses] AS [NoOfCourses], 
+    [MockUpData].[Elective] AS [Elective], 
+    [MockUpData].[Core] AS [Core], 
+    [MockUpData].[ElectiveCredit] AS [ElectiveCredit], 
+    [MockUpData].[CoreCredit] AS [CoreCredit], 
+    [MockUpData].[CreditNo] AS [CreditNo]
+    FROM [dbo].[MockUpData] AS [MockUpData]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="PrerequisiteTransfer" EntityType="Self.PrerequisiteTransfer" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [PrerequisiteTransfer].[ID] AS [ID], 
+    [PrerequisiteTransfer].[CourseID] AS [CourseID], 
+    [PrerequisiteTransfer].[CourseNumber] AS [CourseNumber], 
+    [PrerequisiteTransfer].[GroupID] AS [GroupID], 
+    [PrerequisiteTransfer].[PrerequisiteID] AS [PrerequisiteID], 
+    [PrerequisiteTransfer].[PrerequisiteNumber] AS [PrerequisiteNumber]
+    FROM [dbo].[PrerequisiteTransfer] AS [PrerequisiteTransfer]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Requisites" EntityType="Self.Requisites" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Requisites].[ID] AS [ID], 
+    [Requisites].[CourseID] AS [CourseID], 
+    [Requisites].[RequisiteID] AS [RequisiteID], 
+    [Requisites].[Relationship] AS [Relationship], 
+    [Requisites].[DepartmentID] AS [DepartmentID], 
+    [Requisites].[Status] AS [Status], 
+    [Requisites].[UserID] AS [UserID], 
+    [Requisites].[LastDateModified] AS [LastDateModified], 
+    [Requisites].[CourseName] AS [CourseName], 
+    [Requisites].[RequisiteName] AS [RequisiteName]
+    FROM [dbo].[Requisites] AS [Requisites]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="RequisitesType" EntityType="Self.RequisitesType" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [RequisitesType].[ID] AS [ID], 
+    [RequisitesType].[RequisiteType] AS [RequisiteType], 
+    [RequisitesType].[Status] AS [Status]
+    FROM [dbo].[RequisitesType] AS [RequisitesType]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ResidentStatus" EntityType="Self.ResidentStatus" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ResidentStatus].[ID] AS [ID], 
+    [ResidentStatus].[Residency] AS [Residency], 
+    [ResidentStatus].[CreationDate] AS [CreationDate], 
+    [ResidentStatus].[LastDateModified] AS [LastDateModified], 
+    [ResidentStatus].[Status] AS [Status]
+    FROM [dbo].[ResidentStatus] AS [ResidentStatus]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="School" EntityType="Self.School" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [School].[ID] AS [ID], 
+    [School].[Name] AS [Name], 
+    [School].[Acronymn] AS [Acronymn], 
+    [School].[Address] AS [Address], 
+    [School].[CreationDate] AS [CreationDate], 
+    [School].[LastDateModified] AS [LastDateModified], 
+    [School].[Status] AS [Status]
+    FROM [dbo].[School] AS [School]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="StudentPlan" EntityType="Self.StudentPlan" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [StudentPlan].[ID] AS [ID], 
+    [StudentPlan].[PlanID] AS [PlanID], 
+    [StudentPlan].[PlanName] AS [PlanName], 
+    [StudentPlan].[StudentID] AS [StudentID], 
+    [StudentPlan].[CreationDate] AS [CreationDate], 
+    [StudentPlan].[LastDateModified] AS [LastDateModified]
+    FROM [dbo].[StudentPlan] AS [StudentPlan]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TimePreference" EntityType="Self.TimePreference" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TimePreference].[ID] AS [ID], 
+    [TimePreference].[TimePeriod] AS [TimePeriod], 
+    [TimePreference].[CreationDate] AS [CreationDate], 
+    [TimePreference].[LastDateModified] AS [LastDateModified], 
+    [TimePreference].[Status] AS [Status]
+    FROM [dbo].[TimePreference] AS [TimePreference]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TimeSlot" EntityType="Self.TimeSlot" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TimeSlot].[TimeID] AS [TimeID], 
+    [TimeSlot].[Time] AS [Time], 
+    [TimeSlot].[Status] AS [Status]
+    FROM [dbo].[TimeSlot] AS [TimeSlot]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Major_Department" Association="Self.FK_Major_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Major" EntitySet="Major" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReviewedStudyPlan_StudyPlan" Association="Self.FK_ReviewedStudyPlan_StudyPlan">
+      <End Role="StudyPlan" EntitySet="StudyPlan" />
+      <End Role="ReviewedStudyPlan" EntitySet="ReviewedStudyPlan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_JobType" Association="Self.FK_Student_JobType">
+      <End Role="JobType" EntitySet="JobType" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Major" Association="Self.FK_Student_Major">
+      <End Role="Major" EntitySet="Major" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentEnrollment_Quarter" Association="Self.FK_StudentEnrollment_Quarter">
+      <End Role="Quarter" EntitySet="Quarter" />
+      <End Role="StudentEnrollment" EntitySet="StudentEnrollment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentEnrollment_Student" Association="Self.FK_StudentEnrollment_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="StudentEnrollment" EntitySet="StudentEnrollment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentModifiedStudyPlan_GeneratedPlan" Association="Self.FK_StudentModifiedStudyPlan_GeneratedPlan">
+      <End Role="GeneratedPlan" EntitySet="GeneratedPlan" />
+      <End Role="StudyPlan" EntitySet="StudyPlan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyPlan_GeneratedPlan" Association="Self.FK_StudyPlan_GeneratedPlan">
+      <End Role="GeneratedPlan" EntitySet="GeneratedPlan" />
+      <End Role="StudyPlan" EntitySet="StudyPlan" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

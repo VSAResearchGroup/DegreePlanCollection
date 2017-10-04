@@ -1,0 +1,1969 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LocalVSAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="_TimeSlot">
+    <Key>
+      <PropertyRef Name="TimeID" />
+    </Key>
+    <Property Name="TimeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Time" Type="time" Precision="0" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="AcademicYear">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Year" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="ACCOUNTS">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="active" Type="bit" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="first_name" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="last_name" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="salt" Type="varchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.AdmissionRequiredCourses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AdmissionRequiredCourses">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="int" />
+    <Property Name="SchoolID" Type="int" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="DepartmentID" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.Budget' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Budget">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Budget" Type="varchar" MaxLength="30" />
+    <Property Name="MaxCredit" Type="int" />
+    <Property Name="ResidentStatusID" Type="int" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="CODEKEYS">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="codekey" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COLLEGE_ADMISSION_CODEKEYS">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+      <PropertyRef Name="codekeys_id" />
+    </Key>
+    <Property Name="colleges_id" Type="int" Nullable="false" />
+    <Property Name="codekeys_id" Type="int" Nullable="false" />
+    <Property Name="credit" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COLLEGE_ADMISSION_COURSES">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="colleges_id" Type="int" Nullable="false" />
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="foreign_course_number" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COLLEGE_ADMISSION_DEPARTMENTS">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+      <PropertyRef Name="departments_id" />
+    </Key>
+    <Property Name="colleges_id" Type="int" Nullable="false" />
+    <Property Name="departments_id" Type="int" Nullable="false" />
+    <Property Name="credit" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COLLEGE_DEPARTMENTS">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="colleges_id" Type="int" Nullable="false" />
+    <Property Name="departments_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COLLEGE_NOTES">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+    </Key>
+    <Property Name="colleges_id" Type="int" Nullable="false" />
+    <Property Name="courses_note" Type="varchar" MaxLength="1800" />
+    <Property Name="departments_note" Type="varchar" MaxLength="1800" />
+    <Property Name="codekeys_note" Type="varchar" MaxLength="1800" />
+  </EntityType>
+  <EntityType Name="COLLEGE_RANKINGS">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+    </Key>
+    <Property Name="colleges_id" Type="int" Nullable="false" />
+    <Property Name="rank" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COLLEGES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="college_name" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="college_city" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="college_website" Type="varchar" MaxLength="255" />
+    <Property Name="use_catalog" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.Corequisite' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Corequisite">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="CorequisiteID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" Nullable="false" />
+    <Property Name="GroupID" Type="int" Nullable="false" />
+    <Property Name="CorequisiteID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COREQUISITES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="group_id" Type="int" Nullable="false" />
+    <Property Name="courses_corequisite_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="CourseID" />
+    </Key>
+    <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseNumber" Type="nchar" MaxLength="10" />
+    <Property Name="AbbreviatedTitle" Type="varchar" MaxLength="50" />
+    <Property Name="Title" Type="varchar" MaxLength="100" />
+    <Property Name="MinCredit" Type="int" />
+    <Property Name="MaxCredit" Type="int" />
+    <Property Name="Description" Type="varchar" MaxLength="1000" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="PreRequisites" Type="varchar" MaxLength="250" />
+    <Property Name="CoRequisites" Type="varchar" MaxLength="250" />
+    <Property Name="UseCatalog" Type="int" />
+    <Property Name="SectionID" Type="int" />
+  </EntityType>
+  <EntityType Name="COURSE_RANKINGS">
+    <Key>
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="rank" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COURSES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="course_number" Type="varchar" MaxLength="13" Nullable="false" />
+    <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="min_credit" Type="decimal" Precision="4" Scale="2" />
+    <Property Name="max_credit" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+    <Property Name="course_description" Type="varchar" MaxLength="1800" />
+    <Property Name="departments_id" Type="int" Nullable="false" />
+    <Property Name="use_catalog" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="COURSES_CODEKEYS">
+    <Key>
+      <PropertyRef Name="courses_id" />
+      <PropertyRef Name="codekeys_id" />
+    </Key>
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="codekeys_id" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.CourseTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="CourseTime">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="CourseNumber" Type="nchar" MaxLength="10" />
+    <Property Name="StartTimeID" Type="int" />
+    <Property Name="EndTimeID" Type="int" />
+    <Property Name="DayID" Type="int" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="Year" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="SectionID" Type="int" />
+  </EntityType>
+  <EntityType Name="DEGREE_ADMISSION_CATEGORIES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+      <PropertyRef Name="degree_categories_id" />
+    </Key>
+    <Property Name="degrees_id" Type="int" Nullable="false" />
+    <Property Name="degree_categories_id" Type="int" Nullable="false" />
+    <Property Name="credit" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEGREE_ADMISSION_COURSES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="degrees_id" Type="int" Nullable="false" />
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="degree_categories_id" Type="int" Nullable="false" />
+    <Property Name="foreign_course_number" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEGREE_CATEGORIES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="degrees_id" Type="int" Nullable="false" />
+    <Property Name="category" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEGREE_GRADUATION_CATEGORIES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+      <PropertyRef Name="degree_categories_id" />
+    </Key>
+    <Property Name="degrees_id" Type="int" Nullable="false" />
+    <Property Name="degree_categories_id" Type="int" Nullable="false" />
+    <Property Name="credit" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEGREE_GRADUATION_COURSES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="degrees_id" Type="int" Nullable="false" />
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="degree_categories_id" Type="int" Nullable="false" />
+    <Property Name="foreign_course_number" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEGREE_NOTES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+    </Key>
+    <Property Name="degrees_id" Type="int" Nullable="false" />
+    <Property Name="admission_courses_note" Type="varchar" MaxLength="1800" />
+    <Property Name="admission_categories_note" Type="varchar" MaxLength="1800" />
+    <Property Name="graduation_courses_note" Type="varchar" MaxLength="1800" />
+    <Property Name="graduation_categories_note" Type="varchar" MaxLength="1800" />
+    <Property Name="general_note" Type="varchar" MaxLength="1800" />
+  </EntityType>
+  <EntityType Name="DEGREE_RANKINGS">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+    </Key>
+    <Property Name="degrees_id" Type="int" Nullable="false" />
+    <Property Name="rank" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEGREES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="colleges_id" Type="int" Nullable="false" />
+    <Property Name="degree_name" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="departments_id" Type="int" Nullable="false" />
+    <Property Name="degree_type" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="use_catalog" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="Description" Type="varchar" MaxLength="300" />
+    <Property Name="Code" Type="varchar" MaxLength="50" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="DEPARTMENT_RANKINGS">
+    <Key>
+      <PropertyRef Name="departments_id" />
+    </Key>
+    <Property Name="departments_id" Type="int" Nullable="false" />
+    <Property Name="rank" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEPARTMENTS">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="department_name" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="see_also" Type="varchar" MaxLength="255" />
+    <Property Name="dept_intro" Type="varchar" MaxLength="1800" />
+    <Property Name="abv_title" Type="varchar" MaxLength="10" />
+    <Property Name="abv_title2" Type="varchar" MaxLength="10" />
+    <Property Name="use_catalog" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FACULTY">
+    <Key>
+      <PropertyRef Name="accounts_id" />
+    </Key>
+    <Property Name="accounts_id" Type="int" Nullable="false" />
+    <Property Name="editor" Type="bit" Nullable="false" />
+    <Property Name="administrator" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GeneratedPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Score" Type="float" />
+    <Property Name="ParameterSetID" Type="int" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="JobType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobType" Type="varchar" MaxLength="50" />
+    <Property Name="WorkHours" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'LocalVSA.dbo.JobTypeDistribution' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="JobTypeDistribution">
+          <Property Name="EnrolledCourses" Type="int" />
+          <Property Name="FullTime" Type="float" />
+          <Property Name="PartTime" Type="float" />
+          <Property Name="NoJob" Type="float" />
+        </EntityType>-->
+  <EntityType Name="Major">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="250" />
+    <Property Name="Description" Type="varchar" MaxLength="250" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="DegreeType" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'LocalVSA.dbo.MockData' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="MockData">
+          <Property Name="StudentID" Type="bigint" />
+          <Property Name="Major" Type="varchar" MaxLength="50" />
+          <Property Name="No_of_Course" Type="int" />
+          <Property Name="No_of_Core" Type="int" />
+          <Property Name="No_of_Elective" Type="int" />
+          <Property Name="No_of_Credit" Type="int" />
+          <Property Name="Job_Type" Type="varchar" MaxLength="50" />
+          <Property Name="Day_Time" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sum" Type="int" />
+          <Property Name="Core_Credit" Type="int" />
+          <Property Name="Elective_Credit" Type="int" />
+        </EntityType>-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.MockUpData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="MockUpData">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="bigint" Nullable="false" />
+    <Property Name="Major" Type="varchar" MaxLength="250" />
+    <Property Name="JobTypeID" Type="int" />
+    <Property Name="NoOfCourses" Type="int" />
+    <Property Name="Elective" Type="int" />
+    <Property Name="Core" Type="int" />
+    <Property Name="ElectiveCredit" Type="int" />
+    <Property Name="CoreCredit" Type="int" />
+    <Property Name="CreditNo" Type="int" />
+  </EntityType>
+  <EntityType Name="Parameters">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="int" />
+    <Property Name="SchoolID" Type="int" />
+    <Property Name="JobTypeID" Type="int" />
+    <Property Name="BudgetID" Type="int" />
+    <Property Name="StartQuarterID" Type="int" />
+    <Property Name="TimePreferenceID" Type="binary" MaxLength="1" />
+    <Property Name="QuarterPreferenceID" Type="binary" MaxLength="1" />
+    <Property Name="Placements" Type="varchar" MaxLength="50" />
+    <Property Name="Completed" Type="varchar" MaxLength="50" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="ParameterSet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="int" />
+    <Property Name="SchoolID" Type="int" />
+    <Property Name="JobTypeID" Type="int" />
+    <Property Name="BudgetID" Type="int" />
+    <Property Name="TimePreferenceID" Type="int" />
+    <Property Name="QuarterPreferenceID" Type="int" />
+    <Property Name="CompletedCourses" Type="varchar" MaxLength="250" />
+    <Property Name="PlacementCourses" Type="varchar" MaxLength="250" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="PLAN_ACTIVEPLANS">
+    <Key>
+      <PropertyRef Name="plans_id" />
+      <PropertyRef Name="students_accounts_id" />
+    </Key>
+    <Property Name="plans_id" Type="int" Nullable="false" />
+    <Property Name="students_accounts_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PLAN_SELECTEDCOURSES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="plans_id" Type="int" Nullable="false" />
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="degree_categories_id" Type="int" Nullable="false" />
+    <Property Name="completedcourses_id" Type="int" />
+    <Property Name="credit" Type="decimal" Precision="4" Scale="2" />
+  </EntityType>
+  <EntityType Name="PLAN_SELECTEDDEGREES">
+    <Key>
+      <PropertyRef Name="plans_id" />
+      <PropertyRef Name="degrees_id" />
+    </Key>
+    <Property Name="plans_id" Type="int" Nullable="false" />
+    <Property Name="degrees_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PlanRating">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="PlanID" Type="int" Nullable="false" />
+    <Property Name="OptionGroupID" Type="int" Nullable="false" />
+    <Property Name="Stars" Type="int" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PlanRatingDescription">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PlanRatingOption">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OptionGroupID" Type="int" Nullable="false" />
+    <Property Name="DescriptionID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PLANS">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="students_accounts_id" Type="int" Nullable="false" />
+    <Property Name="plan_name" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="time_created" Type="datetime" Nullable="false" />
+    <Property Name="time_updated" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.Prerequisite' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Prerequisite">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="PrerequisiteID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" Nullable="false" />
+    <Property Name="GroupID" Type="int" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PREREQUISITE_PERMISSIONS">
+    <Key>
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="courses_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PREREQUISITE_PLACEMENTS">
+    <Key>
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="placement" Type="varchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PREREQUISITES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="group_id" Type="int" Nullable="false" />
+    <Property Name="courses_prerequisite_id" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.PrerequisiteTransfer' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="PrerequisiteTransfer">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="CourseNumber" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="PrerequisiteID" />
+      <PropertyRef Name="PrerequisiteNumber" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" Nullable="false" />
+    <Property Name="CourseNumber" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="GroupID" Type="int" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="int" Nullable="false" />
+    <Property Name="PrerequisiteNumber" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Quarter">
+    <Key>
+      <PropertyRef Name="QuarterID" />
+    </Key>
+    <Property Name="QuarterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quarter" Type="nchar" MaxLength="10" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.Requisites' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Requisites">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="RequisiteID" Type="int" />
+    <Property Name="Relationship" Type="int" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="UserID" Type="int" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="CourseName" Type="nchar" MaxLength="10" />
+    <Property Name="RequisiteName" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.RequisitesType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="RequisitesType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RequisiteType" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.ResidentStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ResidentStatus">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Residency" Type="varchar" MaxLength="30" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="ReviewedStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentID" Type="bigint" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="PlanName" Type="varchar" MaxLength="50" />
+    <Property Name="AdvisorID" Type="bigint" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="ReviewDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.School' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="School">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="Acronymn" Type="varchar" MaxLength="10" />
+    <Property Name="Address" Type="varchar" MaxLength="150" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Section">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Section" Type="nchar" MaxLength="10" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MajorID" Type="bigint" />
+    <Property Name="DepartmentID" Type="bigint" />
+    <Property Name="JobTypeID" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="STUDENT_PLACEMENTCOURSES">
+    <Key>
+      <PropertyRef Name="students_accounts_id" />
+    </Key>
+    <Property Name="students_accounts_id" Type="int" Nullable="false" />
+    <Property Name="math_courses_id" Type="int" Nullable="false" />
+    <Property Name="english_courses_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StudentEnrollment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentID" Type="bigint" Nullable="false" />
+    <Property Name="CourseNumber" Type="nchar" MaxLength="10" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="Elective" Type="int" />
+    <Property Name="Core" Type="int" />
+    <Property Name="CreditNo" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="Year" Type="int" />
+    <Property Name="EnrollmentDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+  </EntityType>
+  <EntityType Name="StudentModifiedStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="YearID" Type="int" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.StudentPlan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="StudentPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="PlanName" Type="varchar" MaxLength="50" />
+    <Property Name="StudentID" Type="bigint" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+  </EntityType>
+  <EntityType Name="STUDENTS">
+    <Key>
+      <PropertyRef Name="accounts_id" />
+    </Key>
+    <Property Name="accounts_id" Type="int" Nullable="false" />
+    <Property Name="student_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="STUDENTS_COMPLETEDCOURSES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="students_accounts_id" Type="int" Nullable="false" />
+    <Property Name="courses_id" Type="int" Nullable="false" />
+    <Property Name="credit" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StudentStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentID" Type="bigint" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="StudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PlanID" Type="int" />
+    <Property Name="QuarterID" Type="int" />
+    <Property Name="YearID" Type="int" />
+    <Property Name="CourseID" Type="int" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.TimePreference' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TimePreference">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TimePeriod" Type="varchar" MaxLength="10" />
+    <Property Name="CreationDate" Type="datetime" />
+    <Property Name="LastDateModified" Type="datetime" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LocalVSA.dbo.TimeSlot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TimeSlot">
+    <Key>
+      <PropertyRef Name="TimeID" />
+    </Key>
+    <Property Name="TimeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Time" Type="time" Precision="0" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="WeekDay">
+    <Key>
+      <PropertyRef Name="DayID" />
+    </Key>
+    <Property Name="DayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WeekDay" Type="nchar" MaxLength="10" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <Association Name="FK_COLLEGE_ADMISSION_CODEKEYS_codekeys_id">
+    <End Role="CODEKEYS" Type="Self.CODEKEYS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_CODEKEYS" Type="Self.COLLEGE_ADMISSION_CODEKEYS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CODEKEYS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_CODEKEYS">
+        <PropertyRef Name="codekeys_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_ADMISSION_CODEKEYS_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_CODEKEYS" Type="Self.COLLEGE_ADMISSION_CODEKEYS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_CODEKEYS">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_ADMISSION_DEPARTMENTS_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_DEPARTMENTS" Type="Self.COLLEGE_ADMISSION_DEPARTMENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_DEPARTMENTS">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_ADMISSION_DEPARTMENTS_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_DEPARTMENTS" Type="Self.COLLEGE_ADMISSION_DEPARTMENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_DEPARTMENTS">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_DEPARTMENTS_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_DEPARTMENTS" Type="Self.COLLEGE_DEPARTMENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_DEPARTMENTS">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_DEPARTMENTS_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_DEPARTMENTS" Type="Self.COLLEGE_DEPARTMENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_DEPARTMENTS">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_NOTES_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_NOTES" Type="Self.COLLEGE_NOTES" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_NOTES">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_RANKINGS_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_RANKINGS" Type="Self.COLLEGE_RANKINGS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_RANKINGS">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGES_ADMISSION_COURSES_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_COURSES" Type="Self.COLLEGE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_COURSES">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGES_ADMISSION_COURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_COURSES" Type="Self.COLLEGE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_COURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COREQUISITES_courses_corequisite_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1" />
+    <End Role="COREQUISITES" Type="Self.COREQUISITES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COREQUISITES">
+        <PropertyRef Name="courses_corequisite_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COREQUISITES_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1" />
+    <End Role="COREQUISITES" Type="Self.COREQUISITES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COREQUISITES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COURSE_RANKINGS_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COURSE_RANKINGS" Type="Self.COURSE_RANKINGS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COURSE_RANKINGS">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COURSES_CODEKEYS_codekeys_id">
+    <End Role="CODEKEYS" Type="Self.CODEKEYS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COURSES_CODEKEYS" Type="Self.COURSES_CODEKEYS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CODEKEYS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COURSES_CODEKEYS">
+        <PropertyRef Name="codekeys_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COURSES_CODEKEYS_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COURSES_CODEKEYS" Type="Self.COURSES_CODEKEYS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COURSES_CODEKEYS">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COURSES_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COURSES">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_CATEGORIES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="DEGREE_ADMISSION_CATEGORIES" Type="Self.DEGREE_ADMISSION_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_CATEGORIES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_CATEGORIES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_ADMISSION_CATEGORIES" Type="Self.DEGREE_ADMISSION_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_CATEGORIES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_COURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_ADMISSION_COURSES" Type="Self.DEGREE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_COURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_COURSES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="DEGREE_ADMISSION_COURSES" Type="Self.DEGREE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_COURSES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_COURSES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="1" />
+    <End Role="DEGREE_ADMISSION_COURSES" Type="Self.DEGREE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_COURSES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_CATEGORIES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_CATEGORIES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="DEGREE_GRADUATION_CATEGORIES" Type="Self.DEGREE_GRADUATION_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_CATEGORIES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_CATEGORIES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_GRADUATION_CATEGORIES" Type="Self.DEGREE_GRADUATION_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_CATEGORIES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_COURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_GRADUATION_COURSES" Type="Self.DEGREE_GRADUATION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_COURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_COURSES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="DEGREE_GRADUATION_COURSES" Type="Self.DEGREE_GRADUATION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_COURSES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_COURSES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="1" />
+    <End Role="DEGREE_GRADUATION_COURSES" Type="Self.DEGREE_GRADUATION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_COURSES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_NOTES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_NOTES" Type="Self.DEGREE_NOTES" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_NOTES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_RANKINGS_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_RANKINGS" Type="Self.DEGREE_RANKINGS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_RANKINGS">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREES_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREES">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREES_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREES">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEPARTMENT_RANKINGS_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEPARTMENT_RANKINGS" Type="Self.DEPARTMENT_RANKINGS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEPARTMENT_RANKINGS">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FACULTY_accounts_id">
+    <End Role="ACCOUNTS" Type="Self.ACCOUNTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="FACULTY" Type="Self.FACULTY" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ACCOUNTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="FACULTY">
+        <PropertyRef Name="accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Major_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Major" Type="Self.Major" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Major">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_ACTIVEPLANS_plans_id">
+    <End Role="PLANS" Type="Self.PLANS" Multiplicity="1" />
+    <End Role="PLAN_ACTIVEPLANS" Type="Self.PLAN_ACTIVEPLANS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PLANS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_ACTIVEPLANS">
+        <PropertyRef Name="plans_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_ACTIVEPLANS_students_accounts_id">
+    <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+    <End Role="PLAN_ACTIVEPLANS" Type="Self.PLAN_ACTIVEPLANS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Principal>
+      <Dependent Role="PLAN_ACTIVEPLANS">
+        <PropertyRef Name="students_accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_SELECTEDCOURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PLAN_SELECTEDCOURSES" Type="Self.PLAN_SELECTEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_SELECTEDCOURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_SELECTEDCOURSES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="PLAN_SELECTEDCOURSES" Type="Self.PLAN_SELECTEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_SELECTEDCOURSES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_SELECTEDCOURSES_plans_id">
+    <End Role="PLANS" Type="Self.PLANS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PLAN_SELECTEDCOURSES" Type="Self.PLAN_SELECTEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PLANS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_SELECTEDCOURSES">
+        <PropertyRef Name="plans_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_SELECTEDDEGREES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PLAN_SELECTEDDEGREES" Type="Self.PLAN_SELECTEDDEGREES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_SELECTEDDEGREES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_SELECTEDDEGREES_plans_id">
+    <End Role="PLANS" Type="Self.PLANS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PLAN_SELECTEDDEGREES" Type="Self.PLAN_SELECTEDDEGREES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PLANS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_SELECTEDDEGREES">
+        <PropertyRef Name="plans_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLANS_students_accounts_id">
+    <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PLANS" Type="Self.PLANS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Principal>
+      <Dependent Role="PLANS">
+        <PropertyRef Name="students_accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PREREQUISITE_PERMISSIONS_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PREREQUISITE_PERMISSIONS" Type="Self.PREREQUISITE_PERMISSIONS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PREREQUISITE_PERMISSIONS">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PREREQUISITE_PLACEMENTS_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PREREQUISITE_PLACEMENTS" Type="Self.PREREQUISITE_PLACEMENTS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PREREQUISITE_PLACEMENTS">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PREREQUISITES_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1" />
+    <End Role="PREREQUISITES" Type="Self.PREREQUISITES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PREREQUISITES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PREREQUISITES_courses_prequiresite_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1" />
+    <End Role="PREREQUISITES" Type="Self.PREREQUISITES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PREREQUISITES">
+        <PropertyRef Name="courses_prerequisite_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReviewedStudyPlan_StudyPlan">
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="0..1" />
+    <End Role="ReviewedStudyPlan" Type="Self.ReviewedStudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudyPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReviewedStudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_JobType">
+    <End Role="JobType" Type="Self.JobType" Multiplicity="0..1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="JobType">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="JobTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Major">
+    <End Role="Major" Type="Self.Major" Multiplicity="0..1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Major">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="MajorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_PLACEMENTCOURSES_english_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1" />
+    <End Role="STUDENT_PLACEMENTCOURSES" Type="Self.STUDENT_PLACEMENTCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="STUDENT_PLACEMENTCOURSES">
+        <PropertyRef Name="english_courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_PLACEMENTCOURSES_math_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1" />
+    <End Role="STUDENT_PLACEMENTCOURSES" Type="Self.STUDENT_PLACEMENTCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="STUDENT_PLACEMENTCOURSES">
+        <PropertyRef Name="math_courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_PLACEMENTCOURSES_students_accounts_id">
+    <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="STUDENT_PLACEMENTCOURSES" Type="Self.STUDENT_PLACEMENTCOURSES" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Principal>
+      <Dependent Role="STUDENT_PLACEMENTCOURSES">
+        <PropertyRef Name="students_accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentEnrollment_Quarter">
+    <End Role="Quarter" Type="Self.Quarter" Multiplicity="0..1" />
+    <End Role="StudentEnrollment" Type="Self.StudentEnrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Quarter">
+        <PropertyRef Name="QuarterID" />
+      </Principal>
+      <Dependent Role="StudentEnrollment">
+        <PropertyRef Name="QuarterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentEnrollment_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="StudentEnrollment" Type="Self.StudentEnrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="StudentEnrollment">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentModifiedStudyPlan_GeneratedPlan">
+    <End Role="GeneratedPlan" Type="Self.GeneratedPlan" Multiplicity="0..1" />
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GeneratedPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENTS_accounts_id">
+    <End Role="ACCOUNTS" Type="Self.ACCOUNTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ACCOUNTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENTS_COMPLETEDCOURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURSES" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="STUDENTS_COMPLETEDCOURSES" Type="Self.STUDENTS_COMPLETEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="STUDENTS_COMPLETEDCOURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENTS_COMPLETEDCOURSES_students_accounts_id">
+    <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="STUDENTS_COMPLETEDCOURSES" Type="Self.STUDENTS_COMPLETEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Principal>
+      <Dependent Role="STUDENTS_COMPLETEDCOURSES">
+        <PropertyRef Name="students_accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyPlan_GeneratedPlan">
+    <End Role="GeneratedPlan" Type="Self.GeneratedPlan" Multiplicity="0..1" />
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GeneratedPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LocalVSAModelStoreContainer">
+    <EntitySet Name="_TimeSlot" EntityType="Self._TimeSlot" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AcademicYear" EntityType="Self.AcademicYear" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ACCOUNTS" EntityType="Self.ACCOUNTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CODEKEYS" EntityType="Self.CODEKEYS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COLLEGE_ADMISSION_CODEKEYS" EntityType="Self.COLLEGE_ADMISSION_CODEKEYS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COLLEGE_ADMISSION_COURSES" EntityType="Self.COLLEGE_ADMISSION_COURSES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COLLEGE_ADMISSION_DEPARTMENTS" EntityType="Self.COLLEGE_ADMISSION_DEPARTMENTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COLLEGE_DEPARTMENTS" EntityType="Self.COLLEGE_DEPARTMENTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COLLEGE_NOTES" EntityType="Self.COLLEGE_NOTES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COLLEGE_RANKINGS" EntityType="Self.COLLEGE_RANKINGS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COLLEGES" EntityType="Self.COLLEGES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COREQUISITES" EntityType="Self.COREQUISITES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COURSE_RANKINGS" EntityType="Self.COURSE_RANKINGS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COURSES" EntityType="Self.COURSES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COURSES_CODEKEYS" EntityType="Self.COURSES_CODEKEYS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEGREE_ADMISSION_CATEGORIES" EntityType="Self.DEGREE_ADMISSION_CATEGORIES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEGREE_ADMISSION_COURSES" EntityType="Self.DEGREE_ADMISSION_COURSES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEGREE_CATEGORIES" EntityType="Self.DEGREE_CATEGORIES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEGREE_GRADUATION_CATEGORIES" EntityType="Self.DEGREE_GRADUATION_CATEGORIES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEGREE_GRADUATION_COURSES" EntityType="Self.DEGREE_GRADUATION_COURSES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEGREE_NOTES" EntityType="Self.DEGREE_NOTES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEGREE_RANKINGS" EntityType="Self.DEGREE_RANKINGS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEGREES" EntityType="Self.DEGREES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEPARTMENT_RANKINGS" EntityType="Self.DEPARTMENT_RANKINGS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DEPARTMENTS" EntityType="Self.DEPARTMENTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FACULTY" EntityType="Self.FACULTY" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GeneratedPlan" EntityType="Self.GeneratedPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="JobType" EntityType="Self.JobType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Major" EntityType="Self.Major" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Parameters" EntityType="Self.Parameters" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ParameterSet" EntityType="Self.ParameterSet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PLAN_ACTIVEPLANS" EntityType="Self.PLAN_ACTIVEPLANS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PLAN_SELECTEDCOURSES" EntityType="Self.PLAN_SELECTEDCOURSES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PLAN_SELECTEDDEGREES" EntityType="Self.PLAN_SELECTEDDEGREES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PlanRating" EntityType="Self.PlanRating" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PlanRatingDescription" EntityType="Self.PlanRatingDescription" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PlanRatingOption" EntityType="Self.PlanRatingOption" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PLANS" EntityType="Self.PLANS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PREREQUISITE_PERMISSIONS" EntityType="Self.PREREQUISITE_PERMISSIONS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PREREQUISITE_PLACEMENTS" EntityType="Self.PREREQUISITE_PLACEMENTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PREREQUISITES" EntityType="Self.PREREQUISITES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Quarter" EntityType="Self.Quarter" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReviewedStudyPlan" EntityType="Self.ReviewedStudyPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="STUDENT_PLACEMENTCOURSES" EntityType="Self.STUDENT_PLACEMENTCOURSES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudentEnrollment" EntityType="Self.StudentEnrollment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudentModifiedStudyPlan" EntityType="Self.StudentModifiedStudyPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="STUDENTS" EntityType="Self.STUDENTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="STUDENTS_COMPLETEDCOURSES" EntityType="Self.STUDENTS_COMPLETEDCOURSES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudentStudyPlan" EntityType="Self.StudentStudyPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudyPlan" EntityType="Self.StudyPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WeekDay" EntityType="Self.WeekDay" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdmissionRequiredCourses" EntityType="Self.AdmissionRequiredCourses" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [AdmissionRequiredCourses].[ID] AS [ID], 
+    [AdmissionRequiredCourses].[MajorID] AS [MajorID], 
+    [AdmissionRequiredCourses].[SchoolID] AS [SchoolID], 
+    [AdmissionRequiredCourses].[CourseID] AS [CourseID], 
+    [AdmissionRequiredCourses].[DepartmentID] AS [DepartmentID]
+    FROM [dbo].[AdmissionRequiredCourses] AS [AdmissionRequiredCourses]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Budget" EntityType="Self.Budget" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Budget].[ID] AS [ID], 
+    [Budget].[Budget] AS [Budget], 
+    [Budget].[MaxCredit] AS [MaxCredit], 
+    [Budget].[ResidentStatusID] AS [ResidentStatusID], 
+    [Budget].[CreationDate] AS [CreationDate], 
+    [Budget].[LastDateModified] AS [LastDateModified], 
+    [Budget].[Status] AS [Status]
+    FROM [dbo].[Budget] AS [Budget]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Corequisite" EntityType="Self.Corequisite" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Corequisite].[ID] AS [ID], 
+    [Corequisite].[CourseID] AS [CourseID], 
+    [Corequisite].[GroupID] AS [GroupID], 
+    [Corequisite].[CorequisiteID] AS [CorequisiteID]
+    FROM [dbo].[Corequisite] AS [Corequisite]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CourseTime" EntityType="Self.CourseTime" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [CourseTime].[ID] AS [ID], 
+    [CourseTime].[CourseID] AS [CourseID], 
+    [CourseTime].[CourseNumber] AS [CourseNumber], 
+    [CourseTime].[StartTimeID] AS [StartTimeID], 
+    [CourseTime].[EndTimeID] AS [EndTimeID], 
+    [CourseTime].[DayID] AS [DayID], 
+    [CourseTime].[QuarterID] AS [QuarterID], 
+    [CourseTime].[Year] AS [Year], 
+    [CourseTime].[Status] AS [Status], 
+    [CourseTime].[SectionID] AS [SectionID]
+    FROM [dbo].[CourseTime] AS [CourseTime]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="MockUpData" EntityType="Self.MockUpData" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [MockUpData].[StudentID] AS [StudentID], 
+    [MockUpData].[Major] AS [Major], 
+    [MockUpData].[JobTypeID] AS [JobTypeID], 
+    [MockUpData].[NoOfCourses] AS [NoOfCourses], 
+    [MockUpData].[Elective] AS [Elective], 
+    [MockUpData].[Core] AS [Core], 
+    [MockUpData].[ElectiveCredit] AS [ElectiveCredit], 
+    [MockUpData].[CoreCredit] AS [CoreCredit], 
+    [MockUpData].[CreditNo] AS [CreditNo]
+    FROM [dbo].[MockUpData] AS [MockUpData]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Prerequisite" EntityType="Self.Prerequisite" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Prerequisite].[ID] AS [ID], 
+    [Prerequisite].[CourseID] AS [CourseID], 
+    [Prerequisite].[GroupID] AS [GroupID], 
+    [Prerequisite].[PrerequisiteID] AS [PrerequisiteID]
+    FROM [dbo].[Prerequisite] AS [Prerequisite]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="PrerequisiteTransfer" EntityType="Self.PrerequisiteTransfer" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [PrerequisiteTransfer].[ID] AS [ID], 
+    [PrerequisiteTransfer].[CourseID] AS [CourseID], 
+    [PrerequisiteTransfer].[CourseNumber] AS [CourseNumber], 
+    [PrerequisiteTransfer].[GroupID] AS [GroupID], 
+    [PrerequisiteTransfer].[PrerequisiteID] AS [PrerequisiteID], 
+    [PrerequisiteTransfer].[PrerequisiteNumber] AS [PrerequisiteNumber]
+    FROM [dbo].[PrerequisiteTransfer] AS [PrerequisiteTransfer]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Requisites" EntityType="Self.Requisites" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Requisites].[ID] AS [ID], 
+    [Requisites].[CourseID] AS [CourseID], 
+    [Requisites].[RequisiteID] AS [RequisiteID], 
+    [Requisites].[Relationship] AS [Relationship], 
+    [Requisites].[DepartmentID] AS [DepartmentID], 
+    [Requisites].[Status] AS [Status], 
+    [Requisites].[UserID] AS [UserID], 
+    [Requisites].[LastDateModified] AS [LastDateModified], 
+    [Requisites].[CourseName] AS [CourseName], 
+    [Requisites].[RequisiteName] AS [RequisiteName]
+    FROM [dbo].[Requisites] AS [Requisites]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="RequisitesType" EntityType="Self.RequisitesType" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [RequisitesType].[ID] AS [ID], 
+    [RequisitesType].[RequisiteType] AS [RequisiteType], 
+    [RequisitesType].[Status] AS [Status]
+    FROM [dbo].[RequisitesType] AS [RequisitesType]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ResidentStatus" EntityType="Self.ResidentStatus" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ResidentStatus].[ID] AS [ID], 
+    [ResidentStatus].[Residency] AS [Residency], 
+    [ResidentStatus].[CreationDate] AS [CreationDate], 
+    [ResidentStatus].[LastDateModified] AS [LastDateModified], 
+    [ResidentStatus].[Status] AS [Status]
+    FROM [dbo].[ResidentStatus] AS [ResidentStatus]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="School" EntityType="Self.School" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [School].[ID] AS [ID], 
+    [School].[Name] AS [Name], 
+    [School].[Acronymn] AS [Acronymn], 
+    [School].[Address] AS [Address], 
+    [School].[CreationDate] AS [CreationDate], 
+    [School].[LastDateModified] AS [LastDateModified], 
+    [School].[Status] AS [Status]
+    FROM [dbo].[School] AS [School]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="StudentPlan" EntityType="Self.StudentPlan" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [StudentPlan].[ID] AS [ID], 
+    [StudentPlan].[PlanID] AS [PlanID], 
+    [StudentPlan].[PlanName] AS [PlanName], 
+    [StudentPlan].[StudentID] AS [StudentID], 
+    [StudentPlan].[CreationDate] AS [CreationDate], 
+    [StudentPlan].[LastDateModified] AS [LastDateModified]
+    FROM [dbo].[StudentPlan] AS [StudentPlan]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TimePreference" EntityType="Self.TimePreference" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TimePreference].[ID] AS [ID], 
+    [TimePreference].[TimePeriod] AS [TimePeriod], 
+    [TimePreference].[CreationDate] AS [CreationDate], 
+    [TimePreference].[LastDateModified] AS [LastDateModified], 
+    [TimePreference].[Status] AS [Status]
+    FROM [dbo].[TimePreference] AS [TimePreference]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TimeSlot" EntityType="Self.TimeSlot" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TimeSlot].[TimeID] AS [TimeID], 
+    [TimeSlot].[Time] AS [Time], 
+    [TimeSlot].[Status] AS [Status]
+    FROM [dbo].[TimeSlot] AS [TimeSlot]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_COLLEGE_ADMISSION_CODEKEYS_codekeys_id" Association="Self.FK_COLLEGE_ADMISSION_CODEKEYS_codekeys_id">
+      <End Role="CODEKEYS" EntitySet="CODEKEYS" />
+      <End Role="COLLEGE_ADMISSION_CODEKEYS" EntitySet="COLLEGE_ADMISSION_CODEKEYS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_ADMISSION_CODEKEYS_colleges_id" Association="Self.FK_COLLEGE_ADMISSION_CODEKEYS_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_ADMISSION_CODEKEYS" EntitySet="COLLEGE_ADMISSION_CODEKEYS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_ADMISSION_DEPARTMENTS_colleges_id" Association="Self.FK_COLLEGE_ADMISSION_DEPARTMENTS_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_ADMISSION_DEPARTMENTS" EntitySet="COLLEGE_ADMISSION_DEPARTMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_ADMISSION_DEPARTMENTS_departments_id" Association="Self.FK_COLLEGE_ADMISSION_DEPARTMENTS_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS" />
+      <End Role="COLLEGE_ADMISSION_DEPARTMENTS" EntitySet="COLLEGE_ADMISSION_DEPARTMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_DEPARTMENTS_colleges_id" Association="Self.FK_COLLEGE_DEPARTMENTS_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_DEPARTMENTS" EntitySet="COLLEGE_DEPARTMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_DEPARTMENTS_departments_id" Association="Self.FK_COLLEGE_DEPARTMENTS_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS" />
+      <End Role="COLLEGE_DEPARTMENTS" EntitySet="COLLEGE_DEPARTMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_NOTES_colleges_id" Association="Self.FK_COLLEGE_NOTES_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_NOTES" EntitySet="COLLEGE_NOTES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_RANKINGS_colleges_id" Association="Self.FK_COLLEGE_RANKINGS_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_RANKINGS" EntitySet="COLLEGE_RANKINGS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGES_ADMISSION_COURSES_colleges_id" Association="Self.FK_COLLEGES_ADMISSION_COURSES_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_ADMISSION_COURSES" EntitySet="COLLEGE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGES_ADMISSION_COURSES_courses_id" Association="Self.FK_COLLEGES_ADMISSION_COURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="COLLEGE_ADMISSION_COURSES" EntitySet="COLLEGE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COREQUISITES_courses_corequisite_id" Association="Self.FK_COREQUISITES_courses_corequisite_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="COREQUISITES" EntitySet="COREQUISITES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COREQUISITES_courses_id" Association="Self.FK_COREQUISITES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="COREQUISITES" EntitySet="COREQUISITES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COURSE_RANKINGS_courses_id" Association="Self.FK_COURSE_RANKINGS_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="COURSE_RANKINGS" EntitySet="COURSE_RANKINGS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COURSES_CODEKEYS_codekeys_id" Association="Self.FK_COURSES_CODEKEYS_codekeys_id">
+      <End Role="CODEKEYS" EntitySet="CODEKEYS" />
+      <End Role="COURSES_CODEKEYS" EntitySet="COURSES_CODEKEYS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COURSES_CODEKEYS_courses_id" Association="Self.FK_COURSES_CODEKEYS_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="COURSES_CODEKEYS" EntitySet="COURSES_CODEKEYS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COURSES_departments_id" Association="Self.FK_COURSES_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS" />
+      <End Role="COURSES" EntitySet="COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_CATEGORIES_degree_categories_id" Association="Self.FK_DEGREE_ADMISSION_CATEGORIES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="DEGREE_ADMISSION_CATEGORIES" EntitySet="DEGREE_ADMISSION_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_CATEGORIES_degrees_id" Association="Self.FK_DEGREE_ADMISSION_CATEGORIES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_ADMISSION_CATEGORIES" EntitySet="DEGREE_ADMISSION_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_COURSES_courses_id" Association="Self.FK_DEGREE_ADMISSION_COURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="DEGREE_ADMISSION_COURSES" EntitySet="DEGREE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_COURSES_degree_categories_id" Association="Self.FK_DEGREE_ADMISSION_COURSES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="DEGREE_ADMISSION_COURSES" EntitySet="DEGREE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_COURSES_degrees_id" Association="Self.FK_DEGREE_ADMISSION_COURSES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_ADMISSION_COURSES" EntitySet="DEGREE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_CATEGORIES_degrees_id" Association="Self.FK_DEGREE_CATEGORIES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_CATEGORIES_degree_categories_id" Association="Self.FK_DEGREE_GRADUATION_CATEGORIES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="DEGREE_GRADUATION_CATEGORIES" EntitySet="DEGREE_GRADUATION_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_CATEGORIES_degrees_id" Association="Self.FK_DEGREE_GRADUATION_CATEGORIES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_GRADUATION_CATEGORIES" EntitySet="DEGREE_GRADUATION_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_COURSES_courses_id" Association="Self.FK_DEGREE_GRADUATION_COURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="DEGREE_GRADUATION_COURSES" EntitySet="DEGREE_GRADUATION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_COURSES_degree_categories_id" Association="Self.FK_DEGREE_GRADUATION_COURSES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="DEGREE_GRADUATION_COURSES" EntitySet="DEGREE_GRADUATION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_COURSES_degrees_id" Association="Self.FK_DEGREE_GRADUATION_COURSES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_GRADUATION_COURSES" EntitySet="DEGREE_GRADUATION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_NOTES_degrees_id" Association="Self.FK_DEGREE_NOTES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_NOTES" EntitySet="DEGREE_NOTES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_RANKINGS_degrees_id" Association="Self.FK_DEGREE_RANKINGS_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_RANKINGS" EntitySet="DEGREE_RANKINGS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREES_colleges_id" Association="Self.FK_DEGREES_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="DEGREES" EntitySet="DEGREES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREES_departments_id" Association="Self.FK_DEGREES_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS" />
+      <End Role="DEGREES" EntitySet="DEGREES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEPARTMENT_RANKINGS_departments_id" Association="Self.FK_DEPARTMENT_RANKINGS_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS" />
+      <End Role="DEPARTMENT_RANKINGS" EntitySet="DEPARTMENT_RANKINGS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FACULTY_accounts_id" Association="Self.FK_FACULTY_accounts_id">
+      <End Role="ACCOUNTS" EntitySet="ACCOUNTS" />
+      <End Role="FACULTY" EntitySet="FACULTY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Major_Department" Association="Self.FK_Major_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Major" EntitySet="Major" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_ACTIVEPLANS_plans_id" Association="Self.FK_PLAN_ACTIVEPLANS_plans_id">
+      <End Role="PLANS" EntitySet="PLANS" />
+      <End Role="PLAN_ACTIVEPLANS" EntitySet="PLAN_ACTIVEPLANS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_ACTIVEPLANS_students_accounts_id" Association="Self.FK_PLAN_ACTIVEPLANS_students_accounts_id">
+      <End Role="STUDENTS" EntitySet="STUDENTS" />
+      <End Role="PLAN_ACTIVEPLANS" EntitySet="PLAN_ACTIVEPLANS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_SELECTEDCOURSES_courses_id" Association="Self.FK_PLAN_SELECTEDCOURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="PLAN_SELECTEDCOURSES" EntitySet="PLAN_SELECTEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_SELECTEDCOURSES_degree_categories_id" Association="Self.FK_PLAN_SELECTEDCOURSES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="PLAN_SELECTEDCOURSES" EntitySet="PLAN_SELECTEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_SELECTEDCOURSES_plans_id" Association="Self.FK_PLAN_SELECTEDCOURSES_plans_id">
+      <End Role="PLANS" EntitySet="PLANS" />
+      <End Role="PLAN_SELECTEDCOURSES" EntitySet="PLAN_SELECTEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_SELECTEDDEGREES_degrees_id" Association="Self.FK_PLAN_SELECTEDDEGREES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="PLAN_SELECTEDDEGREES" EntitySet="PLAN_SELECTEDDEGREES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_SELECTEDDEGREES_plans_id" Association="Self.FK_PLAN_SELECTEDDEGREES_plans_id">
+      <End Role="PLANS" EntitySet="PLANS" />
+      <End Role="PLAN_SELECTEDDEGREES" EntitySet="PLAN_SELECTEDDEGREES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLANS_students_accounts_id" Association="Self.FK_PLANS_students_accounts_id">
+      <End Role="STUDENTS" EntitySet="STUDENTS" />
+      <End Role="PLANS" EntitySet="PLANS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PREREQUISITE_PERMISSIONS_courses_id" Association="Self.FK_PREREQUISITE_PERMISSIONS_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="PREREQUISITE_PERMISSIONS" EntitySet="PREREQUISITE_PERMISSIONS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PREREQUISITE_PLACEMENTS_courses_id" Association="Self.FK_PREREQUISITE_PLACEMENTS_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="PREREQUISITE_PLACEMENTS" EntitySet="PREREQUISITE_PLACEMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PREREQUISITES_courses_id" Association="Self.FK_PREREQUISITES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="PREREQUISITES" EntitySet="PREREQUISITES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PREREQUISITES_courses_prequiresite_id" Association="Self.FK_PREREQUISITES_courses_prequiresite_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="PREREQUISITES" EntitySet="PREREQUISITES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReviewedStudyPlan_StudyPlan" Association="Self.FK_ReviewedStudyPlan_StudyPlan">
+      <End Role="StudyPlan" EntitySet="StudyPlan" />
+      <End Role="ReviewedStudyPlan" EntitySet="ReviewedStudyPlan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_JobType" Association="Self.FK_Student_JobType">
+      <End Role="JobType" EntitySet="JobType" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Major" Association="Self.FK_Student_Major">
+      <End Role="Major" EntitySet="Major" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_PLACEMENTCOURSES_english_courses_id" Association="Self.FK_STUDENT_PLACEMENTCOURSES_english_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="STUDENT_PLACEMENTCOURSES" EntitySet="STUDENT_PLACEMENTCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_PLACEMENTCOURSES_math_courses_id" Association="Self.FK_STUDENT_PLACEMENTCOURSES_math_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="STUDENT_PLACEMENTCOURSES" EntitySet="STUDENT_PLACEMENTCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_PLACEMENTCOURSES_students_accounts_id" Association="Self.FK_STUDENT_PLACEMENTCOURSES_students_accounts_id">
+      <End Role="STUDENTS" EntitySet="STUDENTS" />
+      <End Role="STUDENT_PLACEMENTCOURSES" EntitySet="STUDENT_PLACEMENTCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentEnrollment_Quarter" Association="Self.FK_StudentEnrollment_Quarter">
+      <End Role="Quarter" EntitySet="Quarter" />
+      <End Role="StudentEnrollment" EntitySet="StudentEnrollment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentEnrollment_Student" Association="Self.FK_StudentEnrollment_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="StudentEnrollment" EntitySet="StudentEnrollment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentModifiedStudyPlan_GeneratedPlan" Association="Self.FK_StudentModifiedStudyPlan_GeneratedPlan">
+      <End Role="GeneratedPlan" EntitySet="GeneratedPlan" />
+      <End Role="StudyPlan" EntitySet="StudyPlan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENTS_accounts_id" Association="Self.FK_STUDENTS_accounts_id">
+      <End Role="ACCOUNTS" EntitySet="ACCOUNTS" />
+      <End Role="STUDENTS" EntitySet="STUDENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENTS_COMPLETEDCOURSES_courses_id" Association="Self.FK_STUDENTS_COMPLETEDCOURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES" />
+      <End Role="STUDENTS_COMPLETEDCOURSES" EntitySet="STUDENTS_COMPLETEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENTS_COMPLETEDCOURSES_students_accounts_id" Association="Self.FK_STUDENTS_COMPLETEDCOURSES_students_accounts_id">
+      <End Role="STUDENTS" EntitySet="STUDENTS" />
+      <End Role="STUDENTS_COMPLETEDCOURSES" EntitySet="STUDENTS_COMPLETEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyPlan_GeneratedPlan" Association="Self.FK_StudyPlan_GeneratedPlan">
+      <End Role="GeneratedPlan" EntitySet="GeneratedPlan" />
+      <End Role="StudyPlan" EntitySet="StudyPlan" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,40 @@
+﻿
+@using System.Runtime.Remoting.Services
+@using System.Web.WebSockets
+@using DegreePlanCollection.Models
+@model DegreePlanCollection.Models.CollectCourseInfoViewModel
+
+
+@{
+    ViewBag.Title = "CollectCourseInfo";
+}
+
+<h2>CollectCourseInfo</h2>
+
+@using (Html.BeginForm("WriteCourseToDb","CollectDegreePlan"))
+{
+    @Html.LabelFor(m => m.Title)
+    @Html.EditorFor(m => m.Title)
+    <br/>
+    @Html.LabelFor(m => m.Description)
+    @Html.EditorFor(m => m.Description)
+    <br/>
+
+    @Html.LabelFor(m => m.MinCredit)
+
+    @Html.EditorFor(m => m.MinCredit)
+    <br/>
+
+    @Html.LabelFor(m => m.MaxCredit)
+
+    @Html.EditorFor(m => m.MaxCredit)
+    <br/>
+    
+    @Html.LabelFor(m => m.Prerequisite)
+    @Html.EditorFor(m => m.Prerequisite)
+
+
+    <input type="submit" value="Submit"/>
+
+}
+

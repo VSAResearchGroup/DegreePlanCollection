@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DegreePlanCollection.Models.PrereqViewModel>
+
+@{
+    ViewBag.Title = "DisplayCoursePreReq";
+}
+
+<h2>Course Prerequisites</h2>
+
+<p>
+ </p>
+<table class="table">
+    <tr>
+        <th>Course</th>
+        <th>Prerequisite</th>
+        <th>Group Number</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+          
+            <td> @item.Course</td>
+      
+          <td>@Html.ActionLink( item.PrerequisiteCourse,"DisplayCoursePreReq", "CollectDegreePlan", new { CourseId = item.PrereqId}, null)</td>
+        
+        <td>
+            
+          
+          
+            @item.GroupId
+        </td>
+    </tr>
+}
+
+</table>

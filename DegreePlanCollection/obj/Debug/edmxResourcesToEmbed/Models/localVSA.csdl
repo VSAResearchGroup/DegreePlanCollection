@@ -1,0 +1,1797 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LocalVSAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="C_TimeSlot">
+    <Key>
+      <PropertyRef Name="TimeID" />
+    </Key>
+    <Property Name="TimeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Time" Type="Time" Precision="0" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="AcademicYear">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Year" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ACCOUNT">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="active" Type="Boolean" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="first_name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="last_name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="salt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="FACULTY" Relationship="Self.FK_FACULTY_accounts_id" FromRole="ACCOUNTS" ToRole="FACULTY" />
+    <NavigationProperty Name="STUDENT" Relationship="Self.FK_STUDENTS_accounts_id" FromRole="ACCOUNTS" ToRole="STUDENTS" />
+  </EntityType>
+  <EntityType Name="CODEKEY">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="codekey1" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="COLLEGE_ADMISSION_CODEKEYS" Relationship="Self.FK_COLLEGE_ADMISSION_CODEKEYS_codekeys_id" FromRole="CODEKEYS" ToRole="COLLEGE_ADMISSION_CODEKEYS" />
+    <NavigationProperty Name="COURSES" Relationship="Self.COURSES_CODEKEYS" FromRole="CODEKEYS" ToRole="COURSES" />
+  </EntityType>
+  <EntityType Name="COLLEGE_ADMISSION_CODEKEYS">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+      <PropertyRef Name="codekeys_id" />
+    </Key>
+    <Property Name="colleges_id" Type="Int32" Nullable="false" />
+    <Property Name="codekeys_id" Type="Int32" Nullable="false" />
+    <Property Name="credit" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+    <NavigationProperty Name="CODEKEY" Relationship="Self.FK_COLLEGE_ADMISSION_CODEKEYS_codekeys_id" FromRole="COLLEGE_ADMISSION_CODEKEYS" ToRole="CODEKEYS" />
+    <NavigationProperty Name="COLLEGE" Relationship="Self.FK_COLLEGE_ADMISSION_CODEKEYS_colleges_id" FromRole="COLLEGE_ADMISSION_CODEKEYS" ToRole="COLLEGES" />
+  </EntityType>
+  <EntityType Name="COLLEGE_ADMISSION_COURSES">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="colleges_id" Type="Int32" Nullable="false" />
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="foreign_course_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="COLLEGE" Relationship="Self.FK_COLLEGES_ADMISSION_COURSES_colleges_id" FromRole="COLLEGE_ADMISSION_COURSES" ToRole="COLLEGES" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_COLLEGES_ADMISSION_COURSES_courses_id" FromRole="COLLEGE_ADMISSION_COURSES" ToRole="COURSES" />
+  </EntityType>
+  <EntityType Name="COLLEGE_ADMISSION_DEPARTMENTS">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+      <PropertyRef Name="departments_id" />
+    </Key>
+    <Property Name="colleges_id" Type="Int32" Nullable="false" />
+    <Property Name="departments_id" Type="Int32" Nullable="false" />
+    <Property Name="credit" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+    <NavigationProperty Name="COLLEGE" Relationship="Self.FK_COLLEGE_ADMISSION_DEPARTMENTS_colleges_id" FromRole="COLLEGE_ADMISSION_DEPARTMENTS" ToRole="COLLEGES" />
+    <NavigationProperty Name="DEPARTMENT" Relationship="Self.FK_COLLEGE_ADMISSION_DEPARTMENTS_departments_id" FromRole="COLLEGE_ADMISSION_DEPARTMENTS" ToRole="DEPARTMENTS" />
+  </EntityType>
+  <EntityType Name="COLLEGE_DEPARTMENTS">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="colleges_id" Type="Int32" Nullable="false" />
+    <Property Name="departments_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="COLLEGE" Relationship="Self.FK_COLLEGE_DEPARTMENTS_colleges_id" FromRole="COLLEGE_DEPARTMENTS" ToRole="COLLEGES" />
+    <NavigationProperty Name="DEPARTMENT" Relationship="Self.FK_COLLEGE_DEPARTMENTS_departments_id" FromRole="COLLEGE_DEPARTMENTS" ToRole="DEPARTMENTS" />
+  </EntityType>
+  <EntityType Name="COLLEGE_NOTES">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+    </Key>
+    <Property Name="colleges_id" Type="Int32" Nullable="false" />
+    <Property Name="courses_note" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <Property Name="departments_note" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <Property Name="codekeys_note" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="COLLEGE" Relationship="Self.FK_COLLEGE_NOTES_colleges_id" FromRole="COLLEGE_NOTES" ToRole="COLLEGES" />
+  </EntityType>
+  <EntityType Name="COLLEGE_RANKINGS">
+    <Key>
+      <PropertyRef Name="colleges_id" />
+    </Key>
+    <Property Name="colleges_id" Type="Int32" Nullable="false" />
+    <Property Name="rank" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="COLLEGE" Relationship="Self.FK_COLLEGE_RANKINGS_colleges_id" FromRole="COLLEGE_RANKINGS" ToRole="COLLEGES" />
+  </EntityType>
+  <EntityType Name="COLLEGE">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="college_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="college_city" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="college_website" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="use_catalog" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="COLLEGE_ADMISSION_CODEKEYS" Relationship="Self.FK_COLLEGE_ADMISSION_CODEKEYS_colleges_id" FromRole="COLLEGES" ToRole="COLLEGE_ADMISSION_CODEKEYS" />
+    <NavigationProperty Name="COLLEGE_ADMISSION_COURSES" Relationship="Self.FK_COLLEGES_ADMISSION_COURSES_colleges_id" FromRole="COLLEGES" ToRole="COLLEGE_ADMISSION_COURSES" />
+    <NavigationProperty Name="COLLEGE_ADMISSION_DEPARTMENTS" Relationship="Self.FK_COLLEGE_ADMISSION_DEPARTMENTS_colleges_id" FromRole="COLLEGES" ToRole="COLLEGE_ADMISSION_DEPARTMENTS" />
+    <NavigationProperty Name="COLLEGE_DEPARTMENTS" Relationship="Self.FK_COLLEGE_DEPARTMENTS_colleges_id" FromRole="COLLEGES" ToRole="COLLEGE_DEPARTMENTS" />
+    <NavigationProperty Name="COLLEGE_NOTES" Relationship="Self.FK_COLLEGE_NOTES_colleges_id" FromRole="COLLEGES" ToRole="COLLEGE_NOTES" />
+    <NavigationProperty Name="COLLEGE_RANKINGS" Relationship="Self.FK_COLLEGE_RANKINGS_colleges_id" FromRole="COLLEGES" ToRole="COLLEGE_RANKINGS" />
+    <NavigationProperty Name="DEGREES" Relationship="Self.FK_DEGREES_colleges_id" FromRole="COLLEGES" ToRole="DEGREES" />
+  </EntityType>
+  <EntityType Name="COREQUISITE">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="group_id" Type="Int32" Nullable="false" />
+    <Property Name="courses_corequisite_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_COREQUISITES_courses_corequisite_id" FromRole="COREQUISITES" ToRole="COURSES" />
+    <NavigationProperty Name="COURS1" Relationship="Self.FK_COREQUISITES_courses_id" FromRole="COREQUISITES" ToRole="COURSES" />
+  </EntityType>
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="CourseID" />
+    </Key>
+    <Property Name="CourseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="AbbreviatedTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="MinCredit" Type="Int32" />
+    <Property Name="MaxCredit" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="DepartmentID" Type="Int32" />
+    <Property Name="PreRequisites" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="CoRequisites" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="UseCatalog" Type="Int32" />
+    <Property Name="SectionID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="COURSE_RANKINGS">
+    <Key>
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="rank" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_COURSE_RANKINGS_courses_id" FromRole="COURSE_RANKINGS" ToRole="COURSES" />
+  </EntityType>
+  <EntityType Name="COURS">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="course_number" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="min_credit" Type="Decimal" Precision="4" Scale="2" />
+    <Property Name="max_credit" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+    <Property Name="course_description" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <Property Name="departments_id" Type="Int32" Nullable="false" />
+    <Property Name="use_catalog" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="COLLEGE_ADMISSION_COURSES" Relationship="Self.FK_COLLEGES_ADMISSION_COURSES_courses_id" FromRole="COURSES" ToRole="COLLEGE_ADMISSION_COURSES" />
+    <NavigationProperty Name="COREQUISITES" Relationship="Self.FK_COREQUISITES_courses_corequisite_id" FromRole="COURSES" ToRole="COREQUISITES" />
+    <NavigationProperty Name="COREQUISITES1" Relationship="Self.FK_COREQUISITES_courses_id" FromRole="COURSES" ToRole="COREQUISITES" />
+    <NavigationProperty Name="COURSE_RANKINGS" Relationship="Self.FK_COURSE_RANKINGS_courses_id" FromRole="COURSES" ToRole="COURSE_RANKINGS" />
+    <NavigationProperty Name="DEPARTMENT" Relationship="Self.FK_COURSES_departments_id" FromRole="COURSES" ToRole="DEPARTMENTS" />
+    <NavigationProperty Name="DEGREE_ADMISSION_COURSES" Relationship="Self.FK_DEGREE_ADMISSION_COURSES_courses_id" FromRole="COURSES" ToRole="DEGREE_ADMISSION_COURSES" />
+    <NavigationProperty Name="DEGREE_GRADUATION_COURSES" Relationship="Self.FK_DEGREE_GRADUATION_COURSES_courses_id" FromRole="COURSES" ToRole="DEGREE_GRADUATION_COURSES" />
+    <NavigationProperty Name="PLAN_SELECTEDCOURSES" Relationship="Self.FK_PLAN_SELECTEDCOURSES_courses_id" FromRole="COURSES" ToRole="PLAN_SELECTEDCOURSES" />
+    <NavigationProperty Name="PREREQUISITE_PERMISSIONS" Relationship="Self.FK_PREREQUISITE_PERMISSIONS_courses_id" FromRole="COURSES" ToRole="PREREQUISITE_PERMISSIONS" />
+    <NavigationProperty Name="PREREQUISITE_PLACEMENTS" Relationship="Self.FK_PREREQUISITE_PLACEMENTS_courses_id" FromRole="COURSES" ToRole="PREREQUISITE_PLACEMENTS" />
+    <NavigationProperty Name="PREREQUISITES" Relationship="Self.FK_PREREQUISITES_courses_id" FromRole="COURSES" ToRole="PREREQUISITES" />
+    <NavigationProperty Name="PREREQUISITES1" Relationship="Self.FK_PREREQUISITES_courses_prequiresite_id" FromRole="COURSES" ToRole="PREREQUISITES" />
+    <NavigationProperty Name="STUDENT_PLACEMENTCOURSES" Relationship="Self.FK_STUDENT_PLACEMENTCOURSES_english_courses_id" FromRole="COURSES" ToRole="STUDENT_PLACEMENTCOURSES" />
+    <NavigationProperty Name="STUDENT_PLACEMENTCOURSES1" Relationship="Self.FK_STUDENT_PLACEMENTCOURSES_math_courses_id" FromRole="COURSES" ToRole="STUDENT_PLACEMENTCOURSES" />
+    <NavigationProperty Name="STUDENTS_COMPLETEDCOURSES" Relationship="Self.FK_STUDENTS_COMPLETEDCOURSES_courses_id" FromRole="COURSES" ToRole="STUDENTS_COMPLETEDCOURSES" />
+    <NavigationProperty Name="CODEKEYS" Relationship="Self.COURSES_CODEKEYS" FromRole="COURSES" ToRole="CODEKEYS" />
+  </EntityType>
+  <EntityType Name="DEGREE_ADMISSION_CATEGORIES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+      <PropertyRef Name="degree_categories_id" />
+    </Key>
+    <Property Name="degrees_id" Type="Int32" Nullable="false" />
+    <Property Name="degree_categories_id" Type="Int32" Nullable="false" />
+    <Property Name="credit" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+    <NavigationProperty Name="DEGREE_CATEGORIES" Relationship="Self.FK_DEGREE_ADMISSION_CATEGORIES_degree_categories_id" FromRole="DEGREE_ADMISSION_CATEGORIES" ToRole="DEGREE_CATEGORIES" />
+    <NavigationProperty Name="DEGREE" Relationship="Self.FK_DEGREE_ADMISSION_CATEGORIES_degrees_id" FromRole="DEGREE_ADMISSION_CATEGORIES" ToRole="DEGREES" />
+  </EntityType>
+  <EntityType Name="DEGREE_ADMISSION_COURSES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="degrees_id" Type="Int32" Nullable="false" />
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="degree_categories_id" Type="Int32" Nullable="false" />
+    <Property Name="foreign_course_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_DEGREE_ADMISSION_COURSES_courses_id" FromRole="DEGREE_ADMISSION_COURSES" ToRole="COURSES" />
+    <NavigationProperty Name="DEGREE_CATEGORIES" Relationship="Self.FK_DEGREE_ADMISSION_COURSES_degree_categories_id" FromRole="DEGREE_ADMISSION_COURSES" ToRole="DEGREE_CATEGORIES" />
+    <NavigationProperty Name="DEGREE" Relationship="Self.FK_DEGREE_ADMISSION_COURSES_degrees_id" FromRole="DEGREE_ADMISSION_COURSES" ToRole="DEGREES" />
+  </EntityType>
+  <EntityType Name="DEGREE_CATEGORIES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="degrees_id" Type="Int32" Nullable="false" />
+    <Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="DEGREE_ADMISSION_CATEGORIES" Relationship="Self.FK_DEGREE_ADMISSION_CATEGORIES_degree_categories_id" FromRole="DEGREE_CATEGORIES" ToRole="DEGREE_ADMISSION_CATEGORIES" />
+    <NavigationProperty Name="DEGREE_ADMISSION_COURSES" Relationship="Self.FK_DEGREE_ADMISSION_COURSES_degree_categories_id" FromRole="DEGREE_CATEGORIES" ToRole="DEGREE_ADMISSION_COURSES" />
+    <NavigationProperty Name="DEGREE" Relationship="Self.FK_DEGREE_CATEGORIES_degrees_id" FromRole="DEGREE_CATEGORIES" ToRole="DEGREES" />
+    <NavigationProperty Name="DEGREE_GRADUATION_CATEGORIES" Relationship="Self.FK_DEGREE_GRADUATION_CATEGORIES_degree_categories_id" FromRole="DEGREE_CATEGORIES" ToRole="DEGREE_GRADUATION_CATEGORIES" />
+    <NavigationProperty Name="DEGREE_GRADUATION_COURSES" Relationship="Self.FK_DEGREE_GRADUATION_COURSES_degree_categories_id" FromRole="DEGREE_CATEGORIES" ToRole="DEGREE_GRADUATION_COURSES" />
+    <NavigationProperty Name="PLAN_SELECTEDCOURSES" Relationship="Self.FK_PLAN_SELECTEDCOURSES_degree_categories_id" FromRole="DEGREE_CATEGORIES" ToRole="PLAN_SELECTEDCOURSES" />
+  </EntityType>
+  <EntityType Name="DEGREE_GRADUATION_CATEGORIES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+      <PropertyRef Name="degree_categories_id" />
+    </Key>
+    <Property Name="degrees_id" Type="Int32" Nullable="false" />
+    <Property Name="degree_categories_id" Type="Int32" Nullable="false" />
+    <Property Name="credit" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+    <NavigationProperty Name="DEGREE_CATEGORIES" Relationship="Self.FK_DEGREE_GRADUATION_CATEGORIES_degree_categories_id" FromRole="DEGREE_GRADUATION_CATEGORIES" ToRole="DEGREE_CATEGORIES" />
+    <NavigationProperty Name="DEGREE" Relationship="Self.FK_DEGREE_GRADUATION_CATEGORIES_degrees_id" FromRole="DEGREE_GRADUATION_CATEGORIES" ToRole="DEGREES" />
+  </EntityType>
+  <EntityType Name="DEGREE_GRADUATION_COURSES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="degrees_id" Type="Int32" Nullable="false" />
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="degree_categories_id" Type="Int32" Nullable="false" />
+    <Property Name="foreign_course_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_DEGREE_GRADUATION_COURSES_courses_id" FromRole="DEGREE_GRADUATION_COURSES" ToRole="COURSES" />
+    <NavigationProperty Name="DEGREE_CATEGORIES" Relationship="Self.FK_DEGREE_GRADUATION_COURSES_degree_categories_id" FromRole="DEGREE_GRADUATION_COURSES" ToRole="DEGREE_CATEGORIES" />
+    <NavigationProperty Name="DEGREE" Relationship="Self.FK_DEGREE_GRADUATION_COURSES_degrees_id" FromRole="DEGREE_GRADUATION_COURSES" ToRole="DEGREES" />
+  </EntityType>
+  <EntityType Name="DEGREE_NOTES">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+    </Key>
+    <Property Name="degrees_id" Type="Int32" Nullable="false" />
+    <Property Name="admission_courses_note" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <Property Name="admission_categories_note" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <Property Name="graduation_courses_note" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <Property Name="graduation_categories_note" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <Property Name="general_note" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="DEGREE" Relationship="Self.FK_DEGREE_NOTES_degrees_id" FromRole="DEGREE_NOTES" ToRole="DEGREES" />
+  </EntityType>
+  <EntityType Name="DEGREE_RANKINGS">
+    <Key>
+      <PropertyRef Name="degrees_id" />
+    </Key>
+    <Property Name="degrees_id" Type="Int32" Nullable="false" />
+    <Property Name="rank" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="DEGREE" Relationship="Self.FK_DEGREE_RANKINGS_degrees_id" FromRole="DEGREE_RANKINGS" ToRole="DEGREES" />
+  </EntityType>
+  <EntityType Name="DEGREE">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="colleges_id" Type="Int32" Nullable="false" />
+    <Property Name="degree_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="departments_id" Type="Int32" Nullable="false" />
+    <Property Name="degree_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="use_catalog" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="COLLEGE" Relationship="Self.FK_DEGREES_colleges_id" FromRole="DEGREES" ToRole="COLLEGES" />
+    <NavigationProperty Name="DEGREE_ADMISSION_CATEGORIES" Relationship="Self.FK_DEGREE_ADMISSION_CATEGORIES_degrees_id" FromRole="DEGREES" ToRole="DEGREE_ADMISSION_CATEGORIES" />
+    <NavigationProperty Name="DEGREE_ADMISSION_COURSES" Relationship="Self.FK_DEGREE_ADMISSION_COURSES_degrees_id" FromRole="DEGREES" ToRole="DEGREE_ADMISSION_COURSES" />
+    <NavigationProperty Name="DEGREE_CATEGORIES" Relationship="Self.FK_DEGREE_CATEGORIES_degrees_id" FromRole="DEGREES" ToRole="DEGREE_CATEGORIES" />
+    <NavigationProperty Name="DEGREE_GRADUATION_CATEGORIES" Relationship="Self.FK_DEGREE_GRADUATION_CATEGORIES_degrees_id" FromRole="DEGREES" ToRole="DEGREE_GRADUATION_CATEGORIES" />
+    <NavigationProperty Name="DEGREE_GRADUATION_COURSES" Relationship="Self.FK_DEGREE_GRADUATION_COURSES_degrees_id" FromRole="DEGREES" ToRole="DEGREE_GRADUATION_COURSES" />
+    <NavigationProperty Name="DEGREE_NOTES" Relationship="Self.FK_DEGREE_NOTES_degrees_id" FromRole="DEGREES" ToRole="DEGREE_NOTES" />
+    <NavigationProperty Name="DEGREE_RANKINGS" Relationship="Self.FK_DEGREE_RANKINGS_degrees_id" FromRole="DEGREES" ToRole="DEGREE_RANKINGS" />
+    <NavigationProperty Name="DEPARTMENT" Relationship="Self.FK_DEGREES_departments_id" FromRole="DEGREES" ToRole="DEPARTMENTS" />
+    <NavigationProperty Name="PLANS" Relationship="Self.PLAN_SELECTEDDEGREES" FromRole="DEGREES" ToRole="PLANS" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="Majors" Relationship="Self.FK_Major_Department" FromRole="Department" ToRole="Major" />
+  </EntityType>
+  <EntityType Name="DEPARTMENT_RANKINGS">
+    <Key>
+      <PropertyRef Name="departments_id" />
+    </Key>
+    <Property Name="departments_id" Type="Int32" Nullable="false" />
+    <Property Name="rank" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="DEPARTMENT" Relationship="Self.FK_DEPARTMENT_RANKINGS_departments_id" FromRole="DEPARTMENT_RANKINGS" ToRole="DEPARTMENTS" />
+  </EntityType>
+  <EntityType Name="DEPARTMENT1">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="department_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="see_also" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="dept_intro" Type="String" MaxLength="1800" FixedLength="false" Unicode="false" />
+    <Property Name="abv_title" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="abv_title2" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="use_catalog" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="COLLEGE_ADMISSION_DEPARTMENTS" Relationship="Self.FK_COLLEGE_ADMISSION_DEPARTMENTS_departments_id" FromRole="DEPARTMENTS" ToRole="COLLEGE_ADMISSION_DEPARTMENTS" />
+    <NavigationProperty Name="COLLEGE_DEPARTMENTS" Relationship="Self.FK_COLLEGE_DEPARTMENTS_departments_id" FromRole="DEPARTMENTS" ToRole="COLLEGE_DEPARTMENTS" />
+    <NavigationProperty Name="COURSES" Relationship="Self.FK_COURSES_departments_id" FromRole="DEPARTMENTS" ToRole="COURSES" />
+    <NavigationProperty Name="DEGREES" Relationship="Self.FK_DEGREES_departments_id" FromRole="DEPARTMENTS" ToRole="DEGREES" />
+    <NavigationProperty Name="DEPARTMENT_RANKINGS" Relationship="Self.FK_DEPARTMENT_RANKINGS_departments_id" FromRole="DEPARTMENTS" ToRole="DEPARTMENT_RANKINGS" />
+  </EntityType>
+  <EntityType Name="FACULTY">
+    <Key>
+      <PropertyRef Name="accounts_id" />
+    </Key>
+    <Property Name="accounts_id" Type="Int32" Nullable="false" />
+    <Property Name="editor" Type="Boolean" Nullable="false" />
+    <Property Name="administrator" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ACCOUNT" Relationship="Self.FK_FACULTY_accounts_id" FromRole="FACULTY" ToRole="ACCOUNTS" />
+  </EntityType>
+  <EntityType Name="GeneratedPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Score" Type="Double" />
+    <Property Name="ParameterSetID" Type="Int32" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="StudyPlans" Relationship="Self.FK_StudentModifiedStudyPlan_GeneratedPlan" FromRole="GeneratedPlan" ToRole="StudyPlan" />
+    <NavigationProperty Name="StudyPlans1" Relationship="Self.FK_StudyPlan_GeneratedPlan" FromRole="GeneratedPlan" ToRole="StudyPlan" />
+  </EntityType>
+  <EntityType Name="JobType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobType1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="WorkHours" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="Students" Relationship="Self.FK_Student_JobType" FromRole="JobType" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Major">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="DepartmentID" Type="Int32" />
+    <Property Name="DegreeType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Major_Department" FromRole="Major" ToRole="Department" />
+    <NavigationProperty Name="Students" Relationship="Self.FK_Student_Major" FromRole="Major" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Parameter">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MajorID" Type="Int32" />
+    <Property Name="SchoolID" Type="Int32" />
+    <Property Name="JobTypeID" Type="Int32" />
+    <Property Name="BudgetID" Type="Int32" />
+    <Property Name="StartQuarterID" Type="Int32" />
+    <Property Name="TimePreferenceID" Type="Binary" MaxLength="1" FixedLength="true" />
+    <Property Name="QuarterPreferenceID" Type="Binary" MaxLength="1" FixedLength="true" />
+    <Property Name="Placements" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Completed" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ParameterSet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MajorID" Type="Int32" />
+    <Property Name="SchoolID" Type="Int32" />
+    <Property Name="JobTypeID" Type="Int32" />
+    <Property Name="BudgetID" Type="Int32" />
+    <Property Name="TimePreferenceID" Type="Int32" />
+    <Property Name="QuarterPreferenceID" Type="Int32" />
+    <Property Name="CompletedCourses" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="PlacementCourses" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="PLAN_SELECTEDCOURSES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="plans_id" Type="Int32" Nullable="false" />
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="degree_categories_id" Type="Int32" Nullable="false" />
+    <Property Name="completedcourses_id" Type="Int32" />
+    <Property Name="credit" Type="Decimal" Precision="4" Scale="2" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_PLAN_SELECTEDCOURSES_courses_id" FromRole="PLAN_SELECTEDCOURSES" ToRole="COURSES" />
+    <NavigationProperty Name="DEGREE_CATEGORIES" Relationship="Self.FK_PLAN_SELECTEDCOURSES_degree_categories_id" FromRole="PLAN_SELECTEDCOURSES" ToRole="DEGREE_CATEGORIES" />
+    <NavigationProperty Name="PLAN" Relationship="Self.FK_PLAN_SELECTEDCOURSES_plans_id" FromRole="PLAN_SELECTEDCOURSES" ToRole="PLANS" />
+  </EntityType>
+  <EntityType Name="PlanRating">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="PlanID" Type="Int32" Nullable="false" />
+    <Property Name="OptionGroupID" Type="Int32" Nullable="false" />
+    <Property Name="Stars" Type="Int32" />
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="PlanRatingDescription">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="PlanRatingOption">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OptionGroupID" Type="Int32" Nullable="false" />
+    <Property Name="DescriptionID" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PLAN">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="students_accounts_id" Type="Int32" Nullable="false" />
+    <Property Name="plan_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="time_created" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="time_updated" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="PLAN_SELECTEDCOURSES" Relationship="Self.FK_PLAN_SELECTEDCOURSES_plans_id" FromRole="PLANS" ToRole="PLAN_SELECTEDCOURSES" />
+    <NavigationProperty Name="STUDENT" Relationship="Self.FK_PLANS_students_accounts_id" FromRole="PLANS" ToRole="STUDENTS" />
+    <NavigationProperty Name="STUDENTS" Relationship="Self.PLAN_ACTIVEPLANS" FromRole="PLANS" ToRole="STUDENTS" />
+    <NavigationProperty Name="DEGREES" Relationship="Self.PLAN_SELECTEDDEGREES" FromRole="PLANS" ToRole="DEGREES" />
+  </EntityType>
+  <EntityType Name="PREREQUISITE_PERMISSIONS">
+    <Key>
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_PREREQUISITE_PERMISSIONS_courses_id" FromRole="PREREQUISITE_PERMISSIONS" ToRole="COURSES" />
+  </EntityType>
+  <EntityType Name="PREREQUISITE_PLACEMENTS">
+    <Key>
+      <PropertyRef Name="courses_id" />
+    </Key>
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="placement" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_PREREQUISITE_PLACEMENTS_courses_id" FromRole="PREREQUISITE_PLACEMENTS" ToRole="COURSES" />
+  </EntityType>
+  <EntityType Name="PREREQUISITE">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="group_id" Type="Int32" Nullable="false" />
+    <Property Name="courses_prerequisite_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_PREREQUISITES_courses_id" FromRole="PREREQUISITES" ToRole="COURSES" />
+    <NavigationProperty Name="COURS1" Relationship="Self.FK_PREREQUISITES_courses_prequiresite_id" FromRole="PREREQUISITES" ToRole="COURSES" />
+  </EntityType>
+  <EntityType Name="Quarter">
+    <Key>
+      <PropertyRef Name="QuarterID" />
+    </Key>
+    <Property Name="QuarterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Quarter1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="StudentEnrollments" Relationship="Self.FK_StudentEnrollment_Quarter" FromRole="Quarter" ToRole="StudentEnrollment" />
+  </EntityType>
+  <EntityType Name="ReviewedStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int64" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="PlanName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AdvisorID" Type="Int64" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="ReviewDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="StudyPlan" Relationship="Self.FK_ReviewedStudyPlan_StudyPlan" FromRole="ReviewedStudyPlan" ToRole="StudyPlan" />
+  </EntityType>
+  <EntityType Name="Section">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Section1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MajorID" Type="Int64" />
+    <Property Name="DepartmentID" Type="Int64" />
+    <Property Name="JobTypeID" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="JobType" Relationship="Self.FK_Student_JobType" FromRole="Student" ToRole="JobType" />
+    <NavigationProperty Name="Major" Relationship="Self.FK_Student_Major" FromRole="Student" ToRole="Major" />
+    <NavigationProperty Name="StudentEnrollments" Relationship="Self.FK_StudentEnrollment_Student" FromRole="Student" ToRole="StudentEnrollment" />
+  </EntityType>
+  <EntityType Name="STUDENT_PLACEMENTCOURSES">
+    <Key>
+      <PropertyRef Name="students_accounts_id" />
+    </Key>
+    <Property Name="students_accounts_id" Type="Int32" Nullable="false" />
+    <Property Name="math_courses_id" Type="Int32" Nullable="false" />
+    <Property Name="english_courses_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_STUDENT_PLACEMENTCOURSES_english_courses_id" FromRole="STUDENT_PLACEMENTCOURSES" ToRole="COURSES" />
+    <NavigationProperty Name="COURS1" Relationship="Self.FK_STUDENT_PLACEMENTCOURSES_math_courses_id" FromRole="STUDENT_PLACEMENTCOURSES" ToRole="COURSES" />
+    <NavigationProperty Name="STUDENT" Relationship="Self.FK_STUDENT_PLACEMENTCOURSES_students_accounts_id" FromRole="STUDENT_PLACEMENTCOURSES" ToRole="STUDENTS" />
+  </EntityType>
+  <EntityType Name="StudentEnrollment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int64" Nullable="false" />
+    <Property Name="CourseNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="QuarterID" Type="Int32" />
+    <Property Name="Elective" Type="Int32" />
+    <Property Name="Core" Type="Int32" />
+    <Property Name="CreditNo" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="Year" Type="Int32" />
+    <Property Name="EnrollmentDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Quarter" Relationship="Self.FK_StudentEnrollment_Quarter" FromRole="StudentEnrollment" ToRole="Quarter" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_StudentEnrollment_Student" FromRole="StudentEnrollment" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="StudentModifiedStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="QuarterID" Type="Int32" />
+    <Property Name="YearID" Type="Int32" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="STUDENT1">
+    <Key>
+      <PropertyRef Name="accounts_id" />
+    </Key>
+    <Property Name="accounts_id" Type="Int32" Nullable="false" />
+    <Property Name="student_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ACCOUNT" Relationship="Self.FK_STUDENTS_accounts_id" FromRole="STUDENTS" ToRole="ACCOUNTS" />
+    <NavigationProperty Name="PLANS" Relationship="Self.FK_PLANS_students_accounts_id" FromRole="STUDENTS" ToRole="PLANS" />
+    <NavigationProperty Name="STUDENT_PLACEMENTCOURSES" Relationship="Self.FK_STUDENT_PLACEMENTCOURSES_students_accounts_id" FromRole="STUDENTS" ToRole="STUDENT_PLACEMENTCOURSES" />
+    <NavigationProperty Name="STUDENTS_COMPLETEDCOURSES" Relationship="Self.FK_STUDENTS_COMPLETEDCOURSES_students_accounts_id" FromRole="STUDENTS" ToRole="STUDENTS_COMPLETEDCOURSES" />
+    <NavigationProperty Name="PLANS1" Relationship="Self.PLAN_ACTIVEPLANS" FromRole="STUDENTS" ToRole="PLANS" />
+  </EntityType>
+  <EntityType Name="STUDENTS_COMPLETEDCOURSES">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="students_accounts_id" Type="Int32" Nullable="false" />
+    <Property Name="courses_id" Type="Int32" Nullable="false" />
+    <Property Name="credit" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+    <NavigationProperty Name="COURS" Relationship="Self.FK_STUDENTS_COMPLETEDCOURSES_courses_id" FromRole="STUDENTS_COMPLETEDCOURSES" ToRole="COURSES" />
+    <NavigationProperty Name="STUDENT" Relationship="Self.FK_STUDENTS_COMPLETEDCOURSES_students_accounts_id" FromRole="STUDENTS_COMPLETEDCOURSES" ToRole="STUDENTS" />
+  </EntityType>
+  <EntityType Name="StudentStudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int64" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="StudyPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="QuarterID" Type="Int32" />
+    <Property Name="YearID" Type="Int32" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="DateAdded" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="GeneratedPlan" Relationship="Self.FK_StudentModifiedStudyPlan_GeneratedPlan" FromRole="StudyPlan" ToRole="GeneratedPlan" />
+    <NavigationProperty Name="GeneratedPlan1" Relationship="Self.FK_StudyPlan_GeneratedPlan" FromRole="StudyPlan" ToRole="GeneratedPlan" />
+    <NavigationProperty Name="ReviewedStudyPlans" Relationship="Self.FK_ReviewedStudyPlan_StudyPlan" FromRole="StudyPlan" ToRole="ReviewedStudyPlan" />
+  </EntityType>
+  <EntityType Name="WeekDay">
+    <Key>
+      <PropertyRef Name="DayID" />
+    </Key>
+    <Property Name="DayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WeekDay1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="AdmissionRequiredCours">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MajorID" Type="Int32" />
+    <Property Name="SchoolID" Type="Int32" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="DepartmentID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Budget">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Budget1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="MaxCredit" Type="Int32" />
+    <Property Name="ResidentStatusID" Type="Int32" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Corequisite1">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="CorequisiteID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" Nullable="false" />
+    <Property Name="GroupID" Type="Int32" Nullable="false" />
+    <Property Name="CorequisiteID" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CourseTime">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="CourseNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="StartTimeID" Type="Int32" />
+    <Property Name="EndTimeID" Type="Int32" />
+    <Property Name="DayID" Type="Int32" />
+    <Property Name="QuarterID" Type="Int32" />
+    <Property Name="Year" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="SectionID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="MockUpData">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="Int64" Nullable="false" />
+    <Property Name="Major" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="JobTypeID" Type="Int32" />
+    <Property Name="NoOfCourses" Type="Int32" />
+    <Property Name="Elective" Type="Int32" />
+    <Property Name="Core" Type="Int32" />
+    <Property Name="ElectiveCredit" Type="Int32" />
+    <Property Name="CoreCredit" Type="Int32" />
+    <Property Name="CreditNo" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Prerequisite1">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="PrerequisiteID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" Nullable="false" />
+    <Property Name="GroupID" Type="Int32" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PrerequisiteTransfer">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseID" />
+      <PropertyRef Name="CourseNumber" />
+      <PropertyRef Name="GroupID" />
+      <PropertyRef Name="PrerequisiteID" />
+      <PropertyRef Name="PrerequisiteNumber" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" Nullable="false" />
+    <Property Name="CourseNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="GroupID" Type="Int32" Nullable="false" />
+    <Property Name="PrerequisiteID" Type="Int32" Nullable="false" />
+    <Property Name="PrerequisiteNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Requisite">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="Int32" />
+    <Property Name="RequisiteID" Type="Int32" />
+    <Property Name="Relationship" Type="Int32" />
+    <Property Name="DepartmentID" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="CourseName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="RequisiteName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RequisitesType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RequisiteType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ResidentStatu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Residency" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="School">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Acronymn" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="StudentPlan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlanID" Type="Int32" />
+    <Property Name="PlanName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="StudentID" Type="Int64" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="TimePreference">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TimePeriod" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDateModified" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="TimeSlot">
+    <Key>
+      <PropertyRef Name="TimeID" />
+    </Key>
+    <Property Name="TimeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Time" Type="Time" Precision="0" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_FACULTY_accounts_id">
+    <End Role="ACCOUNTS" Type="Self.ACCOUNT" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="FACULTY" Type="Self.FACULTY" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ACCOUNTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="FACULTY">
+        <PropertyRef Name="accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENTS_accounts_id">
+    <End Role="ACCOUNTS" Type="Self.ACCOUNT" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="STUDENTS" Type="Self.STUDENT1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ACCOUNTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_ADMISSION_CODEKEYS_codekeys_id">
+    <End Role="CODEKEYS" Type="Self.CODEKEY" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_CODEKEYS" Type="Self.COLLEGE_ADMISSION_CODEKEYS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CODEKEYS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_CODEKEYS">
+        <PropertyRef Name="codekeys_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_ADMISSION_CODEKEYS_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_CODEKEYS" Type="Self.COLLEGE_ADMISSION_CODEKEYS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_CODEKEYS">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGES_ADMISSION_COURSES_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_COURSES" Type="Self.COLLEGE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_COURSES">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGES_ADMISSION_COURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_COURSES" Type="Self.COLLEGE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_COURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_ADMISSION_DEPARTMENTS_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_DEPARTMENTS" Type="Self.COLLEGE_ADMISSION_DEPARTMENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_DEPARTMENTS">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_ADMISSION_DEPARTMENTS_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENT1" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_ADMISSION_DEPARTMENTS" Type="Self.COLLEGE_ADMISSION_DEPARTMENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_ADMISSION_DEPARTMENTS">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_DEPARTMENTS_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_DEPARTMENTS" Type="Self.COLLEGE_DEPARTMENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_DEPARTMENTS">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_DEPARTMENTS_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENT1" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_DEPARTMENTS" Type="Self.COLLEGE_DEPARTMENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_DEPARTMENTS">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_NOTES_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_NOTES" Type="Self.COLLEGE_NOTES" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_NOTES">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COLLEGE_RANKINGS_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COLLEGE_RANKINGS" Type="Self.COLLEGE_RANKINGS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COLLEGE_RANKINGS">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREES_colleges_id">
+    <End Role="COLLEGES" Type="Self.COLLEGE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COLLEGES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREES">
+        <PropertyRef Name="colleges_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COREQUISITES_courses_corequisite_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1" />
+    <End Role="COREQUISITES" Type="Self.COREQUISITE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COREQUISITES">
+        <PropertyRef Name="courses_corequisite_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COREQUISITES_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1" />
+    <End Role="COREQUISITES" Type="Self.COREQUISITE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COREQUISITES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COURSE_RANKINGS_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COURSE_RANKINGS" Type="Self.COURSE_RANKINGS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COURSE_RANKINGS">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COURSES_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENT1" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="COURSES">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_COURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_ADMISSION_COURSES" Type="Self.DEGREE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_COURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_COURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_GRADUATION_COURSES" Type="Self.DEGREE_GRADUATION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_COURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_SELECTEDCOURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PLAN_SELECTEDCOURSES" Type="Self.PLAN_SELECTEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_SELECTEDCOURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PREREQUISITE_PERMISSIONS_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PREREQUISITE_PERMISSIONS" Type="Self.PREREQUISITE_PERMISSIONS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PREREQUISITE_PERMISSIONS">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PREREQUISITE_PLACEMENTS_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PREREQUISITE_PLACEMENTS" Type="Self.PREREQUISITE_PLACEMENTS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PREREQUISITE_PLACEMENTS">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PREREQUISITES_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1" />
+    <End Role="PREREQUISITES" Type="Self.PREREQUISITE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PREREQUISITES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PREREQUISITES_courses_prequiresite_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1" />
+    <End Role="PREREQUISITES" Type="Self.PREREQUISITE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PREREQUISITES">
+        <PropertyRef Name="courses_prerequisite_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_PLACEMENTCOURSES_english_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1" />
+    <End Role="STUDENT_PLACEMENTCOURSES" Type="Self.STUDENT_PLACEMENTCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="STUDENT_PLACEMENTCOURSES">
+        <PropertyRef Name="english_courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_PLACEMENTCOURSES_math_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1" />
+    <End Role="STUDENT_PLACEMENTCOURSES" Type="Self.STUDENT_PLACEMENTCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="STUDENT_PLACEMENTCOURSES">
+        <PropertyRef Name="math_courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENTS_COMPLETEDCOURSES_courses_id">
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="STUDENTS_COMPLETEDCOURSES" Type="Self.STUDENTS_COMPLETEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COURSES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="STUDENTS_COMPLETEDCOURSES">
+        <PropertyRef Name="courses_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_CATEGORIES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="DEGREE_ADMISSION_CATEGORIES" Type="Self.DEGREE_ADMISSION_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_CATEGORIES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_CATEGORIES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_ADMISSION_CATEGORIES" Type="Self.DEGREE_ADMISSION_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_CATEGORIES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_COURSES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="DEGREE_ADMISSION_COURSES" Type="Self.DEGREE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_COURSES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_ADMISSION_COURSES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="1" />
+    <End Role="DEGREE_ADMISSION_COURSES" Type="Self.DEGREE_ADMISSION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_ADMISSION_COURSES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_CATEGORIES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_CATEGORIES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="DEGREE_GRADUATION_CATEGORIES" Type="Self.DEGREE_GRADUATION_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_CATEGORIES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_COURSES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="DEGREE_GRADUATION_COURSES" Type="Self.DEGREE_GRADUATION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_COURSES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_SELECTEDCOURSES_degree_categories_id">
+    <End Role="DEGREE_CATEGORIES" Type="Self.DEGREE_CATEGORIES" Multiplicity="1" />
+    <End Role="PLAN_SELECTEDCOURSES" Type="Self.PLAN_SELECTEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREE_CATEGORIES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_SELECTEDCOURSES">
+        <PropertyRef Name="degree_categories_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_CATEGORIES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_GRADUATION_CATEGORIES" Type="Self.DEGREE_GRADUATION_CATEGORIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_CATEGORIES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_GRADUATION_COURSES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="1" />
+    <End Role="DEGREE_GRADUATION_COURSES" Type="Self.DEGREE_GRADUATION_COURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_GRADUATION_COURSES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_NOTES_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_NOTES" Type="Self.DEGREE_NOTES" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_NOTES">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREE_RANKINGS_degrees_id">
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREE_RANKINGS" Type="Self.DEGREE_RANKINGS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DEGREES">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREE_RANKINGS">
+        <PropertyRef Name="degrees_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEGREES_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENT1" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEGREES">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Major_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Major" Type="Self.Major" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Major">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DEPARTMENT_RANKINGS_departments_id">
+    <End Role="DEPARTMENTS" Type="Self.DEPARTMENT1" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DEPARTMENT_RANKINGS" Type="Self.DEPARTMENT_RANKINGS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENTS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DEPARTMENT_RANKINGS">
+        <PropertyRef Name="departments_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentModifiedStudyPlan_GeneratedPlan">
+    <End Role="GeneratedPlan" Type="Self.GeneratedPlan" Multiplicity="0..1" />
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GeneratedPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyPlan_GeneratedPlan">
+    <End Role="GeneratedPlan" Type="Self.GeneratedPlan" Multiplicity="0..1" />
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GeneratedPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_JobType">
+    <End Role="JobType" Type="Self.JobType" Multiplicity="0..1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="JobType">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="JobTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Major">
+    <End Role="Major" Type="Self.Major" Multiplicity="0..1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Major">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="MajorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLAN_SELECTEDCOURSES_plans_id">
+    <End Role="PLANS" Type="Self.PLAN" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PLAN_SELECTEDCOURSES" Type="Self.PLAN_SELECTEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PLANS">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PLAN_SELECTEDCOURSES">
+        <PropertyRef Name="plans_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PLANS_students_accounts_id">
+    <End Role="STUDENTS" Type="Self.STUDENT1" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PLANS" Type="Self.PLAN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Principal>
+      <Dependent Role="PLANS">
+        <PropertyRef Name="students_accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentEnrollment_Quarter">
+    <End Role="Quarter" Type="Self.Quarter" Multiplicity="0..1" />
+    <End Role="StudentEnrollment" Type="Self.StudentEnrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Quarter">
+        <PropertyRef Name="QuarterID" />
+      </Principal>
+      <Dependent Role="StudentEnrollment">
+        <PropertyRef Name="QuarterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReviewedStudyPlan_StudyPlan">
+    <End Role="StudyPlan" Type="Self.StudyPlan" Multiplicity="0..1" />
+    <End Role="ReviewedStudyPlan" Type="Self.ReviewedStudyPlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudyPlan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReviewedStudyPlan">
+        <PropertyRef Name="PlanID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentEnrollment_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="StudentEnrollment" Type="Self.StudentEnrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="StudentEnrollment">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_PLACEMENTCOURSES_students_accounts_id">
+    <End Role="STUDENTS" Type="Self.STUDENT1" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="STUDENT_PLACEMENTCOURSES" Type="Self.STUDENT_PLACEMENTCOURSES" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Principal>
+      <Dependent Role="STUDENT_PLACEMENTCOURSES">
+        <PropertyRef Name="students_accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENTS_COMPLETEDCOURSES_students_accounts_id">
+    <End Role="STUDENTS" Type="Self.STUDENT1" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="STUDENTS_COMPLETEDCOURSES" Type="Self.STUDENTS_COMPLETEDCOURSES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENTS">
+        <PropertyRef Name="accounts_id" />
+      </Principal>
+      <Dependent Role="STUDENTS_COMPLETEDCOURSES">
+        <PropertyRef Name="students_accounts_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="COURSES_CODEKEYS">
+    <End Role="CODEKEYS" Type="Self.CODEKEY" Multiplicity="*" />
+    <End Role="COURSES" Type="Self.COURS" Multiplicity="*" />
+  </Association>
+  <Association Name="PLAN_ACTIVEPLANS">
+    <End Role="PLANS" Type="Self.PLAN" Multiplicity="*" />
+    <End Role="STUDENTS" Type="Self.STUDENT1" Multiplicity="*" />
+  </Association>
+  <Association Name="PLAN_SELECTEDDEGREES">
+    <End Role="DEGREES" Type="Self.DEGREE" Multiplicity="*" />
+    <End Role="PLANS" Type="Self.PLAN" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="LocalVSAEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C_TimeSlot" EntityType="Self.C_TimeSlot" />
+    <EntitySet Name="AcademicYears" EntityType="Self.AcademicYear" />
+    <EntitySet Name="ACCOUNTS" EntityType="Self.ACCOUNT" />
+    <EntitySet Name="CODEKEYS" EntityType="Self.CODEKEY" />
+    <EntitySet Name="COLLEGE_ADMISSION_CODEKEYS" EntityType="Self.COLLEGE_ADMISSION_CODEKEYS" />
+    <EntitySet Name="COLLEGE_ADMISSION_COURSES" EntityType="Self.COLLEGE_ADMISSION_COURSES" />
+    <EntitySet Name="COLLEGE_ADMISSION_DEPARTMENTS" EntityType="Self.COLLEGE_ADMISSION_DEPARTMENTS" />
+    <EntitySet Name="COLLEGE_DEPARTMENTS" EntityType="Self.COLLEGE_DEPARTMENTS" />
+    <EntitySet Name="COLLEGE_NOTES" EntityType="Self.COLLEGE_NOTES" />
+    <EntitySet Name="COLLEGE_RANKINGS" EntityType="Self.COLLEGE_RANKINGS" />
+    <EntitySet Name="COLLEGES" EntityType="Self.COLLEGE" />
+    <EntitySet Name="COREQUISITES" EntityType="Self.COREQUISITE" />
+    <EntitySet Name="Courses" EntityType="Self.Course" />
+    <EntitySet Name="COURSE_RANKINGS" EntityType="Self.COURSE_RANKINGS" />
+    <EntitySet Name="COURSES1" EntityType="Self.COURS" />
+    <EntitySet Name="DEGREE_ADMISSION_CATEGORIES" EntityType="Self.DEGREE_ADMISSION_CATEGORIES" />
+    <EntitySet Name="DEGREE_ADMISSION_COURSES" EntityType="Self.DEGREE_ADMISSION_COURSES" />
+    <EntitySet Name="DEGREE_CATEGORIES" EntityType="Self.DEGREE_CATEGORIES" />
+    <EntitySet Name="DEGREE_GRADUATION_CATEGORIES" EntityType="Self.DEGREE_GRADUATION_CATEGORIES" />
+    <EntitySet Name="DEGREE_GRADUATION_COURSES" EntityType="Self.DEGREE_GRADUATION_COURSES" />
+    <EntitySet Name="DEGREE_NOTES" EntityType="Self.DEGREE_NOTES" />
+    <EntitySet Name="DEGREE_RANKINGS" EntityType="Self.DEGREE_RANKINGS" />
+    <EntitySet Name="DEGREES" EntityType="Self.DEGREE" />
+    <EntitySet Name="Departments" EntityType="Self.Department" />
+    <EntitySet Name="DEPARTMENT_RANKINGS" EntityType="Self.DEPARTMENT_RANKINGS" />
+    <EntitySet Name="DEPARTMENTS1" EntityType="Self.DEPARTMENT1" />
+    <EntitySet Name="FACULTies" EntityType="Self.FACULTY" />
+    <EntitySet Name="GeneratedPlans" EntityType="Self.GeneratedPlan" />
+    <EntitySet Name="JobTypes" EntityType="Self.JobType" />
+    <EntitySet Name="Majors" EntityType="Self.Major" />
+    <EntitySet Name="Parameters" EntityType="Self.Parameter" />
+    <EntitySet Name="ParameterSets" EntityType="Self.ParameterSet" />
+    <EntitySet Name="PLAN_SELECTEDCOURSES" EntityType="Self.PLAN_SELECTEDCOURSES" />
+    <EntitySet Name="PlanRatings" EntityType="Self.PlanRating" />
+    <EntitySet Name="PlanRatingDescriptions" EntityType="Self.PlanRatingDescription" />
+    <EntitySet Name="PlanRatingOptions" EntityType="Self.PlanRatingOption" />
+    <EntitySet Name="PLANS" EntityType="Self.PLAN" />
+    <EntitySet Name="PREREQUISITE_PERMISSIONS" EntityType="Self.PREREQUISITE_PERMISSIONS" />
+    <EntitySet Name="PREREQUISITE_PLACEMENTS" EntityType="Self.PREREQUISITE_PLACEMENTS" />
+    <EntitySet Name="PREREQUISITES" EntityType="Self.PREREQUISITE" />
+    <EntitySet Name="Quarters" EntityType="Self.Quarter" />
+    <EntitySet Name="ReviewedStudyPlans" EntityType="Self.ReviewedStudyPlan" />
+    <EntitySet Name="Sections" EntityType="Self.Section" />
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <EntitySet Name="STUDENT_PLACEMENTCOURSES" EntityType="Self.STUDENT_PLACEMENTCOURSES" />
+    <EntitySet Name="StudentEnrollments" EntityType="Self.StudentEnrollment" />
+    <EntitySet Name="StudentModifiedStudyPlans" EntityType="Self.StudentModifiedStudyPlan" />
+    <EntitySet Name="STUDENTS1" EntityType="Self.STUDENT1" />
+    <EntitySet Name="STUDENTS_COMPLETEDCOURSES" EntityType="Self.STUDENTS_COMPLETEDCOURSES" />
+    <EntitySet Name="StudentStudyPlans" EntityType="Self.StudentStudyPlan" />
+    <EntitySet Name="StudyPlans" EntityType="Self.StudyPlan" />
+    <EntitySet Name="WeekDays" EntityType="Self.WeekDay" />
+    <EntitySet Name="AdmissionRequiredCourses" EntityType="Self.AdmissionRequiredCours" />
+    <EntitySet Name="Budgets" EntityType="Self.Budget" />
+    <EntitySet Name="Corequisites1" EntityType="Self.Corequisite1" />
+    <EntitySet Name="CourseTimes" EntityType="Self.CourseTime" />
+    <EntitySet Name="MockUpDatas" EntityType="Self.MockUpData" />
+    <EntitySet Name="Prerequisites1" EntityType="Self.Prerequisite1" />
+    <EntitySet Name="PrerequisiteTransfers" EntityType="Self.PrerequisiteTransfer" />
+    <EntitySet Name="Requisites" EntityType="Self.Requisite" />
+    <EntitySet Name="RequisitesTypes" EntityType="Self.RequisitesType" />
+    <EntitySet Name="ResidentStatus" EntityType="Self.ResidentStatu" />
+    <EntitySet Name="Schools" EntityType="Self.School" />
+    <EntitySet Name="StudentPlans" EntityType="Self.StudentPlan" />
+    <EntitySet Name="TimePreferences" EntityType="Self.TimePreference" />
+    <EntitySet Name="TimeSlots" EntityType="Self.TimeSlot" />
+    <AssociationSet Name="FK_FACULTY_accounts_id" Association="Self.FK_FACULTY_accounts_id">
+      <End Role="ACCOUNTS" EntitySet="ACCOUNTS" />
+      <End Role="FACULTY" EntitySet="FACULTies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENTS_accounts_id" Association="Self.FK_STUDENTS_accounts_id">
+      <End Role="ACCOUNTS" EntitySet="ACCOUNTS" />
+      <End Role="STUDENTS" EntitySet="STUDENTS1" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_ADMISSION_CODEKEYS_codekeys_id" Association="Self.FK_COLLEGE_ADMISSION_CODEKEYS_codekeys_id">
+      <End Role="CODEKEYS" EntitySet="CODEKEYS" />
+      <End Role="COLLEGE_ADMISSION_CODEKEYS" EntitySet="COLLEGE_ADMISSION_CODEKEYS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_ADMISSION_CODEKEYS_colleges_id" Association="Self.FK_COLLEGE_ADMISSION_CODEKEYS_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_ADMISSION_CODEKEYS" EntitySet="COLLEGE_ADMISSION_CODEKEYS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGES_ADMISSION_COURSES_colleges_id" Association="Self.FK_COLLEGES_ADMISSION_COURSES_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_ADMISSION_COURSES" EntitySet="COLLEGE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGES_ADMISSION_COURSES_courses_id" Association="Self.FK_COLLEGES_ADMISSION_COURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="COLLEGE_ADMISSION_COURSES" EntitySet="COLLEGE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_ADMISSION_DEPARTMENTS_colleges_id" Association="Self.FK_COLLEGE_ADMISSION_DEPARTMENTS_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_ADMISSION_DEPARTMENTS" EntitySet="COLLEGE_ADMISSION_DEPARTMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_ADMISSION_DEPARTMENTS_departments_id" Association="Self.FK_COLLEGE_ADMISSION_DEPARTMENTS_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS1" />
+      <End Role="COLLEGE_ADMISSION_DEPARTMENTS" EntitySet="COLLEGE_ADMISSION_DEPARTMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_DEPARTMENTS_colleges_id" Association="Self.FK_COLLEGE_DEPARTMENTS_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_DEPARTMENTS" EntitySet="COLLEGE_DEPARTMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_DEPARTMENTS_departments_id" Association="Self.FK_COLLEGE_DEPARTMENTS_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS1" />
+      <End Role="COLLEGE_DEPARTMENTS" EntitySet="COLLEGE_DEPARTMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_NOTES_colleges_id" Association="Self.FK_COLLEGE_NOTES_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_NOTES" EntitySet="COLLEGE_NOTES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COLLEGE_RANKINGS_colleges_id" Association="Self.FK_COLLEGE_RANKINGS_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="COLLEGE_RANKINGS" EntitySet="COLLEGE_RANKINGS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREES_colleges_id" Association="Self.FK_DEGREES_colleges_id">
+      <End Role="COLLEGES" EntitySet="COLLEGES" />
+      <End Role="DEGREES" EntitySet="DEGREES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COREQUISITES_courses_corequisite_id" Association="Self.FK_COREQUISITES_courses_corequisite_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="COREQUISITES" EntitySet="COREQUISITES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COREQUISITES_courses_id" Association="Self.FK_COREQUISITES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="COREQUISITES" EntitySet="COREQUISITES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COURSE_RANKINGS_courses_id" Association="Self.FK_COURSE_RANKINGS_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="COURSE_RANKINGS" EntitySet="COURSE_RANKINGS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COURSES_departments_id" Association="Self.FK_COURSES_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS1" />
+      <End Role="COURSES" EntitySet="COURSES1" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_COURSES_courses_id" Association="Self.FK_DEGREE_ADMISSION_COURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="DEGREE_ADMISSION_COURSES" EntitySet="DEGREE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_COURSES_courses_id" Association="Self.FK_DEGREE_GRADUATION_COURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="DEGREE_GRADUATION_COURSES" EntitySet="DEGREE_GRADUATION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_SELECTEDCOURSES_courses_id" Association="Self.FK_PLAN_SELECTEDCOURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="PLAN_SELECTEDCOURSES" EntitySet="PLAN_SELECTEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PREREQUISITE_PERMISSIONS_courses_id" Association="Self.FK_PREREQUISITE_PERMISSIONS_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="PREREQUISITE_PERMISSIONS" EntitySet="PREREQUISITE_PERMISSIONS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PREREQUISITE_PLACEMENTS_courses_id" Association="Self.FK_PREREQUISITE_PLACEMENTS_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="PREREQUISITE_PLACEMENTS" EntitySet="PREREQUISITE_PLACEMENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PREREQUISITES_courses_id" Association="Self.FK_PREREQUISITES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="PREREQUISITES" EntitySet="PREREQUISITES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PREREQUISITES_courses_prequiresite_id" Association="Self.FK_PREREQUISITES_courses_prequiresite_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="PREREQUISITES" EntitySet="PREREQUISITES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_PLACEMENTCOURSES_english_courses_id" Association="Self.FK_STUDENT_PLACEMENTCOURSES_english_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="STUDENT_PLACEMENTCOURSES" EntitySet="STUDENT_PLACEMENTCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_PLACEMENTCOURSES_math_courses_id" Association="Self.FK_STUDENT_PLACEMENTCOURSES_math_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="STUDENT_PLACEMENTCOURSES" EntitySet="STUDENT_PLACEMENTCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENTS_COMPLETEDCOURSES_courses_id" Association="Self.FK_STUDENTS_COMPLETEDCOURSES_courses_id">
+      <End Role="COURSES" EntitySet="COURSES1" />
+      <End Role="STUDENTS_COMPLETEDCOURSES" EntitySet="STUDENTS_COMPLETEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_CATEGORIES_degree_categories_id" Association="Self.FK_DEGREE_ADMISSION_CATEGORIES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="DEGREE_ADMISSION_CATEGORIES" EntitySet="DEGREE_ADMISSION_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_CATEGORIES_degrees_id" Association="Self.FK_DEGREE_ADMISSION_CATEGORIES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_ADMISSION_CATEGORIES" EntitySet="DEGREE_ADMISSION_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_COURSES_degree_categories_id" Association="Self.FK_DEGREE_ADMISSION_COURSES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="DEGREE_ADMISSION_COURSES" EntitySet="DEGREE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_ADMISSION_COURSES_degrees_id" Association="Self.FK_DEGREE_ADMISSION_COURSES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_ADMISSION_COURSES" EntitySet="DEGREE_ADMISSION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_CATEGORIES_degrees_id" Association="Self.FK_DEGREE_CATEGORIES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_CATEGORIES_degree_categories_id" Association="Self.FK_DEGREE_GRADUATION_CATEGORIES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="DEGREE_GRADUATION_CATEGORIES" EntitySet="DEGREE_GRADUATION_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_COURSES_degree_categories_id" Association="Self.FK_DEGREE_GRADUATION_COURSES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="DEGREE_GRADUATION_COURSES" EntitySet="DEGREE_GRADUATION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_SELECTEDCOURSES_degree_categories_id" Association="Self.FK_PLAN_SELECTEDCOURSES_degree_categories_id">
+      <End Role="DEGREE_CATEGORIES" EntitySet="DEGREE_CATEGORIES" />
+      <End Role="PLAN_SELECTEDCOURSES" EntitySet="PLAN_SELECTEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_CATEGORIES_degrees_id" Association="Self.FK_DEGREE_GRADUATION_CATEGORIES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_GRADUATION_CATEGORIES" EntitySet="DEGREE_GRADUATION_CATEGORIES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_GRADUATION_COURSES_degrees_id" Association="Self.FK_DEGREE_GRADUATION_COURSES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_GRADUATION_COURSES" EntitySet="DEGREE_GRADUATION_COURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_NOTES_degrees_id" Association="Self.FK_DEGREE_NOTES_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_NOTES" EntitySet="DEGREE_NOTES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREE_RANKINGS_degrees_id" Association="Self.FK_DEGREE_RANKINGS_degrees_id">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="DEGREE_RANKINGS" EntitySet="DEGREE_RANKINGS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEGREES_departments_id" Association="Self.FK_DEGREES_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS1" />
+      <End Role="DEGREES" EntitySet="DEGREES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Major_Department" Association="Self.FK_Major_Department">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Major" EntitySet="Majors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DEPARTMENT_RANKINGS_departments_id" Association="Self.FK_DEPARTMENT_RANKINGS_departments_id">
+      <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS1" />
+      <End Role="DEPARTMENT_RANKINGS" EntitySet="DEPARTMENT_RANKINGS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentModifiedStudyPlan_GeneratedPlan" Association="Self.FK_StudentModifiedStudyPlan_GeneratedPlan">
+      <End Role="GeneratedPlan" EntitySet="GeneratedPlans" />
+      <End Role="StudyPlan" EntitySet="StudyPlans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyPlan_GeneratedPlan" Association="Self.FK_StudyPlan_GeneratedPlan">
+      <End Role="GeneratedPlan" EntitySet="GeneratedPlans" />
+      <End Role="StudyPlan" EntitySet="StudyPlans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_JobType" Association="Self.FK_Student_JobType">
+      <End Role="JobType" EntitySet="JobTypes" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Major" Association="Self.FK_Student_Major">
+      <End Role="Major" EntitySet="Majors" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLAN_SELECTEDCOURSES_plans_id" Association="Self.FK_PLAN_SELECTEDCOURSES_plans_id">
+      <End Role="PLANS" EntitySet="PLANS" />
+      <End Role="PLAN_SELECTEDCOURSES" EntitySet="PLAN_SELECTEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PLANS_students_accounts_id" Association="Self.FK_PLANS_students_accounts_id">
+      <End Role="STUDENTS" EntitySet="STUDENTS1" />
+      <End Role="PLANS" EntitySet="PLANS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentEnrollment_Quarter" Association="Self.FK_StudentEnrollment_Quarter">
+      <End Role="Quarter" EntitySet="Quarters" />
+      <End Role="StudentEnrollment" EntitySet="StudentEnrollments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReviewedStudyPlan_StudyPlan" Association="Self.FK_ReviewedStudyPlan_StudyPlan">
+      <End Role="StudyPlan" EntitySet="StudyPlans" />
+      <End Role="ReviewedStudyPlan" EntitySet="ReviewedStudyPlans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentEnrollment_Student" Association="Self.FK_StudentEnrollment_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="StudentEnrollment" EntitySet="StudentEnrollments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_PLACEMENTCOURSES_students_accounts_id" Association="Self.FK_STUDENT_PLACEMENTCOURSES_students_accounts_id">
+      <End Role="STUDENTS" EntitySet="STUDENTS1" />
+      <End Role="STUDENT_PLACEMENTCOURSES" EntitySet="STUDENT_PLACEMENTCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENTS_COMPLETEDCOURSES_students_accounts_id" Association="Self.FK_STUDENTS_COMPLETEDCOURSES_students_accounts_id">
+      <End Role="STUDENTS" EntitySet="STUDENTS1" />
+      <End Role="STUDENTS_COMPLETEDCOURSES" EntitySet="STUDENTS_COMPLETEDCOURSES" />
+    </AssociationSet>
+    <AssociationSet Name="COURSES_CODEKEYS" Association="Self.COURSES_CODEKEYS">
+      <End Role="CODEKEYS" EntitySet="CODEKEYS" />
+      <End Role="COURSES" EntitySet="COURSES1" />
+    </AssociationSet>
+    <AssociationSet Name="PLAN_ACTIVEPLANS" Association="Self.PLAN_ACTIVEPLANS">
+      <End Role="PLANS" EntitySet="PLANS" />
+      <End Role="STUDENTS" EntitySet="STUDENTS1" />
+    </AssociationSet>
+    <AssociationSet Name="PLAN_SELECTEDDEGREES" Association="Self.PLAN_SELECTEDDEGREES">
+      <End Role="DEGREES" EntitySet="DEGREES" />
+      <End Role="PLANS" EntitySet="PLANS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

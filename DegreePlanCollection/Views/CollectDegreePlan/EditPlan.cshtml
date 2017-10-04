@@ -1,0 +1,22 @@
+﻿@model IEnumerable<DegreePlanCollection.Models.CourseCourseIDViewModel>
+@{
+    ViewBag.Title = "EditPlan";
+}
+
+<h2>EditPlan</h2>
+<table>
+    @foreach (var items in Model)
+    {
+        <tr>
+            
+            <td>
+                @Html.DisplayFor(modelItem => items.Course)
+            </td>
+            <td>
+                @Html.ActionLink("Prerequisites", "DisplayCoursePreReq", "CollectDegreePlan", new { items.CourseId },null) |
+                @Html.ActionLink("Scheduled Times", "DisplayCourseTime", "CollectDegreePlan", new { items.CourseId },null)
+            </td>
+        </tr>
+    }
+     
+</table>
