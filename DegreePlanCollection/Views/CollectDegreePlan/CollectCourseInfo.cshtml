@@ -12,7 +12,7 @@
 
 @{
     var courses = Model.CurrentCollectDegreeInfoCourses.Split('|');
-    Model.currentCollectInfoCourse = courses[0].Replace("amp;", "");
+    Model.currentCollectInfoCourse = courses[0];
 }
 
 <h2>Enter @Html.Raw(Model.currentCollectInfoCourse) Info:  </h2>
@@ -26,12 +26,14 @@
     <table>
         <tr>
             <td>
-
-                    @Html.LabelFor(m => m.Title)
+                @Html.LabelFor(m => m.Title)
             </td>
             <td>
 
-                    @Html.EditorFor(m => m.Title)
+                @Html.EditorFor(m => m.Title)
+            </td>
+            <td>
+                @Html.ValidationMessageFor(m => m.Title,"", new { @class = "text-danger" })
             </td>
     </tr>
     <tr>
@@ -42,6 +44,10 @@
         <td>
             @Html.EditorFor(m => m.Description)
         </td>
+        <td>               
+             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+        
+        </td>
 
     </tr>
     <tr>
@@ -50,6 +56,10 @@
         </td>
         <td>
             @Html.EditorFor(m => m.MinCredit)
+        </td>
+        <td>               
+            @Html.ValidationMessageFor(m => m.MinCredit, "", new { @class = "text-danger" })
+        
         </td>
     </tr>
     <tr>
@@ -60,6 +70,10 @@
             @Html.EditorFor(m => m.MaxCredit)
 
         </td>
+        <td>               
+            @Html.ValidationMessageFor(m => m.MaxCredit, "", new { @class = "text-danger" })
+        
+        </td>
     </tr>
     <tr>
         <td>
@@ -67,6 +81,10 @@
         </td>
         <td>
             @Html.EditorFor(m => m.Prerequisite)
+        </td>
+        <td>               
+            @Html.ValidationMessageFor(m => m.Prerequisite, "", new { @class = "text-danger" })
+        
         </td>
     </tr>
 </table>
@@ -97,16 +115,30 @@
             <th>End Time</th>
 
         </tr>
+       
         @{
-            Model.CourseTimeInfo = new List<CourseTimeViewModel>
-                   {
-                       new CourseTimeViewModel {Quarter = "Fall"},
-                       new CourseTimeViewModel {Quarter = "Winter"},
-                       new CourseTimeViewModel {Quarter = "Spring"},
-                       new CourseTimeViewModel {Quarter = "Summer"}
-                   };
-        }
+            // the first time CollectCourseInfo is called CourseTimeInfo will be null
+            // because I dont want to deal with the binding in CollectCoreCourses view
 
+            if (Model.CourseTimeInfo.Count == 0)
+            {
+                              
+                // reset course info for new course
+                Model.CourseTimeInfo = new List<CourseTimeViewModel>
+                {
+                    new CourseTimeViewModel {Quarter = "Fall"},
+                    new CourseTimeViewModel {Quarter = "Winter"},
+                    new CourseTimeViewModel {Quarter = "Spring"},
+                    new CourseTimeViewModel {Quarter = "Summer"}
+                };
+                Model.Title = "";
+                Model.Description = "";
+                Model.MinCredit = 0;
+                Model.MaxCredit = 1;
+                Model.Prerequisite = "";
+            }
+        }
+        
 
         @for (var i = 0; i < Model.CourseTimeInfo.Count; i++)
         {
@@ -118,14 +150,27 @@
                 <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Thursday)</td>
                 <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Friday)</td>
                 <td>@Html.EditorFor(m => m.CourseTimeInfo[i].StartTime)</td>
+                <td>@Html.ValidationMessageFor(m => m.CourseTimeInfo[i].StartTime, "", new { @class = "text-danger" })</td>
                 <td>@Html.EditorFor(m => m.CourseTimeInfo[i].EndTime)</td>
+                <td>@Html.ValidationMessageFor(m => m.CourseTimeInfo[i].EndTime, "", new { @class = "text-danger" })</td>
+
                 @Html.HiddenFor(m => m.CourseTimeInfo[i].Quarter)
             </tr>
 
         }
 
+
     </table>
-            <input type="submit" value="Submit" />
+
+    for (var i = 0; i < Model.DefferedPrerequisites.Count; i++)
+    {
+        @Html.HiddenFor(m => m.DefferedPrerequisites[i].courseId)
+        @Html.HiddenFor(m => m.DefferedPrerequisites[i].prereqName)
+        @Html.HiddenFor(m => m.DefferedPrerequisites[i].groupId)
+
+    }
+
+    <input type="submit" value="Submit" />
 
             }
 

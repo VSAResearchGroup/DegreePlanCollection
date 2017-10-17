@@ -19,9 +19,10 @@ namespace DegreePlanCollection.Controllers
         {
             var models = db.AdmissionRequiredCourses.Select(f => new { f.MajorID, f.SchoolID }).Distinct();
             var final = from p in models
-                join pm in db.Majors on (int)  p.MajorID equals pm.ID
-                join s in db.Schools on  (int) p.SchoolID equals s.ID
-                select new SchoolMajorViewModel {Major = pm.Name, MajorId=  (int)p.MajorID, School = s.Name, SchoolId = (int) p.SchoolID};
+                        join pm in db.Majors on (int)p.MajorID equals pm.ID
+                        join s in db.Schools on (int)p.SchoolID equals s.ID
+                        orderby pm.Name
+                        select new SchoolMajorViewModel { Major = pm.Name, MajorId = (int)p.MajorID, School = s.Name, SchoolId = (int)p.SchoolID };
             return View(final.ToList());
         }
 
@@ -40,10 +41,6 @@ namespace DegreePlanCollection.Controllers
             return View(prerequisite);
         }
 
-       
-
-
-
         // POST: CollectDegreePlan/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -51,7 +48,7 @@ namespace DegreePlanCollection.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult HandleForm(string response)
         {
-            
+
             ViewBag.CurrentDegree = response;
             return View("Index");
         }
@@ -63,16 +60,8 @@ namespace DegreePlanCollection.Controllers
         {
             CollectDegreeViewModel newDegree = new CollectDegreeViewModel();
             newDegree.CurrentDegreeCourses = "";
-            newDegree.deferredPrereqs = "";
-           
-
-
-
-
-            var schools = from f in db.Schools select f.Name;
-
+            var schools = from f in db.Schools select f.Name;       
             newDegree.Schools = new SelectList(schools);
-            
             return View(newDegree);
 
         }
@@ -83,27 +72,24 @@ namespace DegreePlanCollection.Controllers
 
             if (m.CurrentDegreeCourses == null)
             {
-                m.CurrentDegreeCourses = m.CurrentCourse.Replace("amp;", "");
+                m.CurrentDegreeCourses = m.CurrentCourse;
 
             }
             else
             {
-                m.CurrentDegreeCourses += "|" + m.CurrentCourse.Replace("amp;", "");
+                m.CurrentDegreeCourses += "|" + m.CurrentCourse;
 
             }
             m.CurrentCourse = "";
-            return View( "CollectCoreCourses",m);
+            return View("CollectCoreCourses", m);
         }
-
-
-
-       
 
         public ActionResult CollectCourseInfo(CollectDegreeViewModel m)
         {
-       
-
+            // upper case
             string[] courses = m.CurrentDegreeCourses.Split('|');
+
+            // upper case needs trimming
             var dbCourses = db.Courses.Select(c => c.CourseNumber);
 
             // This will be more accurate when there is autocomplete
@@ -111,99 +97,36 @@ namespace DegreePlanCollection.Controllers
             string coursesRequireInfo = "";
             foreach (string s in courses)
             {
-                string currString = s.Replace("amp;", "");
-                if (!dbCourses.Any(g => g.Trim().Equals(currString)) || !CourseHasPrereqs(currString) || !CourseHasCourseSchedule(currString))
+                if (!dbCourses.Any(g => g.Trim().Equals(s)) || !CourseHasPrereqs(s) || !CourseHasCourseSchedule(s))
                 {
                     if (coursesRequireInfo.Equals(""))
                     {
-                        coursesRequireInfo = currString;
+                        coursesRequireInfo = s;
                     }
                     else
                     {
-                        coursesRequireInfo += "|" + currString;
-                    }
-                } 
-            }
-
-
-
-            if (coursesRequireInfo.IsNullOrWhiteSpace())
-            {
-                // write new degree to Major table
-                if (!CheckIfCourseInDb(m.CurrentDegree))
-                {
-                    db.Majors.Add(new Major
-                    {
-                        Name = m.CurrentDegree
-
-                    });
-
-                    db.SaveChanges();
-                }
-                string[] requiredCourses = m.CurrentDegreeCourses.Split('|');
-
-                int majorId = getMajorId(m.CurrentDegree);
-                int schoolId = getSchoolId(m.School);
-                foreach (string s in requiredCourses)
-                {
-
-                    string currString = s.Replace("amp;", "");
-
-
-                    int courseId = getCourseId(currString);
-                    db.AdmissionRequiredCourses.Add(new AdmissionRequiredCours
-                    {
-                        MajorID = majorId,
-                        CourseID = courseId,
-                        SchoolID = schoolId
-
-                    });
-                }
-
-                if (!m.deferredPrereqs.IsNullOrWhiteSpace())
-                {
-                    string[] deferredRows = m.deferredPrereqs.Split('|');
-
-                    foreach (var s in deferredRows)
-                    {
-                        string[] rowInfo = s.Split(',');
-                        int courseId = getCourseId(rowInfo[0]);
-                        int prereqId = getCourseId(rowInfo[1]);
-                        int groupNum = int.Parse(rowInfo[2]);
-                        db.Prerequisites.Add(new Prerequisite
-                        {
-                            PrerequisiteID = prereqId,
-                            CourseID = courseId,
-                            GroupID = groupNum
-
-                        });
+                        coursesRequireInfo += "|" + s;
                     }
                 }
-
-
-                db.SaveChanges();
-                return RedirectToAction("Index");
             }
-            else
-            {
-                m.CurrentCollectDegreeInfoCourses = coursesRequireInfo;
-                return View(m);
 
-            }
+            m.CurrentCollectDegreeInfoCourses = coursesRequireInfo;
+            return View(m);
         }
+
 
         public ActionResult EditPlan(int MajorId, int SchoolId)
         {
-            var requiredClasses = db.AdmissionRequiredCourses.Where(t => t.MajorID == MajorId && t.SchoolID == SchoolId).Select(t => new { t.CourseID});
+            var requiredClasses = db.AdmissionRequiredCourses.Where(t => t.MajorID == MajorId && t.SchoolID == SchoolId).Select(t => new { t.CourseID });
             var final = from p in requiredClasses
-                join pm in db.Courses on p.CourseID equals pm.CourseID
-                select new CourseCourseIDViewModel {Course = pm.CourseNumber, CourseId = (int) p.CourseID};
-            return View(final.OrderBy(t=>t).ToList());
+                        join pm in db.Courses on p.CourseID equals pm.CourseID
+                        select new CourseCourseIDViewModel { Course = pm.CourseNumber, CourseId = (int)p.CourseID };
+            return View(final.OrderBy(t => t).ToList());
         }
 
         public int GetTimeId(string time)
         {
-          // assuming time conforms to the TimeSlot format
+            // assuming time conforms to the TimeSlot format
 
             var times = db.TimeSlots.Where(m => m.Time.ToString().Equals(time)).Select(m => m.TimeID);
             return times.First();
@@ -211,13 +134,13 @@ namespace DegreePlanCollection.Controllers
 
         public void writeToCourseTime(List<CourseTimeViewModel> m, string courseNumber)
         {
-           
+
             foreach (var v in m)
             {
                 int courseId = getCourseId(courseNumber);
 
-               int q = GetQuarterStringToInt(v.Quarter);
-                bool[] days = {v.Monday, v.Tuesday, v.Wednesday, v.Thursday, v.Friday};
+                int q = GetQuarterStringToInt(v.Quarter);
+                bool[] days = { v.Monday, v.Tuesday, v.Wednesday, v.Thursday, v.Friday };
                 int startTime = GetTimeId(v.StartTime.ToString());
                 int endTime = GetTimeId(v.EndTime.ToString());
 
@@ -231,7 +154,7 @@ namespace DegreePlanCollection.Controllers
                             CourseNumber = courseNumber,
                             StartTimeID = startTime,
                             EndTimeID = endTime,
-                            DayID = i+1,
+                            DayID = i + 1,
                             QuarterID = q,
                             Year = 1,
                             Status = -1,
@@ -266,154 +189,205 @@ namespace DegreePlanCollection.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!CheckIfCourseInDb(m.currentCollectInfoCourse.Replace("amp;", "")))
+                // write course to Courses Table
+                if (!CheckIfCourseInDb(m.currentCollectInfoCourse))
                 {
-                    db.Courses.Add(new Course
-                    {
-                        CourseNumber = m.currentCollectInfoCourse.Replace("amp;", ""),
-                        Title = m.Title,
-                        MinCredit = m.MinCredit,
-                        MaxCredit = m.MaxCredit,
-                        Description = m.Description,
-                        PreRequisites = m.Prerequisite,
-                        SectionID = 20
-
-
-                    });
-
-                    db.SaveChanges();
+                   WriteToCourseTable(m.currentCollectInfoCourse, m.Title, m.MinCredit, m.MaxCredit, m.Description, m.Prerequisite);
                 }
 
+                // the coures will be guaranteed to be in the db at this point
+
+
+                // if there are no time scheduling, write to the Course Time table
                 if (!CourseHasCourseSchedule(m.currentCollectInfoCourse))
                 {
                     writeToCourseTime(m.CourseTimeInfo.ToList(), m.currentCollectInfoCourse);
                 }
-                // the coures will be guarnteed to be in the db at this point
 
+
+                // courses is a list of courses that still need info collect from user
                 List<string> courses = m.CurrentCollectDegreeInfoCourses.Split('|').ToList();
-
-                if (!m.Prerequisite.IsNullOrWhiteSpace())
+                List<DefferedPrerequisiteModel> f = m.DefferedPrerequisites.ToList();
+                // skip over courses without prereqs or courses that all ready have prereq entries
+                if (!m.Prerequisite.IsNullOrWhiteSpace() || CourseHasPrereqs(m.currentCollectInfoCourse))
                 {
-                    string[] prereqGroups = m.Prerequisite.ToLower().Replace("or", "|").Split('|');
 
-                        string[][] prereq = new string[prereqGroups.Length][];
-                        for (int i = 0; i < prereqGroups.Length; i++)
-                        {
-                            string[] classesInGroup = prereqGroups[i].ToLower().Replace("and", "+").Split('+');
-                            prereq[i] = classesInGroup;
+                    WritePrereqs(m.Prerequisite, m.currentCollectInfoCourse, ref courses, ref f);
 
-
-                            foreach (string s in classesInGroup)
-                            {
-                                string currentString = s.ToUpper();
-                                if (!CheckIfCourseInDb(currentString) && !CourseHasPrereqs(currentString))
-                                {
-                                    if (!courses.Contains(currentString.Trim()))
-                                    {
-                                        courses.Add(currentString.Trim());
-                                        m.deferredPrereqs +=
-                                            "|" + m.currentCollectInfoCourse + "," + currentString.Trim() + "," + i + 1;
-                                    }
-                                }
-                                else
-                                {
-                                    int prereqCourseId = getCourseId(currentString);
-                                    int courseId = getCourseId(m.currentCollectInfoCourse);
-                                    db.Prerequisites.Add(new Prerequisite
-                                    {
-                                        PrerequisiteID = prereqCourseId,
-                                        CourseID = courseId,
-                                        GroupID = i + 1
-
-                                    });
-                                    db.SaveChanges();
-
-                                    // check if prereq has scheduled times
-                                    if (!CourseHasCourseSchedule(currentString))
-                                    {
-                                        if(!courses.Contains(currentString.Trim()))
-                                            courses.Add(currentString.Trim());
-                                    }
-
-                            }
-                        }
-                        }
-
-
-
-                    }
-            
+                    m.DefferedPrerequisites = f;
+                }
+                string[] coursesArr = courses.ToArray();
                 
-
-
-                string[] courseArr = courses.ToArray();
-                string nextCollectDegreeInfoCourses =
-                    String.Join("|", courseArr.Reverse().Take(courseArr.Length - 1).Reverse());
+                // take elements 1 to courseArr.Length -1
+                string nextCollectDegreeInfoCourses = string.Join("|", coursesArr.Reverse().Take(coursesArr.Length - 1).Reverse());
                 m.CurrentCollectDegreeInfoCourses = nextCollectDegreeInfoCourses;
 
-
+                // if the nextCollectDegreeInfo Course is empty, the degree collection is over
                 if (nextCollectDegreeInfoCourses.IsNullOrWhiteSpace())
                 {
                     // write new degree to Major table
                     if (!CheckIfDegreeInDb(m.CurrentDegree))
                     {
-                        db.Majors.Add(new Major
-                        {
-                            Name = m.CurrentDegree
 
-                        });
-
-                        db.SaveChanges();
-                    }
-                    string[] requiredCourses = m.CurrentDegreeCourses.Split('|');
-
-                    int majorId = getMajorId(m.CurrentDegree);
-                    int schoolId = getSchoolId(m.School);
-                    foreach (string s in requiredCourses)
-                    {
-                        string currString = s.Replace("amp;", "");
-                        int courseId = getCourseId(s);
-                        db.AdmissionRequiredCourses.Add(new AdmissionRequiredCours
-                        {
-                            MajorID = majorId,
-                            CourseID = courseId,
-                            SchoolID = schoolId
-
-                        });
-                        db.SaveChanges();
+                        WriteToMajorsTable(m.CurrentDegree);
 
                     }
 
-                    if (!m.deferredPrereqs.IsNullOrWhiteSpace())
-                    {
-                        string[] deferredRows = m.deferredPrereqs.Split('|');
-
-                        foreach (var s in deferredRows)
-                        {
-                            string[] rowInfo = s.Split(',');
-                            int courseId = getCourseId(rowInfo[0]);
-                            int prereqId = getCourseId(rowInfo[1]);
-                            int groupNum = int.Parse(rowInfo[2]);
-                            db.Prerequisites.Add(new Prerequisite
-                            {
-                                PrerequisiteID = prereqId,
-                                CourseID = courseId,
-                                GroupID = groupNum
-
-                            });
-                            db.SaveChanges();
-
-                        }
-                    }
+                    // write Degree courses to the admission required table
+                    WriteToAdmissonReq(m.CurrentDegreeCourses, m.CurrentDegree, m.School, m.DefferedPrerequisites.ToList());
 
 
                     return RedirectToAction("Index");
                 }
-                db.SaveChanges();
 
+
+
+                // there are still courses to collect
+                // reset course info for new course
+                m.CourseTimeInfo = new List<CourseTimeViewModel>
+                {
+                    new CourseTimeViewModel {Quarter = "Fall"},
+                    new CourseTimeViewModel {Quarter = "Winter"},
+                    new CourseTimeViewModel {Quarter = "Spring"},
+                    new CourseTimeViewModel {Quarter = "Summer"}
+                };
+                m.Title = "";
+                m.Description = "";
+                m.MinCredit = 0;
+                m.MaxCredit = 1;
+                m.Prerequisite = "";
                 return View("CollectCourseInfo", m);
             }
+
+
+            // model validation failed
             return View("CollectCourseInfo", m);
+        }
+
+        private void WriteToAdmissonReq(string currentDegreeCourses, string currentDegree, string school, List<DefferedPrerequisiteModel> deffered)
+        {
+            string[] requiredCourses = currentDegreeCourses.Split('|');
+
+            int majorId = getMajorId(currentDegree);
+            int schoolId = getSchoolId(school);
+            foreach (string s in requiredCourses)
+            {
+                int courseId = getCourseId(s);
+                db.AdmissionRequiredCourses.Add(new AdmissionRequiredCours
+                {
+                    MajorID = majorId,
+                    CourseID = courseId,
+                    SchoolID = schoolId
+
+                });
+
+            }
+
+            // write deffered prerreqs to Prerequisite table
+            foreach (var v in deffered)
+            {
+                int courseId = v.courseId;
+               
+                // the prereq is now in the db so it is save to get the courseid
+                int prereqId = getCourseId(v.prereqName);
+                db.Prerequisites.Add(new Prerequisite { 
+                
+                    CourseID = courseId,
+                    PrerequisiteID = prereqId,
+                    GroupID = v.groupId
+
+                });
+            }
+            db.SaveChanges();
+
+        }
+
+        private void WriteToMajorsTable(string major)
+        {
+            db.Majors.Add(new Major
+            {
+                Name = major
+
+            });
+            db.SaveChanges();
+        }
+
+        private void WriteToCourseTable(string courseNumber, string title, int minCredit, int maxCredit, string description, string prerequisite, int sectionID = 20)
+        {
+            db.Courses.Add(new Course
+            {
+                CourseNumber = courseNumber,
+                Title = title,
+                MinCredit = minCredit,
+                MaxCredit = maxCredit,
+                Description = description,
+                PreRequisites = prerequisite,
+                SectionID = sectionID
+            });
+
+            db.SaveChanges();
+        }
+
+        private void WritePrereqs(string prereqGroup, string currentCollectInfoCourse, ref List<string> courses,  ref List<DefferedPrerequisiteModel> defferedList)
+        {
+            string[] prereqGroups = prereqGroup.ToLower().Replace("or", "|").Split('|');
+
+            string[][] prereq = new string[prereqGroups.Length][];
+            for (int i = 0; i < prereqGroups.Length; i++)
+            {
+
+                // courses are lower case
+                string[] classesInGroup = prereqGroups[i].ToLower().Replace("and", "+").Split('+');
+                prereq[i] = classesInGroup;
+
+
+                foreach (string s in classesInGroup)
+                {
+                    // courses were compared using ToLower- restore ToUpper format
+
+
+                    //TODO crashing when the prereq is not in db
+                    string currentString = s.ToUpper();
+
+                    if (CheckIfCourseInDb(currentString))
+                    {
+                        int prereqCourseId = getCourseId(currentString);
+                        int courseId = getCourseId(currentCollectInfoCourse);
+                        db.Prerequisites.Add(new Prerequisite
+                        {
+                            PrerequisiteID = prereqCourseId,
+                            CourseID = courseId,
+                            GroupID = i + 1
+
+                        });
+                        db.SaveChanges();
+
+                        // check if prereq has scheduled times
+                        if (!CourseHasCourseSchedule(currentString))
+                        {
+                            if(!courses.Contains(currentString.Trim()))
+                                courses.Add(currentString.Trim());
+                        }
+                    }
+                    else
+                    {
+                        // add course to list to write when prereq is written
+                        defferedList.Add(new DefferedPrerequisiteModel
+                        {
+                            courseId = getCourseId(currentCollectInfoCourse),
+                            groupId = i +1,
+                            prereqName = currentString
+                        });
+
+                        // check not necesary
+                        if (!courses.Contains(currentString.Trim()))
+                            courses.Add(currentString.Trim());
+                    }
+                    
+
+                }
+
+            }
         }
 
         private bool CourseHasCourseSchedule(string courseNumber)
@@ -443,7 +417,7 @@ namespace DegreePlanCollection.Controllers
             return courses.Any(x => x.Trim().ToLower().Equals(courseName.Trim().ToLower()));
         }
 
-        
+
         private bool CheckIfDegreeInDb(string degreeName)
         {
             List<string> degrees = (from c in db.Majors select c.Name).ToList();
@@ -454,18 +428,18 @@ namespace DegreePlanCollection.Controllers
 
         private int getCourseId(string courseNumber)
         {
-            var courses = (from c in db.Courses select new { c.CourseID, c.CourseNumber}).ToList();
+            var courses = (from c in db.Courses select new { c.CourseID, c.CourseNumber }).ToList();
 
 
-            return courses.Find(x => x.CourseNumber.Trim().ToLower().Equals( courseNumber.Trim().ToLower())).CourseID;
+            return courses.Find(x => x.CourseNumber.Trim().ToLower().Equals(courseNumber.Trim().ToLower())).CourseID;
         }
 
         private int getMajorId(string major)
         {
-            var majors = (from c in db.Majors select new {  c.ID, c.Name }).ToList();
+            var majors = (from c in db.Majors select new { c.ID, c.Name }).ToList();
 
 
-            return (int) majors.Find(x => x.Name.Trim().ToLower().Equals(major.Trim().ToLower())).ID;
+            return (int)majors.Find(x => x.Name.Trim().ToLower().Equals(major.Trim().ToLower())).ID;
         }
 
         private int getSchoolId(string school)
@@ -480,12 +454,12 @@ namespace DegreePlanCollection.Controllers
         public ActionResult DisplayCoursePreReq(int CourseId)
         {
             var prereqs = db.Prerequisites.Where(t => t.CourseID == CourseId);
-                
+
 
             var final = (from p in prereqs
-                        join pm in db.Courses on p.CourseID equals pm.CourseID
-                        join pm2 in db.Courses on p.PrerequisiteID equals pm2.CourseID
-                select  new PrereqViewModel { Course = pm.CourseNumber, PrerequisiteCourse = pm2.CourseNumber,GroupId = p.GroupID, CourseId = p.CourseID, PrereqId = p.PrerequisiteID}).Distinct() ;
+                         join pm in db.Courses on p.CourseID equals pm.CourseID
+                         join pm2 in db.Courses on p.PrerequisiteID equals pm2.CourseID
+                         select new PrereqViewModel { Course = pm.CourseNumber, PrerequisiteCourse = pm2.CourseNumber, GroupId = p.GroupID, CourseId = p.CourseID, PrereqId = p.PrerequisiteID }).Distinct();
             return View(final.ToList());
         }
 
@@ -494,15 +468,15 @@ namespace DegreePlanCollection.Controllers
             var ct = db.CourseTimes.Where(t => t.CourseID == CourseId);
 
             var final = (from p in ct
-                join dy in db.WeekDays on p.DayID equals dy.DayID
-                join q in db.Quarters on p.QuarterID equals q.QuarterID
-                join s in db.Sections on p.SectionID equals s.ID
-                join st in db.TimeSlots on p.StartTimeID equals st.TimeID
-                join st2 in db.TimeSlots on p.EndTimeID equals st2.TimeID
-                select new DisplayCourseTimeViewModel { EndTime = (TimeSpan) st2.Time, StartTime = (TimeSpan) st.Time,CourseNumber = p.CourseNumber, Day = dy.WeekDay1,Quarter = q.Quarter1, Section = s.Section1});
+                         join dy in db.WeekDays on p.DayID equals dy.DayID
+                         join q in db.Quarters on p.QuarterID equals q.QuarterID
+                         join s in db.Sections on p.SectionID equals s.ID
+                         join st in db.TimeSlots on p.StartTimeID equals st.TimeID
+                         join st2 in db.TimeSlots on p.EndTimeID equals st2.TimeID
+                         select new DisplayCourseTimeViewModel { EndTime = (TimeSpan)st2.Time, StartTime = (TimeSpan)st.Time, CourseNumber = p.CourseNumber, Day = dy.WeekDay1, Quarter = q.Quarter1, Section = s.Section1 });
 
-           
-                    
+
+
             return View(final.ToList());
         }
 

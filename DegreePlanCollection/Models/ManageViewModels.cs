@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Razor;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -64,6 +67,8 @@ namespace DegreePlanCollection.Models
         public string Title { get; set; }
         public string Description { get; set; }
 
+
+        [PositiveNumber(ErrorMessage = "Minimum Credits can't be negative")]
         [Display(Name = "Minimum Credits")]
         public int MinCredit { get; set; }
 
@@ -73,13 +78,13 @@ namespace DegreePlanCollection.Models
         [Display(Name = "Maximum Credits")]
         public int MaxCredit { get; set; }
 
+        [PrereqValidation(ErrorMessage = "Prerequisite Group Invalid")]
         [Display(Name = "Prerequisite Group")]
         public string Prerequisite { get; set; }
 
         public IList<CourseTimeViewModel> CourseTimeInfo { get; set; }
 
-
-        public string deferredPrereqs { get; set; }
+        public IList<DefferedPrerequisiteModel> DefferedPrerequisites { get; set; }
 
         public CollectDegreeViewModel()
         {
@@ -88,10 +93,88 @@ namespace DegreePlanCollection.Models
             School = "";
             CurrentDegreeCourses = "";
 
-        CurrentCollectDegreeInfoCourses = "";
+            Title = "";
+            Description = "";
+            MinCredit = 0;
+            MaxCredit = 1;
+            Prerequisite = "";
+            CourseTimeInfo = new List<CourseTimeViewModel>();
+            DefferedPrerequisites = new List<DefferedPrerequisiteModel>();
+        }
+}
+
+    public class DefferedPrerequisiteModel
+    {
+        // this will have a courseId
+       public int courseId { get; set; }
+
+        // this feild does is not in the db yet
+        public string prereqName { get; set; }
+
+        public int groupId { get; set; }
 
     }
-}
+    public class PositiveNumber : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            
+            if (value == null)
+            {
+                return true;
+            }
+            int val;
+            if (int.TryParse(value.ToString(), out val))
+            {
+
+               
+
+                if (val >= 0)
+                    return true;
+            }
+            return false;
+
+        }
+    }
+
+
+    public class PrereqValidation : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            if (value == null)
+            {
+                return true;
+            }
+            string prereqString = (string) value;
+            string[] groups = prereqString.Split(' ');
+
+            if (groups.Length == 0)
+            {
+                return false;
+            }                 
+
+            string[] prereqGroups = prereqString.ToLower().Replace("or", "|").Split('|');
+
+            if (prereqGroups.Any(m => m.IsNullOrWhiteSpace()))
+            {
+                return false;
+            }
+
+            foreach (string v in prereqGroups)
+            {
+                string[] groupCourses = v.Replace("and", "+").Split('+');
+
+                if (groupCourses.Any(n => n.IsNullOrWhiteSpace()))
+                {
+                    return false;
+                }
+
+            }
+            return true;
+        }
+    }
+
 
     public class CourseTimeViewModel
     {
@@ -101,10 +184,29 @@ namespace DegreePlanCollection.Models
         public bool Wednesday { get; set; }
         public bool Thursday { get; set; }
         public bool Friday { get; set; }
+        [TimeInputValidation(ErrorMessage = "hh:mm:ss in military time")]
         public TimeSpan StartTime { get; set; }
+
+        [TimeInputValidation(ErrorMessage = "hh:mm:ss in military time")]
         public TimeSpan EndTime { get; set; }     
     }
 
+
+
+    public class TimeInputValidation : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+
+            string s = value.ToString();
+            string[] vals = s.Split(':');
+            return true;
+        }
+    }
 
 
     public class DisplayCourseTimeViewModel
@@ -137,69 +239,5 @@ namespace DegreePlanCollection.Models
     {
         public string Course { get; set; }
         public int CourseId { get; set; }
-    }
-
-    public class FactorViewModel
-    {
-        public string Purpose { get; set; }
-    }
-
-    public class SetPasswordViewModel
-    {
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "New password")]
-        public string NewPassword { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-    }
-
-    public class ChangePasswordViewModel
-    {
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
-        public string OldPassword { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "New password")]
-        public string NewPassword { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-    }
-
-    public class AddPhoneNumberViewModel
-    {
-        [Required]
-        [Phone]
-        [Display(Name = "Phone Number")]
-        public string Number { get; set; }
-    }
-
-    public class VerifyPhoneNumberViewModel
-    {
-        [Required]
-        [Display(Name = "Code")]
-        public string Code { get; set; }
-
-        [Required]
-        [Phone]
-        [Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
-    }
-
-    public class ConfigureTwoFactorViewModel
-    {
-        public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
 }
