@@ -588,7 +588,7 @@ namespace DegreePlanCollection.Controllers
         public ActionResult HandleDegreeCollegeForm(CollectDegreeViewModel m)
         {
             var courses = db.Courses.Select(c => c.CourseNumber);
-            m.Courses = courses.ToList();
+          
             // write to db
             return View("CollectCoreCourses", m);
 
