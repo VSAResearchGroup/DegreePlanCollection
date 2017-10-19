@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using System.Linq;
 using System.Net;
+using System.Web.DynamicData;
 using System.Web.Mvc;
 using DegreePlanCollection.Models;
 using Microsoft.Ajax.Utilities;
@@ -14,6 +15,7 @@ namespace DegreePlanCollection.Controllers
         private VSA db = new VSA();
 
 
+       
         // GET: CollectDegreePlan
         public ActionResult Index()
         {
@@ -59,7 +61,6 @@ namespace DegreePlanCollection.Controllers
         public ActionResult Create()
         {
             CollectDegreeViewModel newDegree = new CollectDegreeViewModel();
-            newDegree.CurrentDegreeCourses = "";
             var schools = from f in db.Schools select f.Name;       
             newDegree.Schools = new SelectList(schools);
             return View(newDegree);
@@ -120,7 +121,7 @@ namespace DegreePlanCollection.Controllers
             var requiredClasses = db.AdmissionRequiredCourses.Where(t => t.MajorID == MajorId && t.SchoolID == SchoolId).Select(t => new { t.CourseID });
             var final = from p in requiredClasses
                         join pm in db.Courses on p.CourseID equals pm.CourseID
-                        select new CourseCourseIDViewModel { Course = pm.CourseNumber, CourseId = (int)p.CourseID };
+                        select new CourseViewModel { Course = pm.CourseNumber, CourseId = (int)p.CourseID };
             return View(final.OrderBy(t => t).ToList());
         }
 
@@ -132,6 +133,13 @@ namespace DegreePlanCollection.Controllers
             return times.First();
         }
 
+        public TimeSpan GetTimeStringRep(int timeId)
+        {
+            // assuming time conforms to the TimeSlot format
+
+            var times = db.TimeSlots.Where(m => m.TimeID.Equals(timeId)).Select(m => m.Time);
+            return (TimeSpan) times.First();
+        }
         public void writeToCourseTime(List<CourseTimeViewModel> m, string courseNumber)
         {
 
@@ -239,11 +247,20 @@ namespace DegreePlanCollection.Controllers
 
                     return RedirectToAction("Index");
                 }
-
+                
+                // the first is the current the second is the next
+                string nextCourse = coursesArr[1];
 
 
                 // there are still courses to collect
                 // reset course info for new course
+
+               
+
+                
+
+                Course nCourse = getCourse(nextCourse);
+
                 m.CourseTimeInfo = new List<CourseTimeViewModel>
                 {
                     new CourseTimeViewModel {Quarter = "Fall"},
@@ -251,11 +268,29 @@ namespace DegreePlanCollection.Controllers
                     new CourseTimeViewModel {Quarter = "Spring"},
                     new CourseTimeViewModel {Quarter = "Summer"}
                 };
+
                 m.Title = "";
-                m.Description = "";
+                m.Description ="";
                 m.MinCredit = 0;
                 m.MaxCredit = 1;
                 m.Prerequisite = "";
+
+                if (nCourse != null)
+                {
+                    if (CourseHasCourseSchedule(nCourse.Title))
+                    {
+                        m.CourseTimeInfo = null;
+                    }
+
+
+                        m.Title = nCourse.Title;
+                    m.Description = nCourse.Description;
+                    m.MinCredit =  nCourse.MinCredit == null ? 0 : (int) nCourse.MinCredit;
+                    m.MaxCredit = nCourse.MaxCredit == null ? 0 : (int)nCourse.MaxCredit;
+                    m.Prerequisite = nCourse.PreRequisites;
+                }
+
+
                 return View("CollectCourseInfo", m);
             }
 
@@ -263,6 +298,8 @@ namespace DegreePlanCollection.Controllers
             // model validation failed
             return View("CollectCourseInfo", m);
         }
+
+       
 
         private void WriteToAdmissonReq(string currentDegreeCourses, string currentDegree, string school, List<DefferedPrerequisiteModel> deffered)
         {
@@ -299,6 +336,14 @@ namespace DegreePlanCollection.Controllers
                 });
             }
             db.SaveChanges();
+
+        }
+
+        private Course getCourse(string courseNumber)
+        {
+            var c = db.Courses.Where(m => m.CourseNumber.Equals(courseNumber));
+         
+            return    c.FirstOrDefault();
 
         }
 
@@ -345,8 +390,6 @@ namespace DegreePlanCollection.Controllers
                 {
                     // courses were compared using ToLower- restore ToUpper format
 
-
-                    //TODO crashing when the prereq is not in db
                     string currentString = s.ToUpper();
 
                     if (CheckIfCourseInDb(currentString))
@@ -544,6 +587,8 @@ namespace DegreePlanCollection.Controllers
 
         public ActionResult HandleDegreeCollegeForm(CollectDegreeViewModel m)
         {
+            var courses = db.Courses.Select(c => c.CourseNumber);
+            m.Courses = courses.ToList();
             // write to db
             return View("CollectCoreCourses", m);
 

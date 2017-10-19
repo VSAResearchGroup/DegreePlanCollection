@@ -38,10 +38,15 @@ namespace DegreePlanCollection.Models
         public int PrereqId { get; set; }
     }
 
-    public class CourseCourseIDViewModel
+    public class CourseViewModel
     {
         public string Course { get; set; }
         public int CourseId { get; set; }
+        public string Title { get; set; }
+        public string Desc { get; set; }
+        public string Prereq { get; set; }
+        public int MinCredit { get; set; }
+        public int MaxCredit { get; set; }
     }
 
    
@@ -65,6 +70,8 @@ namespace DegreePlanCollection.Models
 
         [Required]
         public string Title { get; set; }
+
+        [MaxLength(1000)]
         public string Description { get; set; }
 
 
@@ -80,6 +87,7 @@ namespace DegreePlanCollection.Models
 
         [PrereqValidation(ErrorMessage = "Prerequisite Group Invalid")]
         [Display(Name = "Prerequisite Group")]
+        [MaxLength(250)]
         public string Prerequisite { get; set; }
 
         public IList<CourseTimeViewModel> CourseTimeInfo { get; set; }
@@ -100,6 +108,8 @@ namespace DegreePlanCollection.Models
             Prerequisite = "";
             CourseTimeInfo = new List<CourseTimeViewModel>();
             DefferedPrerequisites = new List<DefferedPrerequisiteModel>();
+            CurrentDegreeCourses = "";
+           
         }
 }
 
@@ -142,11 +152,14 @@ namespace DegreePlanCollection.Models
     {
         public override bool IsValid(object value)
         {
-            if (value == null)
+            string prereqString = (string)value;
+
+            if (prereqString.IsNullOrWhiteSpace())
             {
                 return true;
             }
-            string prereqString = (string) value;
+
+
             string[] groups = prereqString.Split(' ');
 
             if (groups.Length == 0)

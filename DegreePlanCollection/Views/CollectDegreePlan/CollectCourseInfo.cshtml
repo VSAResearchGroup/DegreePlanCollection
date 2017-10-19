@@ -6,16 +6,40 @@
 
 @{
     ViewBag.Title = "CollectCourseInfo";
-}
 
 
 
-@{
+
     var courses = Model.CurrentCollectDegreeInfoCourses.Split('|');
     Model.currentCollectInfoCourse = courses[0];
-}
+
+    
+         // the first time CollectCourseInfo is called CourseTimeInfo will be null
+         // because I dont want to deal with the binding in CollectCoreCourses view
+
+         if (Model.CourseTimeInfo.Count == 0)
+         {
+                              
+             // reset course info for new course
+             Model.CourseTimeInfo = new List<CourseTimeViewModel>
+             {
+                 new CourseTimeViewModel {Quarter = "Fall"},
+                 new CourseTimeViewModel {Quarter = "Winter"},
+                 new CourseTimeViewModel {Quarter = "Spring"},
+                 new CourseTimeViewModel {Quarter = "Summer"}
+             };
+             Model.Title = "";
+             Model.Description = "";
+             Model.MinCredit = 0;
+             Model.MaxCredit = 1;
+             Model.Prerequisite = "";
+         }
+     }
+        
+
 
 <h2>Enter @Html.Raw(Model.currentCollectInfoCourse) Info:  </h2>
+
 
 
 
@@ -30,151 +54,134 @@
             </td>
             <td>
 
-                @Html.EditorFor(m => m.Title)
+                <input value="@Model.Title" id="Title" name="Title"/>
+
             </td>
             <td>
-                @Html.ValidationMessageFor(m => m.Title,"", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.Title, "", new {@class = "text-danger"})
             </td>
-    </tr>
-    <tr>
-        <td>
-            
-            @Html.LabelFor(m => m.Description)
-        </td>
-        <td>
-            @Html.EditorFor(m => m.Description)
-        </td>
-        <td>               
-             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-        
-        </td>
-
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(m => m.MinCredit)
-        </td>
-        <td>
-            @Html.EditorFor(m => m.MinCredit)
-        </td>
-        <td>               
-            @Html.ValidationMessageFor(m => m.MinCredit, "", new { @class = "text-danger" })
-        
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(m => m.MaxCredit)
-        </td>
-        <td>
-            @Html.EditorFor(m => m.MaxCredit)
-
-        </td>
-        <td>               
-            @Html.ValidationMessageFor(m => m.MaxCredit, "", new { @class = "text-danger" })
-        
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(m => m.Prerequisite)
-        </td>
-        <td>
-            @Html.EditorFor(m => m.Prerequisite)
-        </td>
-        <td>               
-            @Html.ValidationMessageFor(m => m.Prerequisite, "", new { @class = "text-danger" })
-        
-        </td>
-    </tr>
-</table>
-
-    @Html.HiddenFor(m => m.CurrentDegree)
-    <input type="hidden" value="@Html.Raw(Model.CurrentCollectDegreeInfoCourses)" id="CurrentCollectDegreeInfoCourses" name="CurrentCollectDegreeInfoCourses" />
-
-        @Html.HiddenFor(m => m.CurrentDegreeCourses)
-        <input type="hidden" value="@Html.Raw(Model.currentCollectInfoCourse)" id="currentCollectInfoCourse" name="currentCollectInfoCourse" />
-
-        @Html.HiddenFor(m => m.School)
-        @Html.HiddenFor(m => m.CurrentCourse)
-
-        <br />
-
- 
-    string[] quarters = { "Fall", "Winter", "Spring", "Summer" };
-   
-    <table>
+        </tr>
         <tr>
-            <th>Quarter</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Start Time</th>
-            <th>End Time</th>
+            <td>
+
+                @Html.LabelFor(m => m.Description)
+
+            </td>
+            <td>
+                <input value="@Model.Description" id="Description" name="Description"/>
+            </td>
+            <td>
+                @Html.ValidationMessageFor(m => m.Description, "", new {@class = "text-danger"})
+
+            </td>
 
         </tr>
-       
-        @{
-            // the first time CollectCourseInfo is called CourseTimeInfo will be null
-            // because I dont want to deal with the binding in CollectCoreCourses view
-
-            if (Model.CourseTimeInfo.Count == 0)
-            {
-                              
-                // reset course info for new course
-                Model.CourseTimeInfo = new List<CourseTimeViewModel>
-                {
-                    new CourseTimeViewModel {Quarter = "Fall"},
-                    new CourseTimeViewModel {Quarter = "Winter"},
-                    new CourseTimeViewModel {Quarter = "Spring"},
-                    new CourseTimeViewModel {Quarter = "Summer"}
-                };
-                Model.Title = "";
-                Model.Description = "";
-                Model.MinCredit = 0;
-                Model.MaxCredit = 1;
-                Model.Prerequisite = "";
-            }
-        }
-        
-
-        @for (var i = 0; i < Model.CourseTimeInfo.Count; i++)
-        {
-            <tr>
-                <td><p>@Model.CourseTimeInfo[i].Quarter</p></td>
-                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Monday)</td>
-                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Tuesday)</td>
-                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Wednesday)</td>
-                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Thursday)</td>
-                <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Friday)</td>
-                <td>@Html.EditorFor(m => m.CourseTimeInfo[i].StartTime)</td>
-                <td>@Html.ValidationMessageFor(m => m.CourseTimeInfo[i].StartTime, "", new { @class = "text-danger" })</td>
-                <td>@Html.EditorFor(m => m.CourseTimeInfo[i].EndTime)</td>
-                <td>@Html.ValidationMessageFor(m => m.CourseTimeInfo[i].EndTime, "", new { @class = "text-danger" })</td>
-
-                @Html.HiddenFor(m => m.CourseTimeInfo[i].Quarter)
-            </tr>
-
-        }
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.MinCredit)
+            </td>
+            <td>
+                <input value="@Model.MinCredit" id="MinCredit" name="MinCredit"/>
 
 
+            </td>
+            <td>
+                @Html.ValidationMessageFor(m => m.MinCredit, "", new {@class = "text-danger"})
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.MaxCredit)
+            </td>
+            <td>
+                <input value="@Model.MaxCredit" id="MaxCredit" name="MaxCredit"/>
+            </td>
+            <td>
+                @Html.ValidationMessageFor(m => m.MaxCredit, "", new {@class = "text-danger"})
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.Prerequisite)
+
+            </td>
+            <td>
+                <input value="@Model.Prerequisite" id="Prerequisite" name="Prerequisite"/>
+            </td>
+            <td>
+                @Html.ValidationMessageFor(m => m.Prerequisite, "", new {@class = "text-danger"})
+
+            </td>
+        </tr>
     </table>
 
-    for (var i = 0; i < Model.DefferedPrerequisites.Count; i++)
+    @Html.HiddenFor(m => m.CurrentDegree)
+    <input type="hidden" value="@Html.Raw(Model.CurrentCollectDegreeInfoCourses)" id="CurrentCollectDegreeInfoCourses" name="CurrentCollectDegreeInfoCourses"/>
+
+    @Html.HiddenFor(m => m.CurrentDegreeCourses)
+    <input type="hidden" value="@Html.Raw(Model.currentCollectInfoCourse)" id="currentCollectInfoCourse" name="currentCollectInfoCourse"/>
+
+    @Html.HiddenFor(m => m.School)
+    @Html.HiddenFor(m => m.CurrentCourse)
+
+    <br/>
+
+    if (Model.CourseTimeInfo != null)
     {
-        @Html.HiddenFor(m => m.DefferedPrerequisites[i].courseId)
-        @Html.HiddenFor(m => m.DefferedPrerequisites[i].prereqName)
-        @Html.HiddenFor(m => m.DefferedPrerequisites[i].groupId)
+
+        <table>
+            <tr>
+                <th>Quarter</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+
+            </tr>
+
+
+
+            @for (var i = 0; i < Model.CourseTimeInfo.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <p>@Model.CourseTimeInfo[i].Quarter</p></td>
+                    <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Monday)</td>
+                    <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Tuesday)</td>
+                    <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Wednesday)</td>
+                    <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Thursday)</td>
+                    <td>@Html.CheckBoxFor(m => m.CourseTimeInfo[i].Friday)</td>
+                    <td>@Html.EditorFor(m => m.CourseTimeInfo[i].StartTime)</td>
+                    <td>@Html.ValidationMessageFor(m => m.CourseTimeInfo[i].StartTime, "", new {@class = "text-danger"})</td>
+                    <td>@Html.EditorFor(m => m.CourseTimeInfo[i].EndTime)</td>
+                    <td>@Html.ValidationMessageFor(m => m.CourseTimeInfo[i].EndTime, "", new {@class = "text-danger"})</td>
+
+                    @Html.HiddenFor(m => m.CourseTimeInfo[i].Quarter)
+                </tr>
+
+            }
+
+            }
+        </table>
+
+        for (var i = 0; i < Model.DefferedPrerequisites.Count; i++)
+        {
+            @Html.HiddenFor(m => m.DefferedPrerequisites[i].courseId)
+            @Html.HiddenFor(m => m.DefferedPrerequisites[i].prereqName)
+            @Html.HiddenFor(m => m.DefferedPrerequisites[i].groupId)
+
+        }
+
+        <input type="submit" value="Submit"/>
 
     }
 
-    <input type="submit" value="Submit" />
 
-            }
-
-
-
+}
 
 
