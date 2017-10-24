@@ -17,24 +17,24 @@
          // the first time CollectCourseInfo is called CourseTimeInfo will be null
          // because I dont want to deal with the binding in CollectCoreCourses view
 
-         if (Model.CourseTimeInfo != null && Model.CourseTimeInfo.Count == 0)
-         {
-                              
-             // reset course info for new course
-             Model.CourseTimeInfo = new List<CourseTimeViewModel>
-             {
-                 new CourseTimeViewModel {Quarter = "Fall"},
-                 new CourseTimeViewModel {Quarter = "Winter"},
-                 new CourseTimeViewModel {Quarter = "Spring"},
-                 new CourseTimeViewModel {Quarter = "Summer"}
-             };
-             Model.Title = "";
-             Model.Description = "";
-             Model.MinCredit = 0;
-             Model.MaxCredit = 1;
-             Model.Prerequisite = "";
-         }
-     }
+    if (Model.CourseTimeInfo != null && Model.CourseTimeInfo.Count == 0)
+    {
+
+        // reset course info for new course
+        Model.CourseTimeInfo = new List<CourseTimeViewModel>
+        {
+            new CourseTimeViewModel {Quarter = "Fall"},
+            new CourseTimeViewModel {Quarter = "Winter"},
+            new CourseTimeViewModel {Quarter = "Spring"},
+            new CourseTimeViewModel {Quarter = "Summer"}
+        };
+        Model.Title = "";
+        Model.Description = "";
+        Model.MinCredit = 0;
+        Model.MaxCredit = 1;
+        Model.Prerequisite = "";
+    }
+}
         
 
 
@@ -45,8 +45,7 @@
 
 
 
-@using (Html.BeginForm("WriteCourseToDb", "CollectDegreePlan"))
-{
+@using (Html.BeginForm("WriteCourseToDb", "CollectDegreePlan")) { 
     <table>
         <tr>
             <td>
@@ -166,7 +165,7 @@
 
             }
 
-            }
+            
         </table>
     }
     for (var i = 0; i < Model.DefferedPrerequisites.Count; i++)

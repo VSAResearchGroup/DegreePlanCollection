@@ -379,12 +379,28 @@ namespace DegreePlanCollection.Controllers
 
         private void WriteToMajorsTable(string major)
         {
+
             db.Majors.Add(new Major
             {
-                Name = major
+                Name = major,
+                Description = "",
+                DepartmentID = getDepartmentDegree(major),
+                Status = 1
+
 
             });
             db.SaveChanges();
+        }
+
+        private int getDepartmentDegree(string major)
+        {
+
+           var t= db.Majors.Where(m => m.Name.Trim().ToLower().Equals(major.Trim().ToLower())).Select(m => m.DepartmentID).FirstOrDefault();
+            if (t == null)
+            {
+                return -1;
+            }
+            return (int) t;
         }
 
         private void WriteToCourseTable(string courseNumber, string title, int minCredit, int maxCredit, string description, string prerequisite, int sectionID = 20)
