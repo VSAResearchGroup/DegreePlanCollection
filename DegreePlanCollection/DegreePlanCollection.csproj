@@ -291,7 +291,6 @@
     <Content Include="Views\CollectDegreePlan\View.cshtml" />
     <Content Include="Views\CollectDegreePlan\CollectCoreCourses.cshtml" />
     <Content Include="Views\CollectDegreePlan\CollectCourseInfo.cshtml" />
-    <Content Include="Views\CollectCourse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,7 +17,7 @@
          // the first time CollectCourseInfo is called CourseTimeInfo will be null
          // because I dont want to deal with the binding in CollectCoreCourses view
 
-         if (Model.CourseTimeInfo.Count == 0)
+         if (Model.CourseTimeInfo != null && Model.CourseTimeInfo.Count == 0)
          {
                               
              // reset course info for new course
@@ -168,20 +168,20 @@
 
             }
         </table>
-
-        for (var i = 0; i < Model.DefferedPrerequisites.Count; i++)
-        {
-            @Html.HiddenFor(m => m.DefferedPrerequisites[i].courseId)
-            @Html.HiddenFor(m => m.DefferedPrerequisites[i].prereqName)
-            @Html.HiddenFor(m => m.DefferedPrerequisites[i].groupId)
-
-        }
-
-        <input type="submit" value="Submit"/>
+    }
+    for (var i = 0; i < Model.DefferedPrerequisites.Count; i++)
+    {
+        @Html.HiddenFor(m => m.DefferedPrerequisites[i].courseId)
+        @Html.HiddenFor(m => m.DefferedPrerequisites[i].prereqName)
+        @Html.HiddenFor(m => m.DefferedPrerequisites[i].groupId)
 
     }
 
+    <input type="submit" value="Submit"/>
 
 }
+
+
+
 
 

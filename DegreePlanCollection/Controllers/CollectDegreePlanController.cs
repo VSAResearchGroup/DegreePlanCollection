@@ -81,6 +81,8 @@ namespace DegreePlanCollection.Controllers
                 m.CurrentDegreeCourses += "|" + m.CurrentCourse;
 
             }
+
+
             m.CurrentCourse = "";
             return View("CollectCoreCourses", m);
         }
@@ -96,10 +98,20 @@ namespace DegreePlanCollection.Controllers
             // This will be more accurate when there is autocomplete
             // users will less likely enter MATH105 when MATH 105 is correct
             string coursesRequireInfo = "";
+            string firstCourse = "";
             foreach (string s in courses)
             {
+                    // course doesn't exits in db               no prereqs                  no time scheduling
                 if (!dbCourses.Any(g => g.Trim().Equals(s)) || !CourseHasPrereqs(s) || !CourseHasCourseSchedule(s))
                 {
+                    // skip over classes that have no entries in prereq since they have no prereqs
+                    if (!CourseHasPrereqs(s) && CourseHasCourseSchedule(s) && db.Courses
+                            .Where(c => c.CourseNumber.Trim().ToLower().Equals(s.Trim().ToLower()))
+                            .Select(c => c.PreRequisites).FirstOrDefault().IsNullOrWhiteSpace())
+                    {
+                        continue;
+                    }
+                    firstCourse = s;
                     if (coursesRequireInfo.Equals(""))
                     {
                         coursesRequireInfo = s;
@@ -112,6 +124,9 @@ namespace DegreePlanCollection.Controllers
             }
 
             m.CurrentCollectDegreeInfoCourses = coursesRequireInfo;
+
+            getNextModel(firstCourse, ref m);
+
             return View(m);
         }
 
@@ -140,6 +155,7 @@ namespace DegreePlanCollection.Controllers
             var times = db.TimeSlots.Where(m => m.TimeID.Equals(timeId)).Select(m => m.Time);
             return (TimeSpan) times.First();
         }
+
         public void writeToCourseTime(List<CourseTimeViewModel> m, string courseNumber)
         {
 
@@ -197,32 +213,41 @@ namespace DegreePlanCollection.Controllers
         {
             if (ModelState.IsValid)
             {
-                // write course to Courses Table
-                if (!CheckIfCourseInDb(m.currentCollectInfoCourse))
-                {
-                   WriteToCourseTable(m.currentCollectInfoCourse, m.Title, m.MinCredit, m.MaxCredit, m.Description, m.Prerequisite);
-                }
-
-                // the coures will be guaranteed to be in the db at this point
-
-
-                // if there are no time scheduling, write to the Course Time table
-                if (!CourseHasCourseSchedule(m.currentCollectInfoCourse))
-                {
-                    writeToCourseTime(m.CourseTimeInfo.ToList(), m.currentCollectInfoCourse);
-                }
-
-
-                // courses is a list of courses that still need info collect from user
                 List<string> courses = m.CurrentCollectDegreeInfoCourses.Split('|').ToList();
-                List<DefferedPrerequisiteModel> f = m.DefferedPrerequisites.ToList();
-                // skip over courses without prereqs or courses that all ready have prereq entries
-                if (!m.Prerequisite.IsNullOrWhiteSpace() || CourseHasPrereqs(m.currentCollectInfoCourse))
+
+                if (!(CheckIfCourseInDb(m.currentCollectInfoCourse) &&
+                    CourseHasCourseSchedule(m.currentCollectInfoCourse) && CourseHasPrereqs(m.currentCollectInfoCourse)))
                 {
+                
 
-                    WritePrereqs(m.Prerequisite, m.currentCollectInfoCourse, ref courses, ref f);
 
-                    m.DefferedPrerequisites = f;
+                // write course to Courses Table
+                    if (!CheckIfCourseInDb(m.currentCollectInfoCourse))
+                    {
+                        WriteToCourseTable(m.currentCollectInfoCourse, m.Title, m.MinCredit, m.MaxCredit, m.Description,
+                            m.Prerequisite);
+                    }
+
+                    // the coures will be guaranteed to be in the db at this point
+
+
+                    // if there are no time scheduling, write to the Course Time table
+                    if (!CourseHasCourseSchedule(m.currentCollectInfoCourse))
+                    {
+                        writeToCourseTime(m.CourseTimeInfo.ToList(), m.currentCollectInfoCourse);
+                    }
+
+
+                    // courses is a list of courses that still need info collect from user
+                    List<DefferedPrerequisiteModel> f = m.DefferedPrerequisites.ToList();
+                    // skip over courses without prereqs or courses that all ready have prereq entries
+                    if (!m.Prerequisite.IsNullOrWhiteSpace() || CourseHasPrereqs(m.currentCollectInfoCourse))
+                    {
+
+                        WritePrereqs(m.Prerequisite, m.currentCollectInfoCourse, ref courses, ref f);
+
+                        m.DefferedPrerequisites = f;
+                    }
                 }
                 string[] coursesArr = courses.ToArray();
                 
@@ -255,40 +280,10 @@ namespace DegreePlanCollection.Controllers
                 // there are still courses to collect
                 // reset course info for new course
 
-               
 
+
+                getNextModel(nextCourse,ref m);
                 
-
-                Course nCourse = getCourse(nextCourse);
-
-                m.CourseTimeInfo = new List<CourseTimeViewModel>
-                {
-                    new CourseTimeViewModel {Quarter = "Fall"},
-                    new CourseTimeViewModel {Quarter = "Winter"},
-                    new CourseTimeViewModel {Quarter = "Spring"},
-                    new CourseTimeViewModel {Quarter = "Summer"}
-                };
-
-                m.Title = "";
-                m.Description ="";
-                m.MinCredit = 0;
-                m.MaxCredit = 1;
-                m.Prerequisite = "";
-
-                if (nCourse != null)
-                {
-                    if (CourseHasCourseSchedule(nCourse.Title))
-                    {
-                        m.CourseTimeInfo = null;
-                    }
-
-
-                        m.Title = nCourse.Title;
-                    m.Description = nCourse.Description;
-                    m.MinCredit =  nCourse.MinCredit == null ? 0 : (int) nCourse.MinCredit;
-                    m.MaxCredit = nCourse.MaxCredit == null ? 0 : (int)nCourse.MaxCredit;
-                    m.Prerequisite = nCourse.PreRequisites;
-                }
 
 
                 return View("CollectCourseInfo", m);
@@ -299,7 +294,42 @@ namespace DegreePlanCollection.Controllers
             return View("CollectCourseInfo", m);
         }
 
-       
+        
+
+        private CollectDegreeViewModel getNextModel(string nextCourse,ref CollectDegreeViewModel m)
+        {
+            Course nCourse = getCourse(nextCourse);
+
+            m.CourseTimeInfo = new List<CourseTimeViewModel>
+            {
+                new CourseTimeViewModel {Quarter = "Fall"},
+                new CourseTimeViewModel {Quarter = "Winter"},
+                new CourseTimeViewModel {Quarter = "Spring"},
+                new CourseTimeViewModel {Quarter = "Summer"}
+            };
+
+            m.Title = "";
+            m.Description = "";
+            m.MinCredit = 0;
+            m.MaxCredit = 1;
+            m.Prerequisite = "";
+
+            if (nCourse != null)
+            {
+                if (CourseHasCourseSchedule(nCourse.CourseNumber))
+                {
+                    m.CourseTimeInfo = null;
+                }
+
+
+                m.Title = nCourse.Title;
+                m.Description = nCourse.Description;
+                m.MinCredit = nCourse.MinCredit == null ? 0 : (int)nCourse.MinCredit;
+                m.MaxCredit = nCourse.MaxCredit == null ? 0 : (int)nCourse.MaxCredit;
+                m.Prerequisite = nCourse.PreRequisites;
+            }
+            return m;
+        }
 
         private void WriteToAdmissonReq(string currentDegreeCourses, string currentDegree, string school, List<DefferedPrerequisiteModel> deffered)
         {
@@ -450,8 +480,6 @@ namespace DegreePlanCollection.Controllers
             return courses.Any(x => x == courseID);
         }
 
-
-
         private bool CheckIfCourseInDb(string courseName)
         {
             List<string> courses = (from c in db.Courses select c.CourseNumber).ToList();
@@ -459,7 +487,6 @@ namespace DegreePlanCollection.Controllers
 
             return courses.Any(x => x.Trim().ToLower().Equals(courseName.Trim().ToLower()));
         }
-
 
         private bool CheckIfDegreeInDb(string degreeName)
         {
@@ -493,7 +520,6 @@ namespace DegreePlanCollection.Controllers
             return courses.Find(x => x.Name.Trim().ToLower().Equals(school.Trim().ToLower())).ID;
         }
 
-
         public ActionResult DisplayCoursePreReq(int CourseId)
         {
             var prereqs = db.Prerequisites.Where(t => t.CourseID == CourseId);
@@ -516,9 +542,11 @@ namespace DegreePlanCollection.Controllers
                          join s in db.Sections on p.SectionID equals s.ID
                          join st in db.TimeSlots on p.StartTimeID equals st.TimeID
                          join st2 in db.TimeSlots on p.EndTimeID equals st2.TimeID
+                        
                          select new DisplayCourseTimeViewModel { EndTime = (TimeSpan)st2.Time, StartTime = (TimeSpan)st.Time, CourseNumber = p.CourseNumber, Day = dy.WeekDay1, Quarter = q.Quarter1, Section = s.Section1 });
 
-
+            List<string> quarterOrder = new List<string> {"Summer", "Spring", "Winter", "Fall" };
+            final.OrderBy(x => quarterOrder.IndexOf(x.Quarter));
 
             return View(final.ToList());
         }

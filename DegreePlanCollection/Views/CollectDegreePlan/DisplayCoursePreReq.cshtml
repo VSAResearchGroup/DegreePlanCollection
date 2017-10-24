@@ -1,35 +1,55 @@
-﻿@model IEnumerable<DegreePlanCollection.Models.PrereqViewModel>
+﻿@model IList<DegreePlanCollection.Models.PrereqViewModel>
 
 @{
     ViewBag.Title = "DisplayCoursePreReq";
 }
 
-<h2>Course Prerequisites</h2>
+@{
+    if (Model.Count == 0)
+    {
+        <h2>There are no prerequisites for this course</h2>
+
+    }
+    else
+    {
+        <h2>@Model[0].Course Prerequisites</h2>
+
+    }
+}
 
 <p>
  </p>
 <table class="table">
-    <tr>
-        <th>Course</th>
-        <th>Prerequisite</th>
-        <th>Group Number</th>
-    </tr>
+    @{
+        if (Model.Count > 0)
+        {
+            <tr>
+                <th>Group Number</th>
+                <th>Prerequisite</th>
+            </tr>
+        }
+    }
+     
 
-@foreach (var item in Model) {
-    <tr>
+    @foreach (var item in Model) {
+        <tr>
         
           
-            <td> @item.Course</td>
-      
-          <td>@Html.ActionLink( item.PrerequisiteCourse,"DisplayCoursePreReq", "CollectDegreePlan", new { CourseId = item.PrereqId}, null)</td>
-        
-        <td>
+            <td>
             
           
           
-            @item.GroupId
-        </td>
-    </tr>
-}
+                @item.GroupId
+            </td>
+            <td>@Html.ActionLink( item.PrerequisiteCourse,"DisplayCoursePreReq", "CollectDegreePlan", new { CourseId = item.PrereqId}, null)</td>
+        
+       
+        </tr>
+    }
 
 </table>
+
+@if (Request.UrlReferrer != null)
+{
+    <a  onclick="history.go(-1); return false;" href="#">Back</a><br />
+}
