@@ -101,16 +101,10 @@ namespace DegreePlanCollection.Controllers
             string firstCourse = "";
             foreach (string s in courses)
             {
-                    // course doesn't exits in db               no prereqs                  no time scheduling
-                if (!dbCourses.Any(g => g.Trim().Equals(s)) || !CourseHasPrereqs(s) || !CourseHasCourseSchedule(s))
+                if (!dbCourses.Any(g => g.Trim().Equals(s)))
                 {
-                    // skip over classes that have no entries in prereq since they have no prereqs
-                    if (!CourseHasPrereqs(s) && CourseHasCourseSchedule(s) && db.Courses
-                            .Where(c => c.CourseNumber.Trim().ToLower().Equals(s.Trim().ToLower()))
-                            .Select(c => c.PreRequisites).FirstOrDefault().IsNullOrWhiteSpace())
-                    {
-                        continue;
-                    }
+                    // course doesn't exits in db 
+
                     firstCourse = s;
                     if (coursesRequireInfo.Equals(""))
                     {
@@ -121,12 +115,40 @@ namespace DegreePlanCollection.Controllers
                         coursesRequireInfo += "|" + s;
                     }
                 }
+                else {
+                    // course  exits in db 
+                    //    no prereqs                  no time scheduling
+                    if (!CourseHasPrereqs(s) || !CourseHasCourseSchedule(s))
+                    {
+                        // skip over classes that have no entries in prereq since they have no prereqs
+                        if (!CourseHasPrereqs(s) && CourseHasCourseSchedule(s) && db.Courses
+                                .Where(c => c.CourseNumber.Trim().ToLower().Equals(s.Trim().ToLower()))
+                                .Select(c => c.PreRequisites).FirstOrDefault().IsNullOrWhiteSpace())
+                        {
+                            continue;
+                        }
+                        firstCourse = s;
+                        if (coursesRequireInfo.Equals(""))
+                        {
+                            coursesRequireInfo = s;
+                        }
+                        else
+                        {
+                            coursesRequireInfo += "|" + s;
+                        }
+                    }
+                }
             }
 
             m.CurrentCollectDegreeInfoCourses = coursesRequireInfo;
 
             getNextModel(firstCourse, ref m);
 
+            if (coursesRequireInfo.IsNullOrWhiteSpace())
+            {
+                WriteToAdmissonReq(m.CurrentDegreeCourses,m.CurrentDegree, m.School);
+                return RedirectToAction("Index");
+            }
             return View(m);
         }
 
@@ -258,13 +280,7 @@ namespace DegreePlanCollection.Controllers
                 // if the nextCollectDegreeInfo Course is empty, the degree collection is over
                 if (nextCollectDegreeInfoCourses.IsNullOrWhiteSpace())
                 {
-                    // write new degree to Major table
-                    if (!CheckIfDegreeInDb(m.CurrentDegree))
-                    {
-
-                        WriteToMajorsTable(m.CurrentDegree);
-
-                    }
+                  
 
                     // write Degree courses to the admission required table
                     WriteToAdmissonReq(m.CurrentDegreeCourses, m.CurrentDegree, m.School, m.DefferedPrerequisites.ToList());
@@ -331,9 +347,17 @@ namespace DegreePlanCollection.Controllers
             return m;
         }
 
-        private void WriteToAdmissonReq(string currentDegreeCourses, string currentDegree, string school, List<DefferedPrerequisiteModel> deffered)
+        private void WriteToAdmissonReq(string currentDegreeCourses, string currentDegree, string school, List<DefferedPrerequisiteModel> deffered =null)
         {
             string[] requiredCourses = currentDegreeCourses.Split('|');
+
+            // write new degree to Major table
+            if (!CheckIfDegreeInDb(currentDegree))
+            {
+
+                WriteToMajorsTable(currentDegree);
+
+            }
 
             int majorId = getMajorId(currentDegree);
             int schoolId = getSchoolId(school);
@@ -350,20 +374,25 @@ namespace DegreePlanCollection.Controllers
 
             }
 
-            // write deffered prerreqs to Prerequisite table
-            foreach (var v in deffered)
+            if (deffered != null)
             {
-                int courseId = v.courseId;
-               
-                // the prereq is now in the db so it is save to get the courseid
-                int prereqId = getCourseId(v.prereqName);
-                db.Prerequisites.Add(new Prerequisite { 
-                
-                    CourseID = courseId,
-                    PrerequisiteID = prereqId,
-                    GroupID = v.groupId
+                // write deffered prerreqs to Prerequisite table
+                foreach (var v in deffered)
+                {
+                    int courseId = v.courseId;
 
-                });
+                    // the prereq is now in the db so it is save to get the courseid
+                    int prereqId = getCourseId(v.prereqName);
+                    db.Prerequisites.Add(new Prerequisite
+                    {
+
+                        CourseID = courseId,
+                        PrerequisiteID = prereqId,
+                        GroupID = v.groupId
+
+                    });
+                }
+
             }
             db.SaveChanges();
 
@@ -395,12 +424,18 @@ namespace DegreePlanCollection.Controllers
         private int getDepartmentDegree(string major)
         {
 
-           var t= db.Majors.Where(m => m.Name.Trim().ToLower().Equals(major.Trim().ToLower())).Select(m => m.DepartmentID).FirstOrDefault();
-            if (t == null)
+            if (!db.Departments.Where(m => m.Name.Trim().ToLower().Contains(major.Trim().ToLower())).Select(m => m.ID).Any())
+          
             {
-                return -1;
+                db.Departments.Add(new Department
+                {
+                    Name = major
+                });
+                db.SaveChanges();
             }
-            return (int) t;
+            var t= db.Departments.Where(m => m.Name.Trim().ToLower().Contains(major.Trim().ToLower())).Select(m => m.ID);
+           
+            return  t.First();
         }
 
         private void WriteToCourseTable(string courseNumber, string title, int minCredit, int maxCredit, string description, string prerequisite, int sectionID = 20)
