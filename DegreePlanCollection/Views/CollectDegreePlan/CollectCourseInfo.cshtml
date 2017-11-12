@@ -46,6 +46,7 @@
 
 
 @using (Html.BeginForm("WriteCourseToDb", "CollectDegreePlan")) { 
+    @Html.AntiForgeryToken()
     <table>
         <tr>
             <td>

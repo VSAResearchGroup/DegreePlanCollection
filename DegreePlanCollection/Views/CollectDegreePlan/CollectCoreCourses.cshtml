@@ -50,9 +50,8 @@
 
 @using (Html.BeginForm("CollectCourseInfo", "CollectDegreePlan"))
 {
-  
 
-      
+    @Html.AntiForgeryToken()
 
 
     <input type="hidden" value="@Html.Raw(Model.CurrentDegreeCourses)" id="CurrentDegreeCourses" name="CurrentDegreeCourses" />

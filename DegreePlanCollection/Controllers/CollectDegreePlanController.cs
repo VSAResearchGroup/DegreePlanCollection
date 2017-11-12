@@ -68,6 +68,7 @@ namespace DegreePlanCollection.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddCourseToList(CollectDegreeViewModel m)
         {
 
@@ -87,6 +88,7 @@ namespace DegreePlanCollection.Controllers
             return View("CollectCoreCourses", m);
         }
 
+        [ValidateAntiForgeryToken]
         public ActionResult CollectCourseInfo(CollectDegreeViewModel m)
         {
             // upper case
@@ -151,7 +153,6 @@ namespace DegreePlanCollection.Controllers
             }
             return View(m);
         }
-
 
         public ActionResult EditPlan(int MajorId, int SchoolId)
         {
@@ -230,7 +231,7 @@ namespace DegreePlanCollection.Controllers
         }
 
 
-
+        [ValidateAntiForgeryToken]
         public ActionResult WriteCourseToDb(CollectDegreeViewModel m)
         {
             if (ModelState.IsValid)
@@ -312,7 +313,7 @@ namespace DegreePlanCollection.Controllers
 
         
 
-        private CollectDegreeViewModel getNextModel(string nextCourse,ref CollectDegreeViewModel m)
+        private void getNextModel(string nextCourse,ref CollectDegreeViewModel m)
         {
             Course nCourse = getCourse(nextCourse);
 
@@ -663,7 +664,7 @@ namespace DegreePlanCollection.Controllers
             base.Dispose(disposing);
         }
 
-
+        [ValidateAntiForgeryToken]
         public ActionResult HandleDegreeCollegeForm(CollectDegreeViewModel m)
         {
             var courses = db.Courses.Select(c => c.CourseNumber);
