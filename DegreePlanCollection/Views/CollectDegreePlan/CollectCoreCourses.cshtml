@@ -32,7 +32,7 @@
 
 @using (Html.BeginForm("AddCourseToList","CollectDegreePlan"))
 {
-    
+    @Html.AntiForgeryToken()
     <input value="@Html.Raw(Model.CurrentCourse)" id="CurrentCourse" name="CurrentCourse"  class = "form-control"/>
     
     @Html.HiddenFor(m=>m.CurrentDegree)

@@ -43,19 +43,7 @@ namespace DegreePlanCollection.Controllers
             return View(prerequisite);
         }
 
-        // POST: CollectDegreePlan/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult HandleForm(string response)
-        {
-
-            ViewBag.CurrentDegree = response;
-            return View("Index");
-        }
-
-
+      
 
 
         public ActionResult Create()
@@ -345,7 +333,6 @@ namespace DegreePlanCollection.Controllers
                 m.MaxCredit = nCourse.MaxCredit == null ? 0 : (int)nCourse.MaxCredit;
                 m.Prerequisite = nCourse.PreRequisites;
             }
-            return m;
         }
 
         private void WriteToAdmissonReq(string currentDegreeCourses, string currentDegree, string school, List<DefferedPrerequisiteModel> deffered =null)
