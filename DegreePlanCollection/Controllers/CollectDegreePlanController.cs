@@ -67,7 +67,8 @@ namespace DegreePlanCollection.Controllers
             }
             else
             {
-                m.CurrentDegreeCourses += "|" + m.CurrentCourse;
+                if(!m.CurrentDegreeCourses.Contains(m.CurrentCourse))
+                    m.CurrentDegreeCourses += "|" + m.CurrentCourse;
 
             }
 

@@ -15,7 +15,7 @@ namespace DegreePlanCollection.Models
             Students = new HashSet<Student>();
         }
 
-        public long ID { get; set; }
+        public int ID { get; set; }
 
         [StringLength(250)]
         public string Name { get; set; }
