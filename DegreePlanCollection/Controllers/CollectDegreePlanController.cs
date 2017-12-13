@@ -55,6 +55,11 @@ namespace DegreePlanCollection.Controllers
 
         }
 
+        /// <summary>
+        /// Add the current core course to the CurrentDegreeCourses
+        /// </summary>
+        /// <param name="m">Collect Degree Info model</param>
+        /// <returns>The CollectCoure Course page</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddCourseToList(CollectDegreeViewModel m)
@@ -77,10 +82,18 @@ namespace DegreePlanCollection.Controllers
             return View("CollectCoreCourses", m);
         }
 
+       /// <summary>
+       /// Takes a list of required courses and creates list of courses that need info collected
+       /// 
+       /// </summary>
+       /// <param name="m"></param>
+       /// <returns>CollectCourseInfo view if there are courses to collect info from
+       ///          Index if there are no courses to collect info from
+       /// </returns>
         [ValidateAntiForgeryToken]
         public ActionResult CollectCourseInfo(CollectDegreeViewModel m)
         {
-            // upper case
+            // courses are seperated by | character
             string[] courses = m.CurrentDegreeCourses.Split('|');
 
             // upper case needs trimming
@@ -152,6 +165,12 @@ namespace DegreePlanCollection.Controllers
             return View(final.OrderBy(t => t).ToList());
         }
 
+        /// <summary>
+        /// Returns time id of TimeSpan string representation time
+        /// </summary>
+        /// <param name="time">String representation of a TimeSpan</param>
+        /// <returns>time id</returns>
+        /// <remarks>assuming time conforms to the TimeSlot format</remarks>
         public int GetTimeId(string time)
         {
             // assuming time conforms to the TimeSlot format
@@ -159,15 +178,24 @@ namespace DegreePlanCollection.Controllers
             var times = db.TimeSlots.Where(m => m.Time.ToString().Equals(time)).Select(m => m.TimeID);
             return times.First();
         }
-
+        /// <summary>
+        /// returns TimeSpan representation of TimeSpan associated with timeId
+        /// </summary>
+        /// <param name="timeId">Time id</param>
+        /// <returns>returns TimeSpan representation of TimeSpan associated with timeId</returns>
         public TimeSpan GetTimeStringRep(int timeId)
         {
-            // assuming time conforms to the TimeSlot format
+           
 
             var times = db.TimeSlots.Where(m => m.TimeID.Equals(timeId)).Select(m => m.Time);
             return (TimeSpan) times.First();
         }
 
+        /// <summary>
+        /// Takes the list of course schedulings and course number to populate CourseTime table
+        /// </summary>
+        /// <param name="m">list of day and start and end times</param>
+        /// <param name="courseNumber">Course Title</param>
         public void writeToCourseTime(List<CourseTimeViewModel> m, string courseNumber)
         {
 
@@ -202,6 +230,11 @@ namespace DegreePlanCollection.Controllers
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Takes quarter string and returnns the id associated with it
+        /// </summary>
+        /// <param name="s">the quarter in string format</param>
+        /// <returns>the quarter's id</returns>
         public int GetQuarterStringToInt(string s)
         {
             switch (s.ToLower())
@@ -219,7 +252,13 @@ namespace DegreePlanCollection.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Writes course info to database. Enumerates through list till all courses are written to db 
+        /// </summary>
+        /// <param name="m">Model for degree info collection</param>
+        /// <returns>CollectCourseInfo if the model is invalid or there are still courses that need to be collected
+        /// Index if there are no courses to collect info from
+        /// </returns>
         [ValidateAntiForgeryToken]
         public ActionResult WriteCourseToDb(CollectDegreeViewModel m)
         {
@@ -301,7 +340,11 @@ namespace DegreePlanCollection.Controllers
         }
 
         
-
+        /// <summary>
+        /// Creates model initilizing it with info associated with nextCourse
+        /// </summary>
+        /// <param name="nextCourse">The course that information will be collected from next</param>
+        /// <param name="m">The degree collection model</param>
         private void getNextModel(string nextCourse,ref CollectDegreeViewModel m)
         {
             Course nCourse = getCourse(nextCourse);
@@ -336,6 +379,13 @@ namespace DegreePlanCollection.Controllers
             }
         }
 
+        /// <summary>
+        /// When information collection is done, all courses are written to the AdmissionRequiredCourses table
+        /// </summary>
+        /// <param name="currentDegreeCourses">string with all the degree required courses seperated with | </param>
+        /// <param name="currentDegree">string of current Degree</param>
+        /// <param name="school">string of school</param>
+        /// <param name="deffered">list of courses that did not exist when assigned as another courses prereq  </param>
         private void WriteToAdmissonReq(string currentDegreeCourses, string currentDegree, string school, List<DefferedPrerequisiteModel> deffered =null)
         {
             string[] requiredCourses = currentDegreeCourses.Split('|');
@@ -387,6 +437,11 @@ namespace DegreePlanCollection.Controllers
 
         }
 
+        /// <summary>
+        /// Returns the Course with CourseNumber courseNumber
+        /// </summary>
+        /// <param name="courseNumber">CourseNumber of course</param>
+        /// <returns>Course with CourseNumber courseNumber</returns>
         private Course getCourse(string courseNumber)
         {
             var c = db.Courses.Where(m => m.CourseNumber.Equals(courseNumber));
@@ -395,6 +450,10 @@ namespace DegreePlanCollection.Controllers
 
         }
 
+        /// <summary>
+        /// Write major to majors table
+        /// </summary>
+        /// <param name="major">major</param>
         private void WriteToMajorsTable(string major)
         {
 
@@ -410,6 +469,14 @@ namespace DegreePlanCollection.Controllers
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Gets the department associated with major
+        /// </summary>
+        /// <param name="major">the major to find the department of</param>
+        /// <returns>id of department degree</returns>
+        /// <remarks>
+        /// If the major does not have a department the department is set
+        /// </remarks>
         private int getDepartmentDegree(string major)
         {
 
@@ -427,6 +494,16 @@ namespace DegreePlanCollection.Controllers
             return  t.First();
         }
 
+        /// <summary>
+        /// Write a new course to the database
+        /// </summary>
+        /// <param name="courseNumber"></param>
+        /// <param name="title"></param>
+        /// <param name="minCredit"></param>
+        /// <param name="maxCredit"></param>
+        /// <param name="description"></param>
+        /// <param name="prerequisite"></param>
+        /// <param name="sectionID"></param>
         private void WriteToCourseTable(string courseNumber, string title, int minCredit, int maxCredit, string description, string prerequisite, int sectionID = 20)
         {
             db.Courses.Add(new Course
@@ -443,6 +520,13 @@ namespace DegreePlanCollection.Controllers
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Write prereqs to prereq table
+        /// </summary>
+        /// <param name="prereqGroup">Group of courses seperated by or and and</param>
+        /// <param name="currentCollectInfoCourse">The course that is associated with the prereqs</param>
+        /// <param name="courses">The courses that need information collected</param>
+        /// <param name="defferedList">List of courses that do not exits in database but are another course's prereq</param>
         private void WritePrereqs(string prereqGroup, string currentCollectInfoCourse, ref List<string> courses,  ref List<DefferedPrerequisiteModel> defferedList)
         {
             string[] prereqGroups = prereqGroup.ToLower().Replace("or", "|").Split('|');
@@ -503,6 +587,11 @@ namespace DegreePlanCollection.Controllers
             }
         }
 
+        /// <summary>
+        /// Returns true if the course associated with courseNumber has entries in the CourseTime table
+        /// </summary>
+        /// <param name="courseNumber">course</param>
+        /// <returns>true if courseNumber has time scheduling</returns>
         private bool CourseHasCourseSchedule(string courseNumber)
         {
             List<string> courses = (from c in db.CourseTimes select c.CourseNumber).ToList();
@@ -511,6 +600,11 @@ namespace DegreePlanCollection.Controllers
             return courses.Any(x => x.Trim().ToLower().Equals(courseNumber.Trim().ToLower()));
         }
 
+        /// <summary>
+        /// Returns true if the course associated with courseNumber has entries in the Prerequisites table
+        /// </summary>
+        /// <param name="courseNumber">course</param>
+        /// <returns>true if courseNumber has prerequisites</returns>
         private bool CourseHasPrereqs(string courseNumber)
         {
             int courseID = getCourseId(courseNumber);
@@ -520,6 +614,11 @@ namespace DegreePlanCollection.Controllers
             return courses.Any(x => x == courseID);
         }
 
+        /// <summary>
+        /// Returns true if the course associated with courseNumber has entries in the Course table
+        /// </summary>
+        /// <param name="courseName">course</param>
+        /// <returns>true if courseName is in Course</returns>
         private bool CheckIfCourseInDb(string courseName)
         {
             List<string> courses = (from c in db.Courses select c.CourseNumber).ToList();
@@ -528,6 +627,11 @@ namespace DegreePlanCollection.Controllers
             return courses.Any(x => x.Trim().ToLower().Equals(courseName.Trim().ToLower()));
         }
 
+        /// <summary>
+        /// Returns true if degree is in the Majors table
+        /// </summary>
+        /// <param name="degreeName">degree</param>
+        /// <returns>true if degreeNane exists in Majors table</returns>
         private bool CheckIfDegreeInDb(string degreeName)
         {
             List<string> degrees = (from c in db.Majors select c.Name).ToList();
@@ -536,6 +640,11 @@ namespace DegreePlanCollection.Controllers
             return degrees.Any(x => x.Trim().ToLower().Equals(degreeName.Trim().ToLower()));
         }
 
+        /// <summary>
+        /// Get the CourseId associated with courseNumber
+        /// </summary>
+        /// <param name="courseNumber"></param>
+        /// <returns></returns>
         private int getCourseId(string courseNumber)
         {
             var courses = (from c in db.Courses select new { c.CourseID, c.CourseNumber }).ToList();
@@ -544,6 +653,11 @@ namespace DegreePlanCollection.Controllers
             return courses.Find(x => x.CourseNumber.Trim().ToLower().Equals(courseNumber.Trim().ToLower())).CourseID;
         }
 
+        /// <summary>
+        /// Returns MajorId associated with string major
+        /// </summary>
+        /// <param name="major"></param>
+        /// <returns></returns>
         private int getMajorId(string major)
         {
             var majors = (from c in db.Majors select new { c.ID, c.Name }).ToList();
@@ -552,6 +666,11 @@ namespace DegreePlanCollection.Controllers
             return (int)majors.Find(x => x.Name.Trim().ToLower().Equals(major.Trim().ToLower())).ID;
         }
 
+        /// <summary>
+        /// Returns SchoolId associated with string school
+        /// </summary>
+        /// <param name="major"></param>
+        /// <returns></returns>
         private int getSchoolId(string school)
         {
             var courses = (from c in db.Schools select new { c.ID, c.Name }).ToList();
@@ -560,6 +679,11 @@ namespace DegreePlanCollection.Controllers
             return courses.Find(x => x.Name.Trim().ToLower().Equals(school.Trim().ToLower())).ID;
         }
 
+        /// <summary>
+        /// Returns DisplayCoursePreReq view and passes in courseId's prereqs
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
         public ActionResult DisplayCoursePreReq(int CourseId)
         {
             var prereqs = db.Prerequisites.Where(t => t.CourseID == CourseId);
@@ -572,6 +696,11 @@ namespace DegreePlanCollection.Controllers
             return View(final.ToList());
         }
 
+        /// <summary>
+        /// Returns view with all course scheduling
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
         public ActionResult DisplayCourseTime(int CourseId)
         {
             var ct = db.CourseTimes.Where(t => t.CourseID == CourseId);
@@ -590,6 +719,7 @@ namespace DegreePlanCollection.Controllers
 
             return View(final.ToList());
         }
+
 
         // GET: CollectDegreePlan/Edit/5
         public ActionResult Edit(int? id)
@@ -652,10 +782,14 @@ namespace DegreePlanCollection.Controllers
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Redirects the index page to the collectcorecourses page
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
         [ValidateAntiForgeryToken]
         public ActionResult HandleDegreeCollegeForm(CollectDegreeViewModel m)
         {
-            var courses = db.Courses.Select(c => c.CourseNumber);
           
             // write to db
             return View("CollectCoreCourses", m);
