@@ -8,8 +8,9 @@ using System.Web.Routing;
 
 namespace DegreePlanCollection
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
